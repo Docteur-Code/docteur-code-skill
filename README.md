@@ -10,12 +10,12 @@ C'est la version publique du bilan Docteur Code. La consultation complète (anal
 
 ## L'échelle de santé
 
-| Niveau | Nom | Score | Description |
-|--------|-----|-------|-------------|
-| 1 | Soins intensifs | 0-25 | Projet en danger. Bugs en cascade, l'IA tourne en rond. |
-| 2 | Sous traitement | 26-50 | Tient debout à coups de patchs. Bonnes pratiques inconstantes. |
-| 3 | Bonne santé | 51-75 | Projet stable, process en place. Reste des optimisations. |
-| 4 | Pleine forme | 76-100 | Workflow pro, code maintenable, factures Claude maîtrisées. |
+| Niveau | Nom             | Score  | Description                                                    |
+| ------ | --------------- | ------ | -------------------------------------------------------------- |
+| 1      | Soins intensifs | 0-25   | Projet en danger. Bugs en cascade, l'IA tourne en rond.        |
+| 2      | Sous traitement | 26-50  | Tient debout à coups de patchs. Bonnes pratiques inconstantes. |
+| 3      | Bonne santé     | 51-75  | Projet stable, process en place. Reste des optimisations.      |
+| 4      | Pleine forme    | 76-100 | Workflow pro, code maintenable, factures Claude maîtrisées.    |
 
 La plupart des projets vibe-codés se situent entre les niveaux 1 et 3. Le niveau 4 demande de la discipline.
 
@@ -26,13 +26,14 @@ La plupart des projets vibe-codés se situent entre les niveaux 1 et 3. Le nivea
 **En une commande.** Lancez ceci à la racine d'un projet utilisant Claude Code :
 
 ```bash
-mkdir -p .claude/commands && curl -sL https://raw.githubusercontent.com/[YOUR_USERNAME]/docteur-code-skill/main/.claude/commands/docteur-code.md -o .claude/commands/docteur-code.md
+mkdir -p .claude/commands && curl -sL https://raw.githubusercontent.com/Docteur-Code/docteur-code-skill/main/.claude/commands/docteur-code.md -o .claude/commands/docteur-code.md
 ```
 
-Ou clonez le repo :
+Ou clonez le repo et copiez la commande :
 
 ```bash
-git clone https://github.com/[YOUR_USERNAME]/docteur-code-skill.git
+git clone https://github.com/Docteur-Code/docteur-code-skill.git
+cp docteur-code-skill/.claude/commands/docteur-code.md /chemin/vers/votre/projet/.claude/commands/
 ```
 
 ---
@@ -58,15 +59,15 @@ La skill va :
 
 7 catégories pondérées :
 
-| Catégorie | Poids | Ce qui est vérifié |
-|-----------|-------|---------------------|
-| Setup Claude Code | 22% | CLAUDE.md, hooks, skills installés |
-| Sécurité | 18% | Secrets dans git, .env, dépendances, auth, observabilité |
-| Architecture | 15% | Lockfiles, modularité, séparation back/front |
-| Phase de création | 15% | Tests, linter, pre-commit hooks |
-| Déploiement | 12% | CI/CD, migrations BDD, environnements |
-| Gestion haut niveau | 10% | Git, remote, branches, .gitignore |
-| Bugs fonctionnels | 8% | Console.log oubliés, type safety |
+| Catégorie           | Poids | Ce qui est vérifié                                       |
+| ------------------- | ----- | -------------------------------------------------------- |
+| Setup Claude Code   | 22%   | CLAUDE.md, hooks, skills installés                       |
+| Sécurité            | 18%   | Secrets dans git, .env, dépendances, auth, observabilité |
+| Architecture        | 15%   | Lockfiles, modularité, séparation back/front             |
+| Phase de création   | 15%   | Tests, linter, pre-commit hooks                          |
+| Déploiement         | 12%   | CI/CD, migrations BDD, environnements                    |
+| Gestion haut niveau | 10%   | Git, remote, branches, .gitignore                        |
+| Bugs fonctionnels   | 8%    | Console.log oubliés, type safety                         |
 
 Le scan détecte automatiquement environ 80% des points. Les 20% restants (comportement avec Claude Code, bugs bloquants ressentis) font l'objet de 4 questions simples.
 

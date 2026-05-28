@@ -1,0 +1,17 @@
+# Bilans HTML générés par la skill (tests locaux)
+docteur-code-bilan*.html
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs et temp
+*.log
+.tmp/

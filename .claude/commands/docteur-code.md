@@ -223,7 +223,64 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 
 Après le scan, poser **4 questions** simples au user (en français, ton convivial mais direct). Ces questions concernent des points non détectables automatiquement.
 
-**Format :** poser les 4 questions d'un coup, attendre une réponse formattée libre.
+**Mode d'interaction :**
+
+- **Si l'outil `AskUserQuestion` est disponible** (Claude Code récent) : l'utiliser pour poser les 4 questions en un seul appel, chacune avec ses options cliquables. C'est l'expérience à privilégier.
+- **Sinon** : fallback en texte, poser les 4 questions d'un coup et attendre une réponse libre.
+
+### Format AskUserQuestion (recommandé)
+
+Appeler `AskUserQuestion` avec ces 4 questions, chacune en `multiSelect: false` :
+
+```json
+[
+  {
+    "question": "Quand tu travailles avec Claude (ou Cursor, Bolt...), tu utilises le mode plan avant les tâches complexes ?",
+    "header": "Mode plan",
+    "multiSelect": false,
+    "options": [
+      { "label": "Oui souvent", "description": "Tu pars d'un plan validé avant que l'IA touche au code." },
+      { "label": "Parfois", "description": "Tu l'utilises quand la tâche te paraît grosse, sinon non." },
+      { "label": "Non", "description": "Tu donnes l'instruction et l'IA exécute directement." },
+      { "label": "Jamais entendu parler", "description": "Pas de souci, on en parlera dans le bilan." }
+    ]
+  },
+  {
+    "question": "Quand tu attaques une grosse tâche, tu la découpes en petites sous-tâches avant de la donner à l'IA ?",
+    "header": "Découpage",
+    "multiSelect": false,
+    "options": [
+      { "label": "Oui systématiquement", "description": "Tu listes les étapes avant de lancer l'IA dessus." },
+      { "label": "Parfois", "description": "Quand tu sens que ça va déraper sinon." },
+      { "label": "Non", "description": "Tu lui donnes la tâche en bloc et tu corriges au fur et à mesure." }
+    ]
+  },
+  {
+    "question": "Tu utilises /compact ou /memory pour gérer le contexte sur les longues sessions ?",
+    "header": "Contexte",
+    "multiSelect": false,
+    "options": [
+      { "label": "Oui les deux", "description": "Tu connais et tu utilises /compact et /memory." },
+      { "label": "Un des deux", "description": "Tu en utilises au moins un régulièrement." },
+      { "label": "Non", "description": "Tu laisses le contexte tourner ou tu ouvres une nouvelle session." }
+    ]
+  },
+  {
+    "question": "Sur le projet actuel, est-ce que tu as des bugs bloquants que tu n'arrives pas à résoudre ?",
+    "header": "Bugs",
+    "multiSelect": false,
+    "options": [
+      { "label": "Oui plusieurs", "description": "Plusieurs trucs cassés qui te freinent au quotidien." },
+      { "label": "Oui 1-2", "description": "Un ou deux bugs que tu contournes pour l'instant." },
+      { "label": "Non c'est stable", "description": "Pas de bug bloquant identifié." }
+    ]
+  }
+]
+```
+
+### Format texte (fallback)
+
+Si `AskUserQuestion` n'est pas dispo, poser les 4 questions d'un coup :
 
 ```
 1. Quand tu travailles avec Claude (ou Cursor, Bolt...), tu utilises le **mode plan** avant les tâches complexes ? (oui souvent / parfois / non / jamais entendu parler)
@@ -235,11 +292,12 @@ Après le scan, poser **4 questions** simples au user (en français, ton convivi
 4. Sur le projet actuel, est-ce que tu as des **bugs bloquants** que tu n'arrives pas à résoudre ? (oui plusieurs / oui 1-2 / non c'est stable)
 ```
 
-Mapper les réponses sur l'échelle 0-3 :
-- Q1 mode plan : jamais=0, parfois=1, souvent=3 → ajouter à Setup Claude Code
-- Q2 sous-tâches : non=0, parfois=2, systématique=3 → ajouter à Phase de création
-- Q3 contexte : non=0, un=2, deux=3 → ajouter à Setup Claude Code
-- Q4 bugs : plusieurs=0, 1-2=1, stable=3 → ajouter à Bugs fonctionnels
+### Mapping des réponses sur l'échelle 0-3
+
+- **Q1 mode plan** : jamais entendu parler = 0, non = 0, parfois = 1, oui souvent = 3 → ajouter à Setup Claude Code
+- **Q2 découpage** : non = 0, parfois = 2, oui systématiquement = 3 → ajouter à Phase de création
+- **Q3 contexte** : non = 0, un des deux = 2, oui les deux = 3 → ajouter à Setup Claude Code
+- **Q4 bugs** : oui plusieurs = 0, oui 1-2 = 1, non c'est stable = 3 → ajouter à Bugs fonctionnels
 
 ---
 
