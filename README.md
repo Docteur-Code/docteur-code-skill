@@ -26,7 +26,12 @@ La plupart des projets vibe-codés se situent entre les niveaux 1 et 3. Le nivea
 **En une commande.** Lancez ceci à la racine d'un projet utilisant Claude Code :
 
 ```bash
-mkdir -p .claude/commands && curl -sL https://raw.githubusercontent.com/Docteur-Code/docteur-code-skill/main/.claude/commands/docteur-code.md -o .claude/commands/docteur-code.md
+mkdir -p .claude/commands && \
+  curl -fL https://raw.githubusercontent.com/Docteur-Code/docteur-code-skill/main/.claude/commands/docteur-code.md \
+    -o .claude/commands/docteur-code.md && \
+  echo "" && \
+  echo "Skill installée dans .claude/commands/docteur-code.md" && \
+  echo "Lance /docteur-code dans Claude Code pour démarrer le bilan."
 ```
 
 Ou clonez le repo et copiez la commande :
@@ -75,13 +80,33 @@ Le scan détecte automatiquement environ 80% des points. Les 20% restants (compo
 
 ## Output
 
-Un fichier `docteur-code-bilan.html` autonome, ouvrable dans n'importe quel navigateur. Il contient :
+### Bilans et historique
 
-- Score global sur 100 et niveau de santé
-- Visualisation de l'échelle des 4 niveaux
-- Détail par catégorie avec barres de progression
-- **Ordonnance** : les 3 actions prioritaires à appliquer
-- CTA vers la consultation complète
+Les bilans sont stockés dans `./.claude/docteur-code/bilans/` avec un **timestamp horodaté** :
+- Format : `bilan-YYYY-MM-DDTHH-mm-ss.html` (ex: `bilan-2025-06-16T14-32-47.html`)
+- Permet de relancer la skill plusieurs fois dans la journée
+- Chaque bilan est autonome, ouvrable dans n'importe quel navigateur
+
+Un fichier `./.claude/docteur-code/progress.json` track l'historique :
+```json
+{
+  "bilans": [
+    { "timestamp": "2025-06-12T09-15-32", "score": 42, "niveau": 2 },
+    { "timestamp": "2025-06-16T14-32-47", "score": 52, "niveau": 3 }
+  ]
+}
+```
+
+Cet historique permet de visualiser votre progression dans le temps. Chaque bilan affiche :
+
+- **Score global** sur 100 et niveau de santé
+- **Visualisation** de l'échelle des 4 niveaux
+- **Détail par catégorie** avec barres de progression
+- **Ordonnance** : les 3 actions prioritaires avec :
+  - **Pourquoi c'est important** : explication concrète sans jargon
+  - **Étapes détaillées** : à quoi ça ressemble maintenant, les commandes copiables, comment valider
+  - **Checkboxes** : pour tracker visuellement votre progression
+- **CTA** vers la consultation complète
 
 Le HTML est standalone : pas de dépendance externe, pas de tracker. Vous pouvez le partager ou l'archiver.
 
@@ -92,6 +117,8 @@ Le HTML est standalone : pas de dépendance externe, pas de tracker. Vous pouvez
 La plupart des projets buildés avec l'IA finissent en code spaghetti. Pas par incompétence, mais parce qu'on apprend en faisant - et qu'on n'a pas toujours le bon retour au bon moment.
 
 Cette skill donne un retour objectif en 5 minutes. Pas pour juger, mais pour montrer où sont les leviers prioritaires.
+
+**L'ordonnance est activable** : chaque recommandation explique le **pourquoi** (en termes simples), montre l'**état actuel**, et propose des **étapes copiables avec validation**. L'objectif est qu'un novice puisse les exécuter sans connaissance préalable.
 
 Le scan ne remplace pas l'expertise humaine sur des décisions d'architecture, l'analyse qualitative du code, ou le déblocage de bugs complexes. C'est précisément ce que couvre la [consultation complète](https://docteur-code.fr).
 

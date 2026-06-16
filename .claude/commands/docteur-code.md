@@ -346,12 +346,106 @@ Identifier les 3 questions où :
 2. La catégorie a un poids élevé (priorité Setup Claude Code, Sécurité, Architecture)
 3. L'action est rapide à mettre en oeuvre
 
-Pour chaque quick win, formuler en une phrase claire et actionnable l'action à mener.
+Pour chaque quick win, créer une structure détaillée :
 
-Exemples :
-- "Crée un fichier CLAUDE.md à la racine du projet avec tes règles de style et conventions (gain immédiat sur la qualité des outputs)"
-- "Ajoute .env à ton .gitignore - tes secrets sont actuellement trackés par git (faille de sécurité critique)"
-- "Installe husky + lint-staged pour automatiser les checks avant chaque commit (5 min de setup, gain à vie)"
+```json
+{
+  "id": "recommendation_id",
+  "title": "Titre court (7-10 mots max)",
+  "severity": "CRITICAL|MAJOR|MINOR",
+  "category": "Nom de la catégorie",
+  "whyMatters": "Paragraphe de 3-4 phrases expliquant POURQUOI c'est important. Pas de jargon, ton direct. Exemples : risque réel, impact sur la maintenabilité, bénéfice concret.",
+  "currentState": "Description de l'état actuel détecté dans le scan (ex: '.env présent mais NON ignoré par git')",
+  "steps": [
+    {
+      "num": 1,
+      "title": "Titre de l'étape",
+      "description": "Explication courte",
+      "command": "bash command to copy/paste (if applicable)",
+      "expectedResult": "Ce qu'on doit voir après"
+    }
+  ]
+}
+```
+
+**Principes des recommandations** :
+- Le "pourquoi" doit être compréhensible par un novice, sans supposer de knowledge technique
+- Chaque step doit être exécutable en 1-2 minutes max
+- Les commandes bash doivent être copiables intégralement
+- Toujours finir par une étape de validation ("vérifier que ça marche")
+- Pas d'estimation de temps (l'utilisateur verra si c'est rapide ou non)
+
+**Exemples complétés** :
+
+1. **Sécuriser .env par git**
+```json
+{
+  "id": "gitignore-env",
+  "title": "Sécuriser .env par git",
+  "severity": "CRITICAL",
+  "category": "Sécurité",
+  "whyMatters": "Ton fichier .env contient tes secrets (API keys, tokens database). S'il est tracké par git et ton repo est public (ou accessible à des collègues), n'importe qui peut voir tes credentials. C'est la porte ouverte à un accès non autorisé. Ça doit être fait immédiatement.",
+  "currentState": ".env détecté mais NON dans .gitignore",
+  "steps": [
+    {
+      "num": 1,
+      "title": "Vérifier que .gitignore existe",
+      "description": "Si .gitignore n'existe pas, on le crée",
+      "command": "touch .gitignore",
+      "expectedResult": "Fichier .gitignore apparaît à la racine du projet"
+    },
+    {
+      "num": 2,
+      "title": "Ajouter .env à .gitignore",
+      "description": "On ajoute les fichiers .env pour qu'ils ne soient jamais trackés",
+      "command": "cat >> .gitignore << 'EOF'\n.env\n.env.local\n.env.*.local\nEOF",
+      "expectedResult": "grep .env .gitignore affiche les lignes ajoutées"
+    },
+    {
+      "num": 3,
+      "title": "Vérifier que git ignore bien .env",
+      "description": "On s'assure que git ne track plus .env",
+      "command": "git status | grep -i env",
+      "expectedResult": "Aucune ligne .env n'apparaît (silence = bon signe)"
+    }
+  ]
+}
+```
+
+2. **Documenter tes conventions (CLAUDE.md)**
+```json
+{
+  "id": "claude-md",
+  "title": "Documenter tes conventions",
+  "severity": "MAJOR",
+  "category": "Setup Claude Code",
+  "whyMatters": "Quand tu travailles avec Claude Code ou Cursor, l'IA a besoin de savoir tes préférences : comment tu veux que le code soit structuré, nommé, formaté. Sans ça, chaque réponse réinvente la roue. Avec un CLAUDE.md clair, tu gagnes du temps et les réponses sont meilleures. Ça te coûte 10 min de setup, tu economises des heures après.",
+  "currentState": "CLAUDE.md absent ou incomplet",
+  "steps": [
+    {
+      "num": 1,
+      "title": "Créer le fichier CLAUDE.md",
+      "description": "À la racine du projet",
+      "command": "touch ./CLAUDE.md",
+      "expectedResult": "ls -la | grep CLAUDE.md montre le fichier"
+    },
+    {
+      "num": 2,
+      "title": "Ajouter le contenu minimal",
+      "description": "Un modèle de base pour commencer",
+      "command": "cat > ./CLAUDE.md << 'EOF'\n# {{PROJET_NOM}}\n\n## Stack\nNode.js + TypeScript + React (adapter à ton project)\n\n## Code style\n- Imports: OS → npm → locals\n- Fonctions < 50 lignes\n- Pas de console.log en prod\n- Noms explicites\n\n## Git\n- Branches feature depuis main\n- Messages en anglais\nEOF",
+      "expectedResult": "cat CLAUDE.md affiche le contenu"
+    },
+    {
+      "num": 3,
+      "title": "Personnaliser selon ton projet",
+      "description": "Ajouter tes vraies règles (indentation, conventions de nommage, libs préférées, etc.)",
+      "command": "# Édite CLAUDE.md manuellement dans ton IDE",
+      "expectedResult": "Le fichier contient tes conventions actuelles"
+    }
+  ]
+}
+```
 
 ---
 
@@ -363,9 +457,12 @@ Après avoir tout calculé, **toujours générer** un fichier HTML standalone et
 
 1. Créer un HTML auto-contenu en utilisant le template ci-dessous
 2. Remplacer tous les tokens `{{...}}` avec les vraies valeurs
-3. Écrire dans `./docteur-code-bilan.html` (dossier courant) ou `~/Desktop/docteur-code-bilan.html` selon l'OS
-4. Ouvrir dans le navigateur (open/xdg-open/start)
-5. Dire au user : "Ton bilan est ouvert dans le navigateur."
+3. Générer le timestamp ISO avec heure : `YYYY-MM-DDTHH-mm-ss` (ex: `2025-06-16T14-32-47`)
+4. Créer le dossier `.claude/docteur-code/bilans/` s'il n'existe pas
+5. Écrire le fichier dans `./.claude/docteur-code/bilans/bilan-{{TIMESTAMP}}.html`
+6. Mettre à jour `./.claude/docteur-code/progress.json` avec le nouveau score et timestamp
+7. Ouvrir dans le navigateur : `open ./.claude/docteur-code/bilans/bilan-{{TIMESTAMP}}.html`
+8. Dire au user : "Ton bilan Docteur Code est prêt. Fichier : `./.claude/docteur-code/bilans/bilan-{{TIMESTAMP}}.html`"
 
 ### Tokens à remplacer
 
@@ -411,10 +508,61 @@ Icônes proposées (en emoji car simple à inclure inline) :
 
 ### Format d'un quick win
 
+Chaque recommandation affiche le titre, puis un `<details>` qui s'ouvre pour révéler le pourquoi et les étapes.
+
 ```html
 <div class="rx-item">
   <div class="rx-num">{{NUMERO}}</div>
-  <div class="rx-text">{{ACTION}}</div>
+  <div class="rx-content">
+    
+    <div class="rx-title">{{RECOMMENDATION_TITLE}}</div>
+    <div class="rx-severity">{{SEVERITY}} | {{CATEGORY}}</div>
+    
+    <details class="rx-detail" open>
+      <summary>Pourquoi c'est important</summary>
+      <div class="rx-why">{{WHY_MATTERS}}</div>
+      <div class="rx-state">État actuel : <strong>{{CURRENT_STATE}}</strong></div>
+    </details>
+
+    <details class="rx-detail" open>
+      <summary>Comment procéder</summary>
+      <div class="rx-steps">
+        {{STEPS_HTML}}
+      </div>
+    </details>
+
+    <div class="rx-checkbox">
+      <input type="checkbox" id="done-{{NUMERO}}" />
+      <label for="done-{{NUMERO}}">J'ai complété cette action</label>
+    </div>
+
+  </div>
+</div>
+```
+
+Où `{{STEPS_HTML}}` est généré comme :
+```html
+<div class="rx-step">
+  <div class="rx-step-num">Étape 1</div>
+  <div class="rx-step-title">{{STEP_TITLE}}</div>
+  <div class="rx-step-desc">{{STEP_DESCRIPTION}}</div>
+  
+  {{#if STEP_COMMAND}}
+  <div class="rx-code-block">
+    <code>{{STEP_COMMAND}}</code>
+    <button class="rx-copy">Copier</button>
+  </div>
+  {{/if}}
+  
+  {{#if EXPECTED_RESULT}}
+  <div class="rx-expected">
+    <strong>Tu dois voir :</strong><br>
+    {{EXPECTED_RESULT}}
+  </div>
+  {{/if}}
+  
+  <input type="checkbox" id="step-{{NUMERO}}-{{STEP_NUM}}" />
+  <label for="step-{{NUMERO}}-{{STEP_NUM}}">Étape complétée</label>
 </div>
 ```
 
@@ -825,6 +973,162 @@ Icônes proposées (en emoji car simple à inclure inline) :
     padding-top: 4px;
   }
 
+  /* Recommandations détaillées */
+  .rx-content {
+    flex: 1;
+  }
+
+  .rx-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .rx-severity {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .rx-detail {
+    margin-bottom: 12px;
+    padding: 12px;
+    background: rgba(15, 76, 117, 0.02);
+    border-radius: 6px;
+    border-left: 3px solid var(--primary);
+  }
+
+  .rx-detail summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--primary);
+    padding: 4px 0;
+  }
+
+  .rx-detail summary:hover {
+    text-decoration: underline;
+  }
+
+  .rx-why {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .rx-state {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .rx-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .rx-step {
+    padding: 12px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .rx-step-num {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .rx-step-title {
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .rx-step-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .rx-code-block {
+    background: var(--bg-light);
+    border-radius: 4px;
+    padding: 8px;
+    margin: 8px 0;
+    position: relative;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 12px;
+    overflow-x: auto;
+  }
+
+  .rx-code-block code {
+    display: block;
+    color: var(--text);
+    line-height: 1.4;
+    word-break: break-all;
+  }
+
+  .rx-copy {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  .rx-copy:hover {
+    opacity: 1;
+  }
+
+  .rx-expected {
+    background: rgba(39, 174, 96, 0.05);
+    border-left: 3px solid var(--excellent);
+    padding: 8px;
+    margin: 8px 0;
+    font-size: 13px;
+    color: var(--text);
+    border-radius: 3px;
+  }
+
+  .rx-expected strong {
+    color: var(--excellent);
+  }
+
+  .rx-checkbox {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .rx-checkbox input[type="checkbox"] {
+    margin-right: 6px;
+  }
+
+  .rx-checkbox label {
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .rx-checkbox input[type="checkbox"]:checked + label {
+    color: var(--excellent);
+    text-decoration: line-through;
+  }
+
   /* CTA */
   .cta-box {
     background: linear-gradient(135deg, var(--primary), var(--primary-light));
@@ -1013,9 +1317,59 @@ Icônes proposées (en emoji car simple à inclure inline) :
 
 ### Après écriture du HTML
 
-1. Écrire le fichier complet (tous tokens remplacés) dans `./docteur-code-bilan.html`
-2. Ouvrir : `open ./docteur-code-bilan.html` (Mac) ou `xdg-open` (Linux) ou `start` (Windows)
-3. Dire au user : "Ton bilan Docteur Code est ouvert dans le navigateur. Tu peux le partager ou l'archiver."
+1. Écrire le fichier complet (tous tokens remplacés) dans `./.claude/docteur-code/bilans/bilan-{{TIMESTAMP}}.html`
+2. Mettre à jour (ou créer) `./.claude/docteur-code/progress.json` :
+```json
+{
+  "bilans": [
+    {
+      "timestamp": "2025-06-16T14-32-47",
+      "date": "16 juin 2025",
+      "score": 52,
+      "niveau": 3,
+      "niveau_nom": "Bonne santé"
+    }
+  ],
+  "last_bilan": "2025-06-16T14-32-47"
+}
+```
+3. Ouvrir : `open ./.claude/docteur-code/bilans/bilan-{{TIMESTAMP}}.html` (Mac) ou `xdg-open` (Linux) ou `start` (Windows)
+4. Dire au user : "Ton bilan Docteur Code est prêt : `./.claude/docteur-code/bilans/bilan-{{TIMESTAMP}}.html`. Historique des bilans : `./.claude/docteur-code/progress.json`"
+
+---
+
+## Fichier progress.json
+
+Le fichier `./.claude/docteur-code/progress.json` est créé automatiquement et trackent l'historique. Chaque fois qu'on relance `/docteur-code`, on ajoute une entrée :
+
+```json
+{
+  "bilans": [
+    {
+      "timestamp": "2025-06-12T09-15-32",
+      "date": "12 juin 2025",
+      "score": 42,
+      "niveau": 2,
+      "niveau_nom": "Sous traitement"
+    },
+    {
+      "timestamp": "2025-06-16T14-32-47",
+      "date": "16 juin 2025",
+      "score": 52,
+      "niveau": 3,
+      "niveau_nom": "Bonne santé"
+    }
+  ],
+  "last_bilan": "2025-06-16T14-32-47"
+}
+```
+
+À chaque relance, on :
+1. Lit le fichier (s'il existe)
+2. Ajoute le nouveau bilan à l'array
+3. Met à jour `last_bilan`
+
+Cet historique permet à l'utilisateur de tracker sa progression entre les bilans.
 
 ---
 
