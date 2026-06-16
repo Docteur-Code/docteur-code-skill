@@ -1333,8 +1333,11 @@ Où `{{STEPS_HTML}}` est généré comme :
   "last_bilan": "2025-06-16T14-32-47"
 }
 ```
-3. Ouvrir : `open ./.claude/docteur-code/bilans/bilan-{{TIMESTAMP}}.html` (Mac) ou `xdg-open` (Linux) ou `start` (Windows)
-4. Dire au user : "Ton bilan Docteur Code est prêt : `./.claude/docteur-code/bilans/bilan-{{TIMESTAMP}}.html`. Historique des bilans : `./.claude/docteur-code/progress.json`"
+3. **Ouvrir automatiquement le fichier HTML** :
+   - Sur Mac : exécuter `open ./.claude/docteur-code/bilans/bilan-{{TIMESTAMP}}.html`
+   - Sur Linux : exécuter `xdg-open ./.claude/docteur-code/bilans/bilan-{{TIMESTAMP}}.html`
+   - Sur Windows : exécuter `start .\.claude\docteur-code\bilans\bilan-{{TIMESTAMP}}.html`
+4. Dire au user : "Ton bilan Docteur Code s'ouvre dans le navigateur 👇"
 
 ---
 
