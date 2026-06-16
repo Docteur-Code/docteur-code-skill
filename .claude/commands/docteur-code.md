@@ -382,6 +382,7 @@ Pour chaque quick win, créer une structure détaillée :
 {
   "id": "gitignore-env",
   "title": "Sécuriser .env par git",
+  "benefit": "Tes secrets ne seront jamais publics sur GitHub",
   "severity": "CRITICAL",
   "category": "Sécurité",
   "whyMatters": "Ton fichier .env contient tes secrets (API keys, tokens database). S'il est tracké par git et ton repo est public (ou accessible à des collègues), n'importe qui peut voir tes credentials. C'est la porte ouverte à un accès non autorisé. Ça doit être fait immédiatement.",
@@ -417,6 +418,7 @@ Pour chaque quick win, créer une structure détaillée :
 {
   "id": "claude-md",
   "title": "Documenter tes conventions",
+  "benefit": "L'IA comprend tes préférences = réponses plus rapides et meilleures",
   "severity": "MAJOR",
   "category": "Setup Claude Code",
   "whyMatters": "Quand tu travailles avec Claude Code ou Cursor, l'IA a besoin de savoir tes préférences : comment tu veux que le code soit structuré, nommé, formaté. Sans ça, chaque réponse réinvente la roue. Avec un CLAUDE.md clair, tu gagnes du temps et les réponses sont meilleures. Ça te coûte 10 min de setup, tu economises des heures après.",
@@ -508,24 +510,32 @@ Icônes proposées (en emoji car simple à inclure inline) :
 
 ### Format d'un quick win
 
-Chaque recommandation affiche le titre, puis un `<details>` qui s'ouvre pour révéler le pourquoi et les étapes.
+Chaque recommandation met le **bénéfice en avant** (ce que l'user va gagner) + contexte, puis les détails techniques.
 
 ```html
 <div class="rx-item">
   <div class="rx-num">{{NUMERO}}</div>
   <div class="rx-content">
     
-    <div class="rx-title">{{RECOMMENDATION_TITLE}}</div>
-    <div class="rx-severity">{{SEVERITY}} | {{CATEGORY}}</div>
+    <!-- En-tête : titre + bénéfice visibles d'abord -->
+    <div class="rx-header-section">
+      <div class="rx-title">{{RECOMMENDATION_TITLE}}</div>
+      <div class="rx-benefit">🎯 Tu vas gagner : {{BENEFIT}}</div>
+    </div>
     
-    <details class="rx-detail" open>
-      <summary>Pourquoi c'est important</summary>
+    <!-- État détecté -->
+    <div class="rx-context">
+      <strong>État actuel :</strong> {{CURRENT_STATE}}
+    </div>
+    
+    <!-- Détails techniques (collapsibles) -->
+    <details class="rx-detail">
+      <summary>ℹ️ Pourquoi c'est important</summary>
       <div class="rx-why">{{WHY_MATTERS}}</div>
-      <div class="rx-state">État actuel : <strong>{{CURRENT_STATE}}</strong></div>
     </details>
 
-    <details class="rx-detail" open>
-      <summary>Comment procéder</summary>
+    <details class="rx-detail">
+      <summary>⚙️ Comment procéder ({{DIFFICULTY}}))</summary>
       <div class="rx-steps">
         {{STEPS_HTML}}
       </div>
@@ -533,11 +543,27 @@ Chaque recommandation affiche le titre, puis un `<details>` qui s'ouvre pour ré
 
     <div class="rx-checkbox">
       <input type="checkbox" id="done-{{NUMERO}}" />
-      <label for="done-{{NUMERO}}">J'ai complété cette action</label>
+      <label for="done-{{NUMERO}}">✓ Complété</label>
     </div>
 
   </div>
 </div>
+```
+
+**Format JSON mise à jour pour recommandations :**
+Ajouter un champ `benefit` qui décrit simplement ce que l'user va gagner :
+```json
+{
+  "id": "gitignore-env",
+  "title": "Sécuriser .env par git",
+  "benefit": "Tes secrets ne seront jamais publics sur GitHub",
+  "difficulty": "2 min",
+  "severity": "CRITICAL",
+  "category": "Sécurité",
+  "whyMatters": "...",
+  "currentState": "...",
+  "steps": [...]
+}
 ```
 
 Où `{{STEPS_HTML}}` est généré comme :
@@ -978,11 +1004,35 @@ Où `{{STEPS_HTML}}` est généré comme :
     flex: 1;
   }
 
+  .rx-header-section {
+    margin-bottom: 12px;
+  }
+
   .rx-title {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--text);
     margin-bottom: 4px;
+  }
+
+  .rx-benefit {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--excellent);
+    padding: 8px;
+    background: rgba(39, 174, 96, 0.05);
+    border-radius: 4px;
+    border-left: 3px solid var(--excellent);
+    margin-bottom: 8px;
+  }
+
+  .rx-context {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    padding: 8px;
+    background: var(--bg-light);
+    border-radius: 4px;
   }
 
   .rx-severity {
