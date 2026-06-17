@@ -1,11 +1,11 @@
 ---
 description: Bilan de santé express de votre projet codé avec l'IA. Diagnostic en 5 minutes.
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Docteur Code - Bilan de santé express
 
-**Version : 1.0.0**
+**Version : 1.1.0**
 
 Le check-up rapide pour les créateurs qui buildent avec l'IA (Cursor, Claude Code, Bolt, etc.).
 
@@ -71,13 +71,13 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 2 - Sécurité (poids 18%)
 
 ```
-4. Secrets dans git history
+4. Secrets dans git history   [GARDE-FOU CRITIQUE]
    - Exécuter : git log --all --full-history -p 2>/dev/null | grep -iE "(api[_-]?key|secret|password|token|bearer)" | head -50
    - 0 = secrets trouvés dans l'historique
    - 3 = aucun secret trouvé
    - Vérifier aussi : grep -rE "(sk-[a-zA-Z0-9]{20,}|api_key.*=.*['\"][a-zA-Z0-9]{20,})" --include="*.js" --include="*.ts" --include="*.py" .
 
-5. .env présent ET ignoré par git
+5. .env présent ET ignoré par git   [GARDE-FOU CRITIQUE]
    - Vérifier : .env existe + .env dans .gitignore
    - 0 = .env présent ET non ignoré (CRITIQUE)
    - 1 = pas de .env du tout (variables hardcodées probablement)
@@ -154,11 +154,16 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 5 - Déploiement (poids 12%)
 
 ```
-15. Pipeline CI/CD
-    - Vérifier : .github/workflows/, .gitlab-ci.yml, .circleci/, vercel.json, netlify.toml
-    - 0 = aucun
-    - 2 = workflow basique (build sur push)
-    - 3 = workflow avec tests + lint + déploiement
+15. Pipeline CI/CD réel (automatisé et bloquant)   [GARDE-FOU CRITIQUE]
+    - IMPORTANT : un script de déploiement manuel (deploy.sh, SCP, restart systemd,
+      cron) n'est PAS du CI/CD. Le CI/CD est un pipeline AUTOMATIQUE déclenché par
+      un push ou une PR, qui teste avant de livrer.
+    - Vérifier : .github/workflows/*.yml NON VIDES, .gitlab-ci.yml, .circleci/config.yml,
+      et que le pipeline exécute réellement des étapes (tests / lint / build / deploy)
+    - 0 = aucun pipeline, OU dossier workflows présent mais vide, OU uniquement un script manuel
+    - 1 = pipeline présent mais ne fait que builder (ne lance ni tests ni lint)
+    - 2 = pipeline qui lance les tests OU le lint sur push/PR
+    - 3 = pipeline qui lance tests + lint ET bloque le merge/déploiement en cas d'échec
 
 16. Migrations BDD
     - Vérifier : dossiers migrations/, prisma/migrations/, supabase/migrations/, alembic/versions/
@@ -166,36 +171,57 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 0 = pas de migrations versionées mais BDD présente
     - 3 = migrations versionnées et présentes
 
-17. Environnement de prod distinct
-    - Inférer depuis package.json scripts (start vs start:prod, deploy:staging vs deploy:prod)
-    - Vérifier .env.production, .env.staging
-    - 0 = un seul env (probablement)
-    - 2 = scripts distincts détectés
-    - 3 = .env.production + .env.staging + .env.development
+17. Environnements distincts (dev / staging / prod)
+    - Un environnement de staging (préproduction) pour tester avant la vraie prod
+      est le standard moderne. Le simple dev/prod ne suffit plus.
+    - Vérifier : .env.production / .env.staging / .env.development, scripts
+      deploy:staging vs deploy:prod, branches ou projets d'environnement distincts
+    - 0 = un seul environnement (tu testes directement en prod)
+    - 1 = séparation dev/prod basique, mais pas de staging
+    - 2 = staging présent, ou séparation dev/staging/prod partielle
+    - 3 = dev + staging + prod distincts et réellement utilisés
+
+18. Rollback / retour arrière
+    - Capacité à revenir rapidement à la version précédente si un déploiement casse.
+    - Vérifier : script de rollback, tags de version / releases, déploiement par image
+      versionnée (Docker), ou procédure de rollback documentée
+    - N/A = site purement statique régénéré à chaque build (revenir en arrière est trivial)
+    - 0 = aucun moyen de revenir en arrière (réparation manuelle dans l'urgence)
+    - 2 = rollback possible ou documenté (redéployer un tag/commit précédent à la main)
+    - 3 = rollback automatisé (déclenché sur échec d'un health check, ou commande dédiée)
+
+19. Alerting de déploiement
+    - Être prévenu automatiquement du succès ou de l'échec d'un déploiement, sans
+      avoir à lire les logs SSH à la main.
+    - Vérifier : intégrations Slack / Telegram / Discord / email dans le pipeline ou
+      le script de deploy, monitoring d'uptime, health checks, webhooks
+    - 0 = aucune notification (il faut regarder les logs manuellement)
+    - 2 = notification de base sur échec, ou monitoring d'uptime externe
+    - 3 = notifications succès + échec, et monitoring/alerting actif
 ```
 
 ### Catégorie 6 - Gestion haut niveau (poids 10%)
 
 ```
-18. Utilisation de Git
+20. Utilisation de Git
     - Exécuter : git log --oneline | wc -l (nombre de commits)
     - 0 = < 5 commits
     - 1 = 5-20 commits
     - 2 = 20-100 commits
     - 3 = 100+ commits avec messages descriptifs (check: git log --oneline | head -20)
 
-19. Push sur un remote
+21. Push sur un remote   [GARDE-FOU CRITIQUE]
     - Exécuter : git remote -v
-    - 0 = aucun remote
+    - 0 = aucun remote (le code n'existe qu'en local, aucune sauvegarde)
     - 3 = remote présent (github/gitlab/etc.)
 
-20. Branches séparées
+22. Branches séparées
     - Exécuter : git branch -a | wc -l
     - 0 = uniquement main/master
     - 2 = quelques branches feature
     - 3 = workflow git clean (main + branches de feature avec PRs)
 
-21. .gitignore configuré
+23. .gitignore configuré
     - Lire .gitignore et vérifier présence de : node_modules, .env, dist/, build/, .DS_Store
     - 0 = absent ou très incomplet
     - 2 = présent avec les essentiels
@@ -205,14 +231,14 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 7 - Bugs fonctionnels (poids 8%)
 
 ```
-22. Console.log de debug oubliés
+24. Console.log de debug oubliés
     - Exécuter : grep -rE "console\.log|debugger|TODO|FIXME|XXX" --include="*.js" --include="*.ts" --include="*.tsx" --include="*.jsx" -l 2>/dev/null | wc -l
     - 0 = > 50 fichiers concernés
     - 1 = 20-50
     - 2 = 5-20
     - 3 = < 5
 
-23. Type safety (si TypeScript)
+25. Type safety (si TypeScript)
     - Vérifier : tsconfig.json -> "strict": true
     - N/A = projet JavaScript pur
     - 0 = strict: false ou ignoré
@@ -317,6 +343,24 @@ score_categorie = SOMME(score_question × poids_question_implicite) / SOMME(poid
 Pour simplifier dans ce contexte public, considérer tous les poids des questions à 1 (pas de pondération intra-catégorie).
 
 Ignorer les N/A : ne pas les compter au numérateur ni au dénominateur.
+
+### Garde-fous critiques (plafonnement)
+
+Certains points sont des **garde-fous critiques** : leur absence représente un risque qu'aucune autre bonne pratique ne compense. Si un garde-fou critique est noté **0**, le score de SA catégorie est **plafonné à 50/100**, même si tout le reste est parfait.
+
+Garde-fous critiques (repérés par `[GARDE-FOU CRITIQUE]` dans le scan) :
+- **Sécurité** — Secrets dans l'historique git (#4) à 0, OU .env exposé (#5) à 0 → Sécurité plafonnée à 50
+- **Déploiement** — Pipeline CI/CD réel (#15) à 0 → Déploiement plafonné à 50
+- **Gestion haut niveau** — Aucun remote / pas de sauvegarde (#21) à 0 → catégorie plafonnée à 50
+
+Appliquer le plafond APRÈS le calcul de `score_categorie`, juste avant le score global : `score_categorie = min(score_categorie, 50)` si un garde-fou de la catégorie est à 0.
+
+### Règle anti-complaisance (TRÈS IMPORTANT)
+
+- **Ne jamais arrondir un score vers le haut.** Un 89 % reste 89 %, jamais 100 %. Tronquer plutôt qu'arrondir.
+- **Un script de déploiement manuel n'est PAS du CI/CD.** Un `deploy.sh`, du SCP, un restart systemd ou un cron = score 0 pour le critère #15.
+- En cas de doute sur un critère, **choisir le score le plus bas**, pas le plus haut. Le bilan doit être lucide, pas complaisant.
+- Le but est de refléter les standards de 2026, pas de rassurer : un projet sans CI/CD, sans staging, sans rollback ni alerting ne peut pas avoir un score de déploiement élevé.
 
 ### Score global
 
@@ -1519,7 +1563,7 @@ Où `{{STEPS_HTML}}` est généré comme :
     <div class="signature">Docteur Code · Bilan généré automatiquement par la skill /docteur-code</div>
     <div>Pour la version complète et l'accompagnement : docteur-code.fr</div>
     <!-- Garder cette version synchronisée avec le champ "version" du frontmatter en haut du fichier -->
-    <div class="footer-version">Skill v1.0.0</div>
+    <div class="footer-version">Skill v1.1.0</div>
   </div>
 
 </div>
@@ -1631,5 +1675,5 @@ Ne pas spammer cette CTA. Une fois suffit.
 
 ---
 
-**Version :** 1.0.0
+**Version :** 1.1.0
 **Créé par :** Docteur Code · docteur-code.fr
