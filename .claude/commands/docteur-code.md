@@ -1,11 +1,11 @@
 ---
 description: Bilan de santé express de votre projet codé avec l'IA. Diagnostic en 5 minutes.
-version: 1.3.0
+version: 1.4.0
 ---
 
 # Docteur Code - Bilan de santé express
 
-**Version : 1.3.0**
+**Version : 1.4.0**
 
 Le check-up rapide pour les créateurs qui buildent avec l'IA (Cursor, Claude Code, Bolt, etc.).
 
@@ -46,7 +46,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 1 - Setup & utilisation Claude Code (poids 22%)
 
 ```
-1. CLAUDE.md à la racine
+1. CLAUDE.md à la racine   [GARDE-FOU CRITIQUE]
    - Vérifier : CLAUDE.md, .claude/CLAUDE.md, ~/.claude/CLAUDE.md
    - 0 = absent
    - 1 = présent mais < 20 lignes
@@ -54,57 +54,74 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
    - 3 = 100+ lignes, références à memory, hooks, agents
 
 2. Hooks installés
-   - Vérifier : .claude/settings.json (mcpServers, hooks)
+   - Vérifier : .claude/settings.json (section hooks)
    - 0 = aucun hook
    - 1 = 1-2 hooks basiques
    - 2 = 3+ hooks dont au moins un PreToolUse ou PostToolUse
-   - 3 = hooks dont RTK (Reduce Token Kit) ou équivalent économie tokens
+   - 3 = hooks avancés, dont au moins un d'optimisation (économie de tokens, formatage auto, lint à la volée)
 
 3. Skills/Commands installés
    - Vérifier : .claude/commands/ ET .claude/skills/
    - 0 = aucun
    - 1 = 1-2 skills basiques (< 20 lignes)
    - 2 = 3-5 skills
-   - 3 = 6+ skills incluant ones adaptés au stack (Supabase, React Native, etc.)
+   - 3 = 6+ skills incluant des skills adaptés au stack (Supabase, React Native, etc.)
+
+4. Serveurs MCP configurés
+   - Les serveurs MCP connectent Claude à tes outils externes (base de données,
+     Notion, GitHub, n8n, etc.) pour qu'il agisse directement dessus.
+   - Vérifier : .mcp.json, ou la section mcpServers dans .claude/settings.json / ~/.claude/settings.json
+   - N/A = projet où aucun outil externe n'est pertinent (script isolé)
+   - 0 = aucun serveur MCP configuré
+   - 2 = 1-2 serveurs MCP connectés
+   - 3 = plusieurs serveurs MCP adaptés au stack (BDD, gestion de projet, déploiement…)
+
+5. Subagents / agents personnalisés
+   - Les agents personnalisés délèguent des tâches spécialisées (revue de code,
+     recherche, tests) à des assistants dédiés, en parallèle.
+   - Vérifier : .claude/agents/, ou ~/.claude/agents/
+   - 0 = aucun agent personnalisé
+   - 2 = 1-2 agents définis
+   - 3 = plusieurs agents spécialisés et adaptés au workflow
 ```
 
 ### Catégorie 2 - Sécurité (poids 18%)
 
 ```
-4. Secrets dans git history   [GARDE-FOU CRITIQUE]
+6. Secrets dans git history   [GARDE-FOU CRITIQUE]
    - Exécuter : git log --all --full-history -p 2>/dev/null | grep -iE "(api[_-]?key|secret|password|token|bearer)" | head -50
    - 0 = secrets trouvés dans l'historique
    - 3 = aucun secret trouvé
    - Vérifier aussi : grep -rE "(sk-[a-zA-Z0-9]{20,}|api_key.*=.*['\"][a-zA-Z0-9]{20,})" --include="*.js" --include="*.ts" --include="*.py" .
 
-5. .env présent ET ignoré par git   [GARDE-FOU CRITIQUE]
+7. .env présent ET ignoré par git   [GARDE-FOU CRITIQUE]
    - Vérifier : .env existe + .env dans .gitignore
    - 0 = .env présent ET non ignoré (CRITIQUE)
    - 1 = pas de .env du tout (variables hardcodées probablement)
    - 2 = .env présent et ignoré, mais pas de .env.example
    - 3 = .env + .env.example + correctement gitignored
 
-6. Dépendances auditées
+8. Dépendances auditées
    - Exécuter selon stack : npm audit --json 2>/dev/null, ou pip-audit, ou bundle audit
    - 0 = vulnérabilités HIGH/CRITICAL trouvées
    - 1 = MODERATE warnings nombreux
    - 2 = quelques LOW
    - 3 = clean ou near-clean
 
-7. Authentification via solution éprouvée
+9. Authentification via solution éprouvée
    - Grep package.json pour : @supabase/supabase-js, @clerk/clerk-react, next-auth, @auth0/, passport, lucia-auth
    - 0 = système d'auth maison détecté (routes /login/register custom sans librairie reconnue)
    - 1 = bcrypt seul (auth basique)
    - 3 = librairie d'auth reconnue présente
    - N/A = pas de système d'auth nécessaire (site statique)
 
-8. Observabilité présente
+10. Observabilité présente
    - Grep package.json pour : @sentry/, winston, pino, datadog, logrocket, posthog
    - 0 = aucune (console.log partout)
    - 2 = logger structuré présent
    - 3 = error tracking (Sentry) + logger
 
-9. Contrôle d'accès aux données (autorisation / RLS)   [GARDE-FOU CRITIQUE]
+11. Contrôle d'accès aux données (autorisation / RLS)   [GARDE-FOU CRITIQUE]
    - Le plus gros risque des apps vibe-codées : une base ouverte où n'importe qui
      peut lire/écrire les données de tous les utilisateurs.
    - Vérifier selon le stack :
@@ -118,7 +135,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
    - 2 = autorisation en place sur l'essentiel
    - 3 = autorisation systématique (RLS activé partout, ou contrôle serveur complet)
 
-10. Clés sensibles non exposées côté client   [GARDE-FOU CRITIQUE]
+12. Clés sensibles non exposées côté client   [GARDE-FOU CRITIQUE]
     - Une clé secrète (service_role Supabase, clé API privée, secret serveur) ne doit
       JAMAIS se retrouver dans le code qui tourne dans le navigateur.
     - Vérifier : grep -rE "service_role|sk-live|sk_live|-----BEGIN" dans src/ client/ app/,
@@ -126,7 +143,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 0 = au moins une clé secrète exposée côté client
     - 3 = aucune clé sensible côté client (seulement des clés publiques/anon prévues pour ça)
 
-11. Rate limiting / protection contre les abus
+13. Rate limiting / protection contre les abus
     - Limiter le nombre de requêtes protège tes endpoints (login, API) du brute-force
       et des abus automatisés.
     - Vérifier les dépendances : express-rate-limit, @upstash/ratelimit, rate-limiter-flexible,
@@ -140,13 +157,13 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 3 - Architecture du code (poids 15%)
 
 ```
-12. Lockfile / reproductibilité
+14. Lockfile / reproductibilité
    - Vérifier : présence de package-lock.json / yarn.lock / pnpm-lock.yaml / poetry.lock / Pipfile.lock
    - 0 = pas de lockfile (les versions installées varient d'une machine à l'autre)
    - 2 = lockfile présent
    - 3 = lockfile + mise à jour automatisée des dépendances (dependabot.yml ou renovate.json)
 
-13. Modularité du code   [GARDE-FOU CRITIQUE]
+15. Modularité du code   [GARDE-FOU CRITIQUE]
     - Compter : find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.py" \) -not -path "*/node_modules/*" -not -path "*/.next/*" -exec wc -l {} \; | sort -rn | head -5
     - En 2026, l'IA génère facilement des fichiers énormes : être strict.
     - 0 = au moins 1 fichier > 1000 lignes (fichier géant, ingérable)
@@ -154,7 +171,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = tout sous 600 lignes, mais quelques fichiers entre 300 et 600
     - 3 = tout sous ~300 lignes, découpage clair par responsabilité
 
-14. Séparation des responsabilités
+16. Séparation des responsabilités
     - La logique métier, l'accès aux données et l'affichage doivent vivre dans des
       fichiers/dossiers distincts, pas mélangés dans les mêmes fichiers.
     - Vérifier la structure : dossiers séparés (api/, server/, services/, lib/ vs
@@ -165,7 +182,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = séparation claire entre affichage et logique, quelques exceptions
     - 3 = séparation nette : affichage, logique métier et accès aux données bien isolés
 
-15. Validation des données en entrée
+17. Validation des données en entrée
     - Vérifier les dépendances : zod, yup, joi, valibot, superstruct (JS/TS) ;
       pydantic, marshmallow, cerberus, class-validator (Python/autres)
     - Vérifier aussi que les entrées externes (formulaires, API, paramètres d'URL) sont contrôlées
@@ -173,7 +190,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = une librairie de validation présente et utilisée par endroits
     - 3 = validation systématique des entrées externes (formulaires, API, variables d'env)
 
-16. Couche d'accès aux données structurée
+18. Couche d'accès aux données structurée
     - Les interactions avec la base passent par une couche dédiée (ORM, query builder,
       ou dossier repository), pas par du SQL brut éparpillé partout.
     - Vérifier les dépendances : prisma, drizzle, typeorm, sequelize, mongoose, kysely
@@ -187,20 +204,20 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 4 - Phase de création du code (poids 15%)
 
 ```
-17. Tests unitaires
+19. Tests unitaires
     - Chercher : *.test.*, *.spec.*, __tests__/, tests/, jest.config, vitest.config, pytest.ini
     - 0 = aucun test
     - 1 = quelques tests présents mais ratio test/code < 10%
     - 2 = tests présents, ratio raisonnable
     - 3 = tests + coverage config
 
-18. Linter configuré
+20. Linter configuré
     - Vérifier : .eslintrc*, .prettierrc*, biome.json, ruff.toml, .flake8
     - 0 = aucun
     - 2 = linter présent (eslint OU prettier)
     - 3 = linter + formatter + script lint dans package.json
 
-19. Pre-commit hooks
+21. Pre-commit hooks
     - Vérifier : .husky/, lefthook.yml, .pre-commit-config.yaml, simple-git-hooks dans package.json
     - 0 = aucun
     - 2 = présent et configuré
@@ -210,7 +227,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 5 - Déploiement (poids 12%)
 
 ```
-20. Pipeline CI/CD réel (automatisé et bloquant)   [GARDE-FOU CRITIQUE]
+22. Pipeline CI/CD réel (automatisé et bloquant)   [GARDE-FOU CRITIQUE]
     - IMPORTANT : un script de déploiement manuel (deploy.sh, SCP, restart systemd,
       cron) n'est PAS du CI/CD. Le CI/CD est un pipeline AUTOMATIQUE déclenché par
       un push ou une PR, qui teste avant de livrer.
@@ -221,13 +238,13 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = pipeline qui lance les tests OU le lint sur push/PR
     - 3 = pipeline qui lance tests + lint ET bloque le merge/déploiement en cas d'échec
 
-21. Migrations BDD
+23. Migrations BDD
     - Vérifier : dossiers migrations/, prisma/migrations/, supabase/migrations/, alembic/versions/
     - N/A = pas de BDD
     - 0 = pas de migrations versionées mais BDD présente
     - 3 = migrations versionnées et présentes
 
-22. Environnements distincts (dev / staging / prod)
+24. Environnements distincts (dev / staging / prod)
     - Un environnement de staging (préproduction) pour tester avant la vraie prod
       est le standard moderne. Le simple dev/prod ne suffit plus.
     - Vérifier : .env.production / .env.staging / .env.development, scripts
@@ -237,7 +254,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = staging présent, ou séparation dev/staging/prod partielle
     - 3 = dev + staging + prod distincts et réellement utilisés
 
-23. Rollback / retour arrière
+25. Rollback / retour arrière
     - Capacité à revenir rapidement à la version précédente si un déploiement casse.
     - Vérifier : script de rollback, tags de version / releases, déploiement par image
       versionnée (Docker), ou procédure de rollback documentée
@@ -246,7 +263,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = rollback possible ou documenté (redéployer un tag/commit précédent à la main)
     - 3 = rollback automatisé (déclenché sur échec d'un health check, ou commande dédiée)
 
-24. Alerting de déploiement
+26. Alerting de déploiement
     - Être prévenu automatiquement du succès ou de l'échec d'un déploiement, sans
       avoir à lire les logs SSH à la main.
     - Vérifier : intégrations Slack / Telegram / Discord / email dans le pipeline ou
@@ -259,25 +276,25 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 6 - Gestion haut niveau (poids 10%)
 
 ```
-25. Utilisation de Git
+27. Utilisation de Git
     - Exécuter : git log --oneline | wc -l (nombre de commits)
     - 0 = < 5 commits
     - 1 = 5-20 commits
     - 2 = 20-100 commits
     - 3 = 100+ commits avec messages descriptifs (check: git log --oneline | head -20)
 
-26. Push sur un remote   [GARDE-FOU CRITIQUE]
+28. Push sur un remote   [GARDE-FOU CRITIQUE]
     - Exécuter : git remote -v
     - 0 = aucun remote (le code n'existe qu'en local, aucune sauvegarde)
     - 3 = remote présent (github/gitlab/etc.)
 
-27. Branches séparées
+29. Branches séparées
     - Exécuter : git branch -a | wc -l
     - 0 = uniquement main/master
     - 2 = quelques branches feature
     - 3 = workflow git clean (main + branches de feature avec PRs)
 
-28. .gitignore configuré
+30. .gitignore configuré
     - Lire .gitignore et vérifier présence de : node_modules, .env, dist/, build/, .DS_Store
     - 0 = absent ou très incomplet
     - 2 = présent avec les essentiels
@@ -287,14 +304,14 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 7 - Bugs fonctionnels (poids 8%)
 
 ```
-29. Console.log de debug oubliés
+31. Console.log de debug oubliés
     - Exécuter : grep -rE "console\.log|debugger|TODO|FIXME|XXX" --include="*.js" --include="*.ts" --include="*.tsx" --include="*.jsx" -l 2>/dev/null | wc -l
     - 0 = > 50 fichiers concernés
     - 1 = 20-50
     - 2 = 5-20
     - 3 = < 5
 
-30. Type safety (si TypeScript)
+32. Type safety (si TypeScript)
     - Vérifier : tsconfig.json -> "strict": true
     - N/A = projet JavaScript pur
     - 0 = strict: false ou ignoré
@@ -405,10 +422,11 @@ Ignorer les N/A : ne pas les compter au numérateur ni au dénominateur.
 Certains points sont des **garde-fous critiques** : leur absence représente un risque qu'aucune autre bonne pratique ne compense. Si un garde-fou critique est noté **0**, le score de SA catégorie est **plafonné à 50/100**, même si tout le reste est parfait.
 
 Garde-fous critiques (repérés par `[GARDE-FOU CRITIQUE]` dans le scan) :
-- **Sécurité** — L'un de ces points à 0 → Sécurité plafonnée à 50 : secrets dans l'historique git (#4), .env exposé (#5), base ouverte / pas de contrôle d'accès (#9), ou clé secrète exposée côté client (#10)
-- **Architecture** — Fichier géant > 1000 lignes (Modularité #13 à 0) → Architecture plafonnée à 50
-- **Déploiement** — Pipeline CI/CD réel (#20) à 0 → Déploiement plafonné à 50
-- **Gestion haut niveau** — Aucun remote / pas de sauvegarde (#26) à 0 → catégorie plafonnée à 50
+- **Setup Claude Code** — Aucun CLAUDE.md (#1) à 0 → Setup plafonné à 50
+- **Sécurité** — L'un de ces points à 0 → Sécurité plafonnée à 50 : secrets dans l'historique git (#6), .env exposé (#7), base ouverte / pas de contrôle d'accès (#11), ou clé secrète exposée côté client (#12)
+- **Architecture** — Fichier géant > 1000 lignes (Modularité #15 à 0) → Architecture plafonnée à 50
+- **Déploiement** — Pipeline CI/CD réel (#22) à 0 → Déploiement plafonné à 50
+- **Gestion haut niveau** — Aucun remote / pas de sauvegarde (#28) à 0 → catégorie plafonnée à 50
 
 Appliquer le plafond APRÈS le calcul de `score_categorie`, juste avant le score global : `score_categorie = min(score_categorie, 50)` si un garde-fou de la catégorie est à 0.
 
@@ -1620,7 +1638,7 @@ Où `{{STEPS_HTML}}` est généré comme :
     <div class="signature">Docteur Code · Bilan généré automatiquement par la skill /docteur-code</div>
     <div>Pour la version complète et l'accompagnement : docteur-code.fr</div>
     <!-- Garder cette version synchronisée avec le champ "version" du frontmatter en haut du fichier -->
-    <div class="footer-version">Skill v1.3.0</div>
+    <div class="footer-version">Skill v1.4.0</div>
   </div>
 
 </div>
@@ -1732,5 +1750,5 @@ Ne pas spammer cette CTA. Une fois suffit.
 
 ---
 
-**Version :** 1.3.0
+**Version :** 1.4.0
 **Créé par :** Docteur Code · docteur-code.fr
