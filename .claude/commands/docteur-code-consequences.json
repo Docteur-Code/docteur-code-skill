@@ -34,7 +34,29 @@
     }
   },
 
-  "q4_secrets_in_git": {
+  "q4_mcp": {
+    "question_name": "Serveurs MCP configurés",
+    "category": "Setup Claude Code",
+    "why_matters": "Les serveurs MCP donnent à l'IA un accès direct à tes outils : ta base de données, tes tâches, ton hébergeur. <strong>Sans eux, tu fais l'intermédiaire à la main : copier-coller, allers-retours, perte de temps.</strong> Bien connectée, l'IA agit elle-même au lieu de seulement te conseiller.",
+    "consequences": {
+      "court_terme": "Tu sers de passe-plat entre l'IA et tes outils, en copiant-collant tout à la main.",
+      "moyen_terme": "Tu perds du temps sur des manipulations que l'IA pourrait faire directement.",
+      "long_terme": "Tu n'exploites qu'une fraction de ce que l'IA pourrait t'apporter au quotidien."
+    }
+  },
+
+  "q5_subagents": {
+    "question_name": "Subagents / agents personnalisés",
+    "category": "Setup Claude Code",
+    "why_matters": "Les agents personnalisés sont des assistants spécialisés à qui tu confies une tâche précise, en parallèle de ton travail. <strong>Sans eux, tout passe par une seule conversation qui fait tout, moins bien et plus lentement.</strong> Bien utilisés, ils traitent plusieurs sujets à la fois.",
+    "consequences": {
+      "court_terme": "Chaque tâche, même répétitive ou spécialisée, mobilise ta conversation principale.",
+      "moyen_terme": "Tu avances en série au lieu de déléguer en parallèle, et tu perds en efficacité.",
+      "long_terme": "Ton usage de l'IA plafonne bien en dessous de ce qu'il pourrait être."
+    }
+  },
+
+  "q6_secrets_in_git": {
     "question_name": "Secrets dans git history",
     "category": "Sécurité",
     "why_matters": "Tes secrets (clés d'accès, mots de passe) sont enregistrés dans l'historique de ton projet, visibles par toute personne qui y a accès. <strong>Une fois publiés, ils ne peuvent plus être considérés comme sûrs.</strong> Des robots scannent en permanence le web à la recherche de ce genre de clés.",
@@ -45,7 +67,7 @@
     }
   },
 
-  "q5_env_security": {
+  "q7_env_security": {
     "question_name": ".env présent ET ignoré par git",
     "category": "Sécurité",
     "why_matters": "Le fichier .env range tes secrets à part, séparés du code, pour ne jamais les diffuser par accident. <strong>S'il n'est pas protégé, tes clés se promènent en clair dans ton projet.</strong> C'est la base de l'hygiène de sécurité.",
@@ -56,7 +78,7 @@
     }
   },
 
-  "q6_dependencies_audit": {
+  "q8_dependencies_audit": {
     "question_name": "Dépendances auditées",
     "category": "Sécurité",
     "why_matters": "Ton projet s'appuie sur des dizaines de briques de code écrites par d'autres, et certaines contiennent des failles connues. <strong>Ne pas les vérifier, c'est laisser une porte ouverte sans le savoir.</strong> Un contrôle régulier te dit lesquelles réparer.",
@@ -67,7 +89,7 @@
     }
   },
 
-  "q7_auth_solution": {
+  "q9_auth_solution": {
     "question_name": "Authentification via solution éprouvée",
     "category": "Sécurité",
     "why_matters": "L'authentification, c'est ce qui protège les comptes de tes utilisateurs. <strong>Une solution faite maison est presque toujours plus fragile qu'un outil éprouvé</strong> utilisé par des milliers de projets. Mieux vaut s'appuyer sur ce qui a déjà fait ses preuves.",
@@ -78,7 +100,7 @@
     }
   },
 
-  "q8_observability": {
+  "q10_observability": {
     "question_name": "Observabilité présente",
     "category": "Sécurité",
     "why_matters": "Surveiller ton application, c'est être prévenu quand quelque chose casse, avant tes utilisateurs. <strong>Sans surveillance, tu découvres les bugs uniquement quand on se plaint.</strong> Un outil de suivi te montre les problèmes en temps réel.",
@@ -89,7 +111,7 @@
     }
   },
 
-  "q9_authz_data_access": {
+  "q11_authz_data_access": {
     "question_name": "Contrôle d'accès aux données (autorisation)",
     "category": "Sécurité",
     "why_matters": "Le contrôle d'accès, c'est ce qui garantit que chaque utilisateur ne voit que SES données, et rien de plus. <strong>Sans lui, ta base est grande ouverte : n'importe qui peut lire et modifier les données de tout le monde.</strong> C'est la fuite de données la plus courante des applications créées avec l'IA.",
@@ -100,7 +122,7 @@
     }
   },
 
-  "q10_client_secrets": {
+  "q12_client_secrets": {
     "question_name": "Clés sensibles non exposées côté client",
     "category": "Sécurité",
     "why_matters": "Certaines clés donnent un accès total à tes services et ne doivent jamais quitter ton serveur. <strong>Si une clé secrète se retrouve dans le code du navigateur, n'importe qui peut l'y lire et prendre le contrôle.</strong> Le navigateur n'est jamais un endroit sûr pour un secret.",
@@ -111,7 +133,7 @@
     }
   },
 
-  "q11_rate_limiting": {
+  "q13_rate_limiting": {
     "question_name": "Rate limiting / protection contre les abus",
     "category": "Sécurité",
     "why_matters": "Le rate limiting limite combien de fois quelqu'un peut solliciter ton application en peu de temps. <strong>Sans lui, un robot peut marteler ta page de connexion ou ton API jusqu'à passer ou te coûter cher.</strong> C'est ce qui calme les abus automatisés.",
@@ -122,7 +144,7 @@
     }
   },
 
-  "q12_lockfile": {
+  "q14_lockfile": {
     "question_name": "Lockfile / reproductibilité",
     "category": "Architecture",
     "why_matters": "Le lockfile fige la version exacte de chaque brique utilisée par ton projet. <strong>Sans lui, ton code peut marcher chez toi et planter ailleurs</strong>, simplement parce que les versions diffèrent. C'est ce qui garantit que tout le monde travaille à l'identique.",
@@ -133,7 +155,7 @@
     }
   },
 
-  "q13_modularity": {
+  "q15_modularity": {
     "question_name": "Modularité du code",
     "category": "Architecture",
     "why_matters": "Un code bien rangé est découpé en petits morceaux simples, faciles à comprendre un par un. <strong>Quand tout est entassé dans d'énormes fichiers, la moindre modification en casse dix autres.</strong> Découper, c'est pouvoir avancer sans tout faire trembler.",
@@ -144,7 +166,7 @@
     }
   },
 
-  "q14_backend_frontend_separation": {
+  "q16_backend_frontend_separation": {
     "question_name": "Séparation des responsabilités",
     "category": "Architecture",
     "why_matters": "Bien séparer l'affichage, la logique métier et l'accès aux données, c'est garder chaque morceau de ton application indépendant. <strong>Quand tout est mélangé dans les mêmes fichiers, toucher à un endroit en casse un autre.</strong> Cette séparation te laisse faire évoluer chaque partie tranquillement.",
@@ -155,7 +177,7 @@
     }
   },
 
-  "q15_architecture_validation": {
+  "q17_architecture_validation": {
     "question_name": "Validation des données en entrée",
     "category": "Architecture",
     "why_matters": "Valider les données en entrée, c'est vérifier que ce qui arrive dans ton application a bien la forme attendue avant de l'utiliser. <strong>Sans ce contrôle, une donnée mal formée peut faire planter ton app ou y faire entrer n'importe quoi.</strong> C'est le videur à l'entrée de ta boîte.",
@@ -166,7 +188,7 @@
     }
   },
 
-  "q16_architecture_data_layer": {
+  "q18_architecture_data_layer": {
     "question_name": "Couche d'accès aux données structurée",
     "category": "Architecture",
     "why_matters": "Une couche d'accès aux données regroupe au même endroit toutes les interactions avec ta base, au lieu de les éparpiller partout. <strong>Sans elle, la moindre évolution de ta base t'oblige à corriger ton code à dix endroits différents.</strong> C'est ce qui garde ton application maintenable quand elle grandit.",
@@ -177,7 +199,7 @@
     }
   },
 
-  "q17_unit_tests": {
+  "q19_unit_tests": {
     "question_name": "Tests unitaires",
     "category": "Phase de création",
     "why_matters": "Les tests automatiques vérifient que ton application marche toujours, même après une modification. <strong>Sans eux, tu ne sais jamais si un changement a cassé autre chose</strong> sans tout retester à la main. C'est ton garde-fou contre les mauvaises surprises.",
@@ -188,7 +210,7 @@
     }
   },
 
-  "q18_linter": {
+  "q20_linter": {
     "question_name": "Linter configuré",
     "category": "Phase de création",
     "why_matters": "Un linter est un correcteur automatique qui relit ton code et signale les fautes au fur et à mesure. <strong>Sans lui, les petites erreurs passent inaperçues</strong> jusqu'à provoquer un vrai bug. C'est une vérification gratuite qui tourne en permanence.",
@@ -199,7 +221,7 @@
     }
   },
 
-  "q19_pre_commit_hooks": {
+  "q21_pre_commit_hooks": {
     "question_name": "Pre-commit hooks",
     "category": "Phase de création",
     "why_matters": "Un hook pre-commit vérifie ton code juste avant de l'enregistrer, et bloque tout ce qui ne va pas. <strong>Sans lui, du code cassé peut se glisser dans ton projet sans alerte.</strong> C'est un dernier contrôle qualité automatique avant validation.",
@@ -210,7 +232,7 @@
     }
   },
 
-  "q20_cicd": {
+  "q22_cicd": {
     "question_name": "Pipeline CI/CD",
     "category": "Déploiement",
     "why_matters": "Un pipeline automatique teste et met en ligne ton application à ta place, à chaque modification. <strong>Sans lui, chaque déploiement repose sur toi, à la main et sans droit à l'erreur.</strong> L'automatiser, c'est supprimer le risque d'oubli.",
@@ -221,7 +243,7 @@
     }
   },
 
-  "q21_database_migrations": {
+  "q23_database_migrations": {
     "question_name": "Migrations BDD",
     "category": "Déploiement",
     "why_matters": "Une migration enregistre chaque changement de ta base de données de façon ordonnée et réversible. <strong>Sans elles, modifier ta base à la main, c'est risquer de perdre ou d'abîmer des données.</strong> C'est ce qui rend tes évolutions sûres.",
@@ -232,7 +254,7 @@
     }
   },
 
-  "q22_environment_separation": {
+  "q24_environment_separation": {
     "question_name": "Environnement de prod distinct",
     "category": "Déploiement",
     "why_matters": "Avoir un environnement de test séparé de la production te permet d'essayer des choses sans risque pour tes vrais utilisateurs. <strong>Sans séparation, tu testes directement sur ce qu'ils utilisent.</strong> C'est ce qui te laisse expérimenter sereinement.",
@@ -243,7 +265,7 @@
     }
   },
 
-  "q23_deploy_rollback": {
+  "q25_deploy_rollback": {
     "question_name": "Rollback / retour arrière",
     "category": "Déploiement",
     "why_matters": "Un rollback, c'est ta capacité à revenir en deux minutes à la version d'avant quand un déploiement casse tout. <strong>Sans lui, une mise en ligne ratée te laisse réparer dans l'urgence, en direct devant tes utilisateurs.</strong> C'est ton bouton « annuler » en cas de pépin.",
@@ -254,7 +276,7 @@
     }
   },
 
-  "q24_deploy_alerting": {
+  "q26_deploy_alerting": {
     "question_name": "Alerting de déploiement",
     "category": "Déploiement",
     "why_matters": "L'alerting te prévient automatiquement quand un déploiement réussit ou échoue, sans que tu aies à surveiller quoi que ce soit. <strong>Sans lui, tu peux croire que tout va bien alors que ton application est en panne.</strong> C'est ce qui te fait gagner un temps précieux quand quelque chose casse.",
@@ -265,7 +287,7 @@
     }
   },
 
-  "q25_git_history": {
+  "q27_git_history": {
     "question_name": "Utilisation de Git",
     "category": "Gestion haut niveau",
     "why_matters": "L'historique Git garde la trace de chaque changement et de la raison qui l'a motivé. <strong>Sans messages clairs, tu oublies vite pourquoi telle décision a été prise.</strong> C'est la mémoire de ton projet.",
@@ -276,7 +298,7 @@
     }
   },
 
-  "q26_git_remote": {
+  "q28_git_remote": {
     "question_name": "Push sur un remote",
     "category": "Gestion haut niveau",
     "why_matters": "Pousser ton code sur un serveur distant, comme GitHub, c'est en garder une copie de sauvegarde en sécurité. <strong>Sans ça, ton projet n'existe qu'à un seul endroit.</strong> Une panne de ton ordinateur suffirait à tout perdre.",
@@ -287,7 +309,7 @@
     }
   },
 
-  "q27_git_branches": {
+  "q29_git_branches": {
     "question_name": "Branches séparées",
     "category": "Gestion haut niveau",
     "why_matters": "Les branches te permettent de travailler sur une nouveauté à part, sans toucher à la version qui fonctionne. <strong>Sans elles, chaque essai en cours affecte directement ta version principale.</strong> C'est ce qui garde ton projet stable pendant que tu avances.",
@@ -298,7 +320,7 @@
     }
   },
 
-  "q28_gitignore": {
+  "q30_gitignore": {
     "question_name": ".gitignore configuré",
     "category": "Gestion haut niveau",
     "why_matters": "Le fichier .gitignore indique à Git quels fichiers ne jamais enregistrer, comme tes secrets ou les fichiers temporaires. <strong>Sans lui, des choses sensibles ou inutiles finissent dans ton projet.</strong> C'est un tri automatique de ce qui doit rester privé.",
@@ -309,7 +331,7 @@
     }
   },
 
-  "q29_console_logs": {
+  "q31_console_logs": {
     "question_name": "Console.log de debug oubliés",
     "category": "Bugs fonctionnels",
     "why_matters": "Les messages de débogage servent pendant le développement, mais n'ont rien à faire dans la version finale. <strong>Oubliés, ils encombrent ton application et peuvent révéler des informations internes.</strong> Les retirer, c'est livrer quelque chose de propre.",
@@ -320,7 +342,7 @@
     }
   },
 
-  "q30_type_safety": {
+  "q32_type_safety": {
     "question_name": "Type safety (TypeScript)",
     "category": "Bugs fonctionnels",
     "why_matters": "La vérification des types repère certaines erreurs automatiquement, avant même que ton code tourne. <strong>Sans elle, ces erreurs n'apparaissent qu'une fois en ligne, devant tes utilisateurs.</strong> C'est une protection qui attrape les fautes en amont.",
