@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Obtenez votre ordonnance · Dr. Code</title>
+  <meta name="description" content="Décrivez les symptômes de votre projet et recevez votre ordonnance. Formulaire ou WhatsApp — le docteur vous répond.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Anton&family=Bitter:ital,wght@0,400;0,600;0,700;1,400&family=Kaushan+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231E3A52'/%3E%3Ctext x='50' y='72' font-size='62' text-anchor='middle' fill='%23D8A33B' font-family='Georgia' font-weight='bold'%3E%2B%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <nav class="nav">
+    <div class="wrap nav__inner">
+      <a href="index.html" class="brand"><span class="brand__mark">DR<span class="brand__plus">.</span>CODE</span></a>
+      <ul class="nav__links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="soins.html">Les Soins</a></li>
+        <li><a href="docteur.html">Le Docteur</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+        <li><a href="contact.html" class="btn nav__cta">Obtenir une ordonnance</a></li>
+      </ul>
+      <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============ PAGE HEAD ============ -->
+  <header class="page-head">
+    <span class="sparkle" style="top:24%;left:13%"></span>
+    <span class="sparkle gold sm" style="bottom:26%;right:15%"></span>
+    <div class="wrap">
+      <span class="eyebrow">Envoyez vos symptômes</span>
+      <h1>OBTENEZ VOTRE ORDONNANCE</h1>
+      <p class="lead" style="margin:18px auto 0;color:var(--cream)">Décrivez votre projet et ce qui vous inquiète. Le docteur revient vers vous rapidement — c'est gratuit et sans engagement.</p>
+    </div>
+  </header>
+
+  <!-- ============ FORM + INFOS ============ -->
+  <section>
+    <div class="wrap grid grid-2" style="gap:48px;align-items:start">
+
+      <!-- Formulaire -->
+      <div class="reveal">
+        <div class="prescription">
+          <div class="prescription__head">
+            <span class="rx">℞</span>
+            <h3>Demande de consultation</h3>
+          </div>
+          <div class="prescription__body">
+            <form id="ordonnance-form" novalidate>
+              <div class="field">
+                <label for="nom">Votre nom <span class="req">*</span></label>
+                <input type="text" id="nom" name="nom" required autocomplete="name">
+                <span class="err">Dites-moi au moins comment vous appeler.</span>
+              </div>
+              <div class="field">
+                <label for="email">Votre email <span class="req">*</span></label>
+                <input type="email" id="email" name="email" required autocomplete="email">
+                <span class="err">Un email valide pour vous répondre, svp.</span>
+              </div>
+              <div class="field">
+                <label for="projet">Votre projet en une phrase <span class="req">*</span></label>
+                <input type="text" id="projet" name="projet" required placeholder="Ex : une app de réservation pour mon resto">
+                <span class="err">Décrivez votre projet en quelques mots.</span>
+              </div>
+              <div class="field">
+                <label for="outil">Avec quoi l'avez-vous codé ?</label>
+                <select id="outil" name="outil">
+                  <option value="">— Choisir —</option>
+                  <option>Cursor</option>
+                  <option>Lovable</option>
+                  <option>v0</option>
+                  <option>Claude / Claude Code</option>
+                  <option>Bolt</option>
+                  <option>Replit</option>
+                  <option>Un peu de tout</option>
+                  <option>Je ne sais pas</option>
+                  <option>Autre</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="symptomes">Les symptômes <span class="req">*</span></label>
+                <textarea id="symptomes" name="symptomes" required placeholder="Qu'est-ce qui cloche ? Bugs, lenteurs, peur de déployer, code illisible…"></textarea>
+                <span class="err">Décrivez ce qui ne va pas, même vaguement.</span>
+              </div>
+              <button type="submit" class="btn btn--lg" style="width:100%;justify-content:center">📋 Envoyer mon ordonnance</button>
+              <p class="form-note">En envoyant, votre demande s'ouvre dans WhatsApp pour finaliser l'échange. Aucune donnée n'est stockée sur ce site.</p>
+            </form>
+
+            <!-- Message de succès -->
+            <div class="form-success">
+              <div class="rx-big">℞</div>
+              <h3 style="font-family:var(--font-condensed);text-transform:uppercase;color:var(--navy);margin-bottom:10px">Ordonnance transmise&nbsp;!</h3>
+              <p style="margin-bottom:20px">Votre demande est prête. Si WhatsApp ne s'est pas ouvert, cliquez ci-dessous.</p>
+              <a href="#" data-wa class="btn btn--wa btn--lg" target="_blank" rel="noopener">💬 Ouvrir WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Infos contact -->
+      <div class="reveal">
+        <span class="eyebrow">Pressé·e&nbsp;?</span>
+        <h2 class="section-title" style="font-size:clamp(1.8rem,4vw,2.8rem)">Écrivez-moi <span class="hl">directement</span></h2>
+        <div class="flourish"></div>
+        <p style="margin-bottom:24px">Pas envie de remplir un formulaire ? Le cabinet est joignable directement.</p>
+
+        <div class="card" style="margin-bottom:20px">
+          <h3>💬 WhatsApp</h3>
+          <p style="margin-bottom:14px">Le plus rapide. Décrivez votre souci, j'y réponds.</p>
+          <!-- PLACEHOLDER : remplace le numéro dans js/main.js (WHATSAPP_NUMBER) -->
+          <a href="https://wa.me/33756921842" class="btn btn--wa" target="_blank" rel="noopener">Ouvrir WhatsApp</a>
+        </div>
+
+        <div class="card" style="margin-bottom:20px">
+          <h3>📱 Réseaux sociaux</h3>
+          <p style="margin-bottom:14px">On se suit ? Le cabinet poste aussi ses conseils.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a href="#" class="btn btn--ghost placeholder">[@ Instagram]</a>
+            <a href="#" class="btn btn--ghost placeholder">[@ LinkedIn]</a>
+          </div>
+        </div>
+
+        <div class="guarantees" style="justify-content:flex-start">
+          <div class="guarantee"><div class="ic">⚡</div><strong>Réponse</strong><p>sous 48–72h</p></div>
+          <div class="guarantee"><div class="ic">🆓</div><strong>1er contact</strong><p>gratuit</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="zigzag"></div>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section--navy">
+    <div class="wrap" style="max-width:820px">
+      <div style="text-align:center">
+        <span class="eyebrow reveal" style="color:var(--gold)">Questions fréquentes</span>
+        <h2 class="section-title reveal">La salle <span class="hl">d'attente</span></h2>
+        <div class="flourish center reveal"></div>
+      </div>
+      <div style="margin-top:40px">
+        <div class="faq-item reveal">
+          <button class="faq-q">Je ne suis pas développeur, c'est gênant ? <span class="toggle">+</span></button>
+          <div class="faq-a"><div>Au contraire, c'est exactement pour vous. On ne juge pas. Le but est justement de vous expliquer simplement ce qui se passe dans votre projet.</div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">Mon code a été généré par l'IA, vous pouvez quand même m'aider ? <span class="toggle">+</span></button>
+          <div class="faq-a"><div>Oui, c'est même la spécialité du cabinet. Cursor, Lovable, v0, Claude, Bolt… quel que soit l'outil, on diagnostique et on soigne.</div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">Combien ça coûte ? <span class="toggle">+</span></button>
+          <div class="faq-a"><div>Le bilan de santé est à prix fixe. Ensuite, le traitement est facturé à l'heure, avec des paquets dégressifs (ex : 6h pour le prix de 5h). Tous les détails sur la page <a href="soins.html" style="color:var(--gold);text-decoration:underline">Les Soins</a>.</div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">Mon projet / mon code reste-t-il confidentiel ? <span class="toggle">+</span></button>
+          <div class="faq-a"><div>Absolument. Votre projet reste strictement confidentiel. <span class="placeholder">[Précise ici tes engagements : NDA possible, etc.]</span></div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">En combien de temps j'ai une réponse ? <span class="toggle">+</span></button>
+          <div class="faq-a"><div>Généralement sous 48 à 72h pour le premier retour. Pour les urgences, écrivez « URGENT » sur WhatsApp.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__grid">
+        <div>
+          <span class="brand__mark">DR<span class="brand__plus">.</span>CODE</span>
+          <p style="margin-top:16px;max-width:34ch">Le cabinet qui soigne les projets codés avec l'IA. On ne juge pas. On vous soigne.</p>
+        </div>
+        <div>
+          <h4>Le cabinet</h4>
+          <div class="footer__links"><a href="index.html">Accueil</a><a href="soins.html">Les Soins</a><a href="docteur.html">Le Docteur</a><a href="contact.html">Contact</a></div>
+        </div>
+        <div>
+          <h4>Prendre rendez-vous</h4>
+          <div class="footer__links">
+            <a href="contact.html">📋 Obtenir une ordonnance</a>
+            <a href="https://wa.me/33756921842" target="_blank" rel="noopener">💬 WhatsApp</a>
+            <a href="#" class="placeholder">[@ Instagram]</a>
+            <a href="#" class="placeholder">[@ LinkedIn]</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">© <span data-year>2026</span> Dr. Code — <span class="placeholder">[Ton nom / SIRET / mentions légales]</span> · Rapide. Efficace. Sans chichis.</div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

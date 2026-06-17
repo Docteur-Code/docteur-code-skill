@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Les Soins — Dr. Code</title>
+  <meta name="description" content="Bilan de santé, traitement à l'heure et suivi continu. Découvrez la carte des soins de Dr. Code pour vos projets codés avec l'IA.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Anton&family=Bitter:ital,wght@0,400;0,600;0,700;1,400&family=Kaushan+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231E3A52'/%3E%3Ctext x='50' y='72' font-size='62' text-anchor='middle' fill='%23D8A33B' font-family='Georgia' font-weight='bold'%3E%2B%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <nav class="nav">
+    <div class="wrap nav__inner">
+      <a href="index.html" class="brand"><span class="brand__mark">DR<span class="brand__plus">.</span>CODE</span></a>
+      <ul class="nav__links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="soins.html" class="active">Les Soins</a></li>
+        <li><a href="docteur.html">Le Docteur</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="contact.html" class="btn nav__cta">Obtenir une ordonnance</a></li>
+      </ul>
+      <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============ PAGE HEAD ============ -->
+  <header class="page-head">
+    <span class="sparkle" style="top:24%;left:14%"></span>
+    <span class="sparkle gold sm" style="top:34%;right:16%"></span>
+    <div class="wrap">
+      <span class="eyebrow">La carte des soins</span>
+      <h1>VOS TRAITEMENTS</h1>
+      <p class="lead" style="margin:18px auto 0;color:var(--cream)">Du simple check-up au suivi au long cours. On commence toujours par un diagnostic — on ne prescrit jamais à l'aveugle.</p>
+    </div>
+  </header>
+
+  <!-- ============ LE PARCOURS ============ -->
+  <section>
+    <div class="wrap">
+      <div style="text-align:center">
+        <span class="eyebrow reveal">Comment ça se passe</span>
+        <h2 class="section-title reveal">Le <span class="hl">parcours de soin</span></h2>
+        <div class="flourish center reveal"></div>
+      </div>
+      <div class="steps" style="margin-top:46px;grid-template-columns:repeat(2,1fr)">
+        <div class="step reveal"><div class="step__n"></div><div><h3>Le diagnostic</h3><p>Vous remplissez l'ordonnance (formulaire). On examine votre projet : code, structure, sécurité, dépendances.</p></div></div>
+        <div class="step reveal"><div class="step__n"></div><div><h3>L'ordonnance</h3><p>Vous recevez un rapport clair : ce qui va, ce qui cloche, les priorités. En français, sans jargon.</p></div></div>
+        <div class="step reveal"><div class="step__n"></div><div><h3>Le traitement</h3><p>On corrige ensemble (ou pour vous) : bugs, failles, dette technique. À l'heure, par paquets dégressifs.</p></div></div>
+        <div class="step reveal"><div class="step__n"></div><div><h3>Le suivi</h3><p>Optionnel : on garde un œil sur votre projet dans la durée. Le médecin traitant de votre code.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="zigzag"></div>
+
+  <!-- ============ SOIN 1 : BILAN ============ -->
+  <section class="section--navy">
+    <div class="wrap grid grid-2" style="align-items:center;gap:56px">
+      <div class="reveal">
+        <div class="card__num" style="font-size:3.4rem;color:var(--gold)">🩺</div>
+        <h2 class="section-title">Le bilan de <span class="hl">santé</span></h2>
+        <div class="flourish"></div>
+        <p class="lead" style="margin-bottom:18px">L'examen complet de votre projet. La première consultation, à prix fixe, pour savoir exactement où vous en êtes.</p>
+        <ul class="checklist">
+          <li>Audit de la qualité et de la lisibilité du code</li>
+          <li>Repérage des bugs et zones fragiles</li>
+          <li>Analyse de sécurité (failles, secrets exposés, dépendances)</li>
+          <li>Évaluation « prêt-pour-la-prod » et déploiement</li>
+          <li>Une ordonnance écrite : priorités + plan d'action</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="price-card feature">
+          <div class="price-tag">Forfait fixe</div>
+          <h3>Bilan de santé</h3>
+          <div class="price-amount"><span class="placeholder">[XXX]</span> €<small>prix fixe, tout compris</small></div>
+          <p>Diagnostic complet + rapport clair sous 48–72h. Sans engagement.</p>
+          <a href="contact.html" class="btn btn--lg" style="margin-top:18px">Réserver mon bilan</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOIN 2 : TRAITEMENT (TARIFS) ============ -->
+  <section>
+    <div class="wrap">
+      <div style="text-align:center">
+        <div class="card__num reveal" style="font-size:3.4rem">💊</div>
+        <h2 class="section-title reveal">Le <span class="hl">traitement</span></h2>
+        <div class="flourish center reveal"></div>
+        <p class="lead reveal" style="margin:0 auto">Après le diagnostic, on soigne. Facturation à l'heure, avec des paquets dégressifs : plus la cure est longue, moins l'heure coûte cher.</p>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:56px">
+        <div class="price-card reveal">
+          <div class="price-tag">Consultation</div>
+          <h3>À l'heure</h3>
+          <div class="price-amount"><span class="placeholder">[170]</span> €<small>de l'heure</small></div>
+          <ul class="checklist" style="text-align:left;margin-top:18px">
+            <li>Sans engagement</li>
+            <li>Idéal pour un dépannage ponctuel</li>
+          </ul>
+        </div>
+        <div class="price-card feature reveal">
+          <div class="price-tag">Le + populaire</div>
+          <h3>Cure de 6h</h3>
+          <div class="price-amount">6h <small>pour le prix de 5h</small></div>
+          <ul class="checklist" style="text-align:left;margin-top:18px">
+            <li>1 heure offerte</li>
+            <li>Pour bugs + nettoyage</li>
+            <li>Soit <span class="placeholder">[850]</span> € au lieu de <span class="placeholder">[1020]</span> €</li>
+          </ul>
+        </div>
+        <div class="price-card reveal">
+          <div class="price-tag">Cure intensive</div>
+          <h3>Cure de 12h</h3>
+          <div class="price-amount">12h <small>pour le prix de 10h</small></div>
+          <ul class="checklist" style="text-align:left;margin-top:18px">
+            <li>2 heures offertes</li>
+            <li>Pour refonte / mise en prod</li>
+            <li>Soit <span class="placeholder">[1700]</span> € au lieu de <span class="placeholder">[2040]</span> €</li>
+          </ul>
+        </div>
+      </div>
+      <p class="form-note reveal" style="text-align:center;margin-top:24px">Montants indicatifs à confirmer — <span class="placeholder">remplace les valeurs [entre crochets] par tes vrais tarifs.</span></p>
+    </div>
+  </section>
+
+  <div class="zigzag"></div>
+
+  <!-- ============ SOIN 3 : SUIVI ============ -->
+  <section class="section--navy">
+    <div class="wrap grid grid-2" style="align-items:center;gap:56px">
+      <div class="reveal" style="order:2">
+        <div class="card__num" style="font-size:3.4rem;color:var(--gold)">📈</div>
+        <h2 class="section-title">Le <span class="hl">suivi</span></h2>
+        <div class="flourish"></div>
+        <p class="lead" style="margin-bottom:18px">Votre médecin traitant du code. Pour les projets qui grandissent et qu'on veut garder en bonne santé.</p>
+        <ul class="checklist">
+          <li>Revues de code régulières</li>
+          <li>Conseils pour mieux coder avec l'IA</li>
+          <li>Un interlocuteur qui connaît votre projet</li>
+          <li>Tarif sur mesure selon le rythme</li>
+        </ul>
+        <div style="margin-top:26px"><a href="contact.html" class="btn btn--ghost">Discuter d'un suivi</a></div>
+      </div>
+      <div class="reveal" style="order:1;display:grid;place-items:center">
+        <div class="starburst red" style="--size:230px">
+          <span><span class="big">ON GARDE</span> UN ŒIL SUR VOTRE CODE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA STRIP ============ -->
+  <section class="cta-strip">
+    <div class="wrap">
+      <h2 class="reveal">Première étape : le diagnostic.</h2>
+      <p class="lead reveal" style="margin:14px auto 0">On ne prescrit rien sans avoir examiné. Décrivez vos symptômes.</p>
+      <div class="btns reveal">
+        <a href="contact.html" class="btn btn--lg btn--navy">📋 Remplir mon ordonnance</a>
+        <a href="contact.html" class="btn btn--lg btn--wa">💬 Écrire sur WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__grid">
+        <div>
+          <span class="brand__mark">DR<span class="brand__plus">.</span>CODE</span>
+          <p style="margin-top:16px;max-width:34ch">Le cabinet qui soigne les projets codés avec l'IA. On ne juge pas. On vous soigne.</p>
+        </div>
+        <div>
+          <h4>Le cabinet</h4>
+          <div class="footer__links">
+            <a href="index.html">Accueil</a><a href="soins.html">Les Soins</a><a href="docteur.html">Le Docteur</a><a href="contact.html">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4>Prendre rendez-vous</h4>
+          <div class="footer__links">
+            <a href="contact.html">📋 Obtenir une ordonnance</a>
+            <a href="#" data-wa-footer>💬 WhatsApp</a>
+            <a href="#" class="placeholder">[@ Instagram]</a>
+            <a href="#" class="placeholder">[@ LinkedIn]</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">© <span data-year>2026</span> Dr. Code — <span class="placeholder">[Ton nom / SIRET / mentions légales]</span> · Rapide. Efficace. Sans chichis.</div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
