@@ -1,8 +1,11 @@
 ---
 description: Bilan de santé express de votre projet codé avec l'IA. Diagnostic en 5 minutes.
+version: 1.0.0
 ---
 
 # Docteur Code - Bilan de santé express
+
+**Version : 1.0.0**
 
 Le check-up rapide pour les créateurs qui buildent avec l'IA (Cursor, Claude Code, Bolt, etc.).
 
@@ -1406,6 +1409,13 @@ Où `{{STEPS_HTML}}` est généré comme :
     font-style: italic;
     margin-bottom: 4px;
   }
+
+  .footer-version {
+    margin-top: 8px;
+    font-size: 11px;
+    opacity: 0.6;
+    letter-spacing: 0.5px;
+  }
 </style>
 </head>
 <body>
@@ -1508,6 +1518,8 @@ Où `{{STEPS_HTML}}` est généré comme :
   <div class="footer">
     <div class="signature">Docteur Code · Bilan généré automatiquement par la skill /docteur-code</div>
     <div>Pour la version complète et l'accompagnement : docteur-code.fr</div>
+    <!-- Garder cette version synchronisée avec le champ "version" du frontmatter en haut du fichier -->
+    <div class="footer-version">Skill v1.0.0</div>
   </div>
 
 </div>
