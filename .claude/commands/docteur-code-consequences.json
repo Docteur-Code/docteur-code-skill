@@ -188,7 +188,29 @@
     }
   },
 
-  "q18_git_history": {
+  "q18_deploy_rollback": {
+    "question_name": "Rollback / retour arrière",
+    "category": "Déploiement",
+    "why_matters": "Un rollback, c'est ta capacité à revenir en deux minutes à la version d'avant quand un déploiement casse tout. <strong>Sans lui, une mise en ligne ratée te laisse réparer dans l'urgence, en direct devant tes utilisateurs.</strong> C'est ton bouton « annuler » en cas de pépin.",
+    "consequences": {
+      "court_terme": "Si un déploiement casse ton application, tu dois tout réparer à la main dans la précipitation.",
+      "moyen_terme": "Chaque mise en ligne devient stressante, car la moindre erreur peut rester en place plusieurs heures.",
+      "long_terme": "Une panne mal gérée peut immobiliser ton service longtemps et faire fuir tes utilisateurs."
+    }
+  },
+
+  "q19_deploy_alerting": {
+    "question_name": "Alerting de déploiement",
+    "category": "Déploiement",
+    "why_matters": "L'alerting te prévient automatiquement quand un déploiement réussit ou échoue, sans que tu aies à surveiller quoi que ce soit. <strong>Sans lui, tu peux croire que tout va bien alors que ton application est en panne.</strong> C'est ce qui te fait gagner un temps précieux quand quelque chose casse.",
+    "consequences": {
+      "court_terme": "Quand une mise en ligne échoue, tu ne le sais pas tout de suite : tu le découvres bien plus tard.",
+      "moyen_terme": "Des pannes passent inaperçues pendant des heures, le temps que quelqu'un les remarque.",
+      "long_terme": "Tu perds la confiance de tes utilisateurs à cause d'indisponibilités que tu n'as jamais vues venir."
+    }
+  },
+
+  "q20_git_history": {
     "question_name": "Utilisation de Git",
     "category": "Gestion haut niveau",
     "why_matters": "L'historique Git garde la trace de chaque changement et de la raison qui l'a motivé. <strong>Sans messages clairs, tu oublies vite pourquoi telle décision a été prise.</strong> C'est la mémoire de ton projet.",
@@ -199,7 +221,7 @@
     }
   },
 
-  "q19_git_remote": {
+  "q21_git_remote": {
     "question_name": "Push sur un remote",
     "category": "Gestion haut niveau",
     "why_matters": "Pousser ton code sur un serveur distant, comme GitHub, c'est en garder une copie de sauvegarde en sécurité. <strong>Sans ça, ton projet n'existe qu'à un seul endroit.</strong> Une panne de ton ordinateur suffirait à tout perdre.",
@@ -210,7 +232,7 @@
     }
   },
 
-  "q20_git_branches": {
+  "q22_git_branches": {
     "question_name": "Branches séparées",
     "category": "Gestion haut niveau",
     "why_matters": "Les branches te permettent de travailler sur une nouveauté à part, sans toucher à la version qui fonctionne. <strong>Sans elles, chaque essai en cours affecte directement ta version principale.</strong> C'est ce qui garde ton projet stable pendant que tu avances.",
@@ -221,7 +243,7 @@
     }
   },
 
-  "q21_gitignore": {
+  "q23_gitignore": {
     "question_name": ".gitignore configuré",
     "category": "Gestion haut niveau",
     "why_matters": "Le fichier .gitignore indique à Git quels fichiers ne jamais enregistrer, comme tes secrets ou les fichiers temporaires. <strong>Sans lui, des choses sensibles ou inutiles finissent dans ton projet.</strong> C'est un tri automatique de ce qui doit rester privé.",
@@ -232,7 +254,7 @@
     }
   },
 
-  "q22_console_logs": {
+  "q24_console_logs": {
     "question_name": "Console.log de debug oubliés",
     "category": "Bugs fonctionnels",
     "why_matters": "Les messages de débogage servent pendant le développement, mais n'ont rien à faire dans la version finale. <strong>Oubliés, ils encombrent ton application et peuvent révéler des informations internes.</strong> Les retirer, c'est livrer quelque chose de propre.",
@@ -243,7 +265,7 @@
     }
   },
 
-  "q23_type_safety": {
+  "q25_type_safety": {
     "question_name": "Type safety (TypeScript)",
     "category": "Bugs fonctionnels",
     "why_matters": "La vérification des types repère certaines erreurs automatiquement, avant même que ton code tourne. <strong>Sans elle, ces erreurs n'apparaissent qu'une fois en ligne, devant tes utilisateurs.</strong> C'est une protection qui attrape les fautes en amont.",

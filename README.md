@@ -70,11 +70,13 @@ La skill va :
 | Sécurité            | 18%   | Secrets dans git, .env, dépendances, auth, observabilité |
 | Architecture        | 15%   | Lockfiles, modularité, séparation back/front             |
 | Phase de création   | 15%   | Tests, linter, pre-commit hooks                          |
-| Déploiement         | 12%   | CI/CD, migrations BDD, environnements                    |
+| Déploiement         | 12%   | CI/CD bloquant, migrations BDD, staging, rollback, alerting |
 | Gestion haut niveau | 10%   | Git, remote, branches, .gitignore                        |
 | Bugs fonctionnels   | 8%    | Console.log oubliés, type safety                         |
 
 Le scan détecte automatiquement environ 80% des points. Les 20% restants (comportement avec Claude Code, bugs bloquants ressentis) font l'objet de 4 questions simples.
+
+**Garde-fous critiques.** Certains manques sont trop graves pour être compensés par le reste : secrets exposés dans git, absence de pipeline CI/CD, ou code sans aucune sauvegarde distante. Si l'un d'eux est détecté, le score de sa catégorie est plafonné à 50/100. Un script de déploiement manuel n'est pas considéré comme du CI/CD : le bilan vise les standards de 2026, sans complaisance.
 
 ---
 
