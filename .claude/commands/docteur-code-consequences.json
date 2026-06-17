@@ -1,0 +1,530 @@
+{
+  "q1_claude_md": {
+    "question_name": "CLAUDE.md à la racine",
+    "category": "Setup Claude Code",
+    "weight": 0.22,
+    "consequence_chain": {
+      "immediate_problem": "Pas de conventions documentées pour l'IA",
+      "short_term": {
+        "timeframe": "À chaque usage",
+        "consequence": "Claude Code doit deviner tes préférences → réinvente la roue à chaque question",
+        "observable_signs": "Code formaté différemment, import order incohérente, noms de variables inconsistants"
+      },
+      "medium_term": {
+        "timeframe": "1-3 mois",
+        "consequence": "Chaque suggestion IA nécessite tu modifies → ralentissement du workflow, frustration",
+        "impact_area": "Productivité, qualité du code"
+      },
+      "long_term": {
+        "final_risk": "LONG TERM: Dépenser 2x plus de tokens pour des refactoring évitables, perdre des heures en corrections",
+        "impact_areas": ["Productivité", "Coûts Claude"]
+      }
+    }
+  },
+
+  "q2_hooks": {
+    "question_name": "Hooks installés",
+    "category": "Setup Claude Code",
+    "weight": 0.22,
+    "consequence_chain": {
+      "immediate_problem": "Pas d'automatisation des tâches répétitives",
+      "short_term": {
+        "timeframe": "À chaque usage",
+        "consequence": "Chaque requête Claude Code doit être manuelle ou mal configurée",
+        "observable_signs": "Claude Code ne sait pas tes préférences, pas de pre-commit checks"
+      },
+      "medium_term": {
+        "timeframe": "2-4 semaines",
+        "consequence": "Bugs non détectés mergent en main → dépendances non auditées, secrets commitée",
+        "impact_area": "Sécurité, qualité du code"
+      },
+      "long_term": {
+        "final_risk": "CRITICAL: Secrets en prod, vulnérabilités ignorées, refactoring coûteux pour corriger la base",
+        "impact_areas": ["Sécurité", "Fiabilité"]
+      }
+    }
+  },
+
+  "q3_skills": {
+    "question_name": "Skills/Commands installés",
+    "category": "Setup Claude Code",
+    "weight": 0.22,
+    "consequence_chain": {
+      "immediate_problem": "Chaque tâche répétitive doit être expliquée à l'IA",
+      "short_term": {
+        "timeframe": "À chaque usage",
+        "consequence": "Workflows courants prennent 3x plus long (tu expliques chaque fois)",
+        "observable_signs": "Tu copie-colle les mêmes prompts, mêmes étapes à chaque fois"
+      },
+      "medium_term": {
+        "timeframe": "1-2 mois",
+        "consequence": "Perte de temps cumulée → frustration, tu arrêtes d'utiliser Claude Code efficacement",
+        "impact_area": "Productivité"
+      },
+      "long_term": {
+        "final_risk": "MEDIUM TERM: Plusieurs heures perdues par mois sur des tâches automatisables",
+        "impact_areas": ["Productivité", "Satisfaction"]
+      }
+    }
+  },
+
+  "q4_secrets_in_git": {
+    "question_name": "Secrets dans git history",
+    "category": "Sécurité",
+    "weight": 0.18,
+    "consequence_chain": {
+      "immediate_problem": "API keys, tokens ou credentials visibles dans git log",
+      "short_term": {
+        "timeframe": "1-4 semaines",
+        "consequence": "Scanner automatisé trouvent tes credentials → attaquant les utilise pour accéder à tes services",
+        "observable_signs": "Appels API non autorisés, usage anormal dans tes logs, factures surprises"
+      },
+      "medium_term": {
+        "timeframe": "1-3 mois",
+        "consequence": "Services compromis → infrastructure instable, données exposées, utilisateurs affectés",
+        "impact_area": "Sécurité, disponibilité, confiance utilisateur"
+      },
+      "long_term": {
+        "final_risk": "CRITICAL: Exfiltration de données, incident de sécurité, responsabilité légale, coûts de remédiation énormes",
+        "impact_areas": ["Sécurité", "Données", "Légal", "Réputation"]
+      }
+    }
+  },
+
+  "q5_env_security": {
+    "question_name": ".env présent ET ignoré par git",
+    "category": "Sécurité",
+    "weight": 0.18,
+    "consequence_chain": {
+      "immediate_problem": ".env est tracké par git ou n'existe pas (variables hardcodées)",
+      "short_term": {
+        "timeframe": "Immédiat",
+        "consequence": "Secrets en clair dans le code source → visible à quiconque a accès au repo",
+        "observable_signs": "API keys, database passwords dans les fichiers source"
+      },
+      "medium_term": {
+        "timeframe": "1-2 mois",
+        "consequence": "Accès non autorisé si quelqu'un obtient la source → données compromise, services abusés",
+        "impact_area": "Sécurité"
+      },
+      "long_term": {
+        "final_risk": "CRITICAL: Même sans malveillance, un incident = exposition de toutes tes credentials, audit coûteux",
+        "impact_areas": ["Sécurité", "Données", "Conformité"]
+      }
+    }
+  },
+
+  "q6_dependencies_audit": {
+    "question_name": "Dépendances auditées",
+    "category": "Sécurité",
+    "weight": 0.18,
+    "consequence_chain": {
+      "immediate_problem": "Vulnérabilités HIGH/CRITICAL non détectées dans les dépendances",
+      "short_term": {
+        "timeframe": "2-8 semaines",
+        "consequence": "Attackers exploitent vulnérabilités connues → accès non autorisé, données compromises",
+        "observable_signs": "Correctifs de sécurité sortent, tu ne les appliques pas, système vulnerable"
+      },
+      "medium_term": {
+        "timeframe": "2-3 mois",
+        "consequence": "Incident de sécurité → données volées, utilisateurs affectés, perte de confiance",
+        "impact_area": "Sécurité, réputation"
+      },
+      "long_term": {
+        "final_risk": "CRITICAL: Breach majeure, coûts d'audit, responsabilité légale, utilisateurs partis",
+        "impact_areas": ["Sécurité", "Données", "Légal", "Réputation"]
+      }
+    }
+  },
+
+  "q7_auth_solution": {
+    "question_name": "Authentification via solution éprouvée",
+    "category": "Sécurité",
+    "weight": 0.18,
+    "consequence_chain": {
+      "immediate_problem": "Auth maison ou bcrypt seul (sans audit de sécurité)",
+      "short_term": {
+        "timeframe": "1-2 semaines",
+        "consequence": "Failles d'auth : session hijacking, password brute force, token theft",
+        "observable_signs": "Connexion sans MFA, sessions non expirantes, passwords stockées mal"
+      },
+      "medium_term": {
+        "timeframe": "1-2 mois",
+        "consequence": "Utilisateurs compromis → données volées, compte utilisateur abusé",
+        "impact_area": "Sécurité, confiance utilisateur"
+      },
+      "long_term": {
+        "final_risk": "CRITICAL: Breach de données utilisateur, responsabilité légale énorme, perte totale de confiance",
+        "impact_areas": ["Sécurité", "Données", "Légal", "Réputation"]
+      }
+    }
+  },
+
+  "q8_observability": {
+    "question_name": "Observabilité présente",
+    "category": "Sécurité",
+    "weight": 0.18,
+    "consequence_chain": {
+      "immediate_problem": "Aucun monitoring : errors invisibles, console.log partout",
+      "short_term": {
+        "timeframe": "À la première erreur",
+        "consequence": "Bugs passent en prod sans détection → utilisateurs hitent des 500 errors avant que tu saches",
+        "observable_signs": "Tu découvres les bugs via les utilisateurs, pas tes logs"
+      },
+      "medium_term": {
+        "timeframe": "1-2 mois",
+        "consequence": "Pattern d'erreurs ignorés → même bugs reviennent, utilisateurs partent",
+        "impact_area": "Fiabilité, satisfaction utilisateur"
+      },
+      "long_term": {
+        "final_risk": "MEDIUM TERM: Perte d'utilisateurs due à mauvaise fiabilité, diagnostic d'incidents impossible",
+        "impact_areas": ["Fiabilité", "Satisfaction"]
+      }
+    }
+  },
+
+  "q9_lockfile": {
+    "question_name": "Gestion des dépendances",
+    "category": "Architecture",
+    "weight": 0.15,
+    "consequence_chain": {
+      "immediate_problem": "Pas de lockfile → dépendances non versionées",
+      "short_term": {
+        "timeframe": "À la prochaine installation",
+        "consequence": "npm install te donne des versions différentes → code fonctionne sur ta machine mais pas en prod",
+        "observable_signs": "Works on my machine syndrome, CI fails mais local OK"
+      },
+      "medium_term": {
+        "timeframe": "2-4 semaines",
+        "consequence": "Déploiements imprévisibles → downtime, rollbacks coûteux",
+        "impact_area": "Fiabilité, déploiement"
+      },
+      "long_term": {
+        "final_risk": "MEDIUM TERM: Impossible de reproduire un environnement stable, maintenance chaotique",
+        "impact_areas": ["Fiabilité", "Déploiement"]
+      }
+    }
+  },
+
+  "q10_modularity": {
+    "question_name": "Modularité du code",
+    "category": "Architecture",
+    "weight": 0.15,
+    "consequence_chain": {
+      "immediate_problem": "Fichiers géants (>500 lignes), logique entrelacée",
+      "short_term": {
+        "timeframe": "À chaque changement",
+        "consequence": "Modifier une feature → 50 other things break, tu dois corriger cascade d'erreurs",
+        "observable_signs": "Chaque change prend 3x plus long que prévu, side effects partout"
+      },
+      "medium_term": {
+        "timeframe": "2-3 mois",
+        "consequence": "Vitesse développement ralentit → coûts augmentent, features prennent 2x plus long",
+        "impact_area": "Productivité, maintenabilité"
+      },
+      "long_term": {
+        "final_risk": "LONG TERM: Code becomes unmaintainable, refactor géant demandé (coûteux), nouveau devs refusent le projet",
+        "impact_areas": ["Maintenabilité", "Scalabilité", "Coûts"]
+      }
+    }
+  },
+
+  "q11_backend_frontend_separation": {
+    "question_name": "Séparation backend/frontend",
+    "category": "Architecture",
+    "weight": 0.15,
+    "consequence_chain": {
+      "immediate_problem": "Backend et frontend mélangés, pas de séparation claire",
+      "short_term": {
+        "timeframe": "À chaque feature",
+        "consequence": "Dépendances croisées → modifier le backend = cascade de changements frontend",
+        "observable_signs": "Impossible de scale une partie sans l'autre, testing fragmenté"
+      },
+      "medium_term": {
+        "timeframe": "2-3 mois",
+        "consequence": "Deploy devient risqué → déployer backend requiert deploy frontend aussi",
+        "impact_area": "Déploiement, scalabilité"
+      },
+      "long_term": {
+        "final_risk": "LONG TERM: Impossible de scale indépendamment, migration future extrêmement coûteuse",
+        "impact_areas": ["Scalabilité", "Maintenabilité"]
+      }
+    }
+  },
+
+  "q12_unit_tests": {
+    "question_name": "Tests unitaires",
+    "category": "Phase de création",
+    "weight": 0.15,
+    "consequence_chain": {
+      "immediate_problem": "Aucun test ou ratio très faible (<10%)",
+      "short_term": {
+        "timeframe": "À chaque change",
+        "consequence": "Régression non détectées → bugs mergent en main, utilisateurs les découvrent",
+        "observable_signs": "Tu relances QA manuellement, même changement simple."
+      },
+      "medium_term": {
+        "timeframe": "1-2 mois",
+        "consequence": "Bugs s'accumulent → refactoring devient trop risqué, debt s'épaissit",
+        "impact_area": "Qualité, fiabilité"
+      },
+      "long_term": {
+        "final_risk": "LONG TERM: Trop de tech debt, impossible de changer le code avec confiance, refactor exigé mais trop risqué",
+        "impact_areas": ["Qualité", "Maintenabilité", "Vitesse"]
+      }
+    }
+  },
+
+  "q13_linter": {
+    "question_name": "Linter configuré",
+    "category": "Phase de création",
+    "weight": 0.15,
+    "consequence_chain": {
+      "immediate_problem": "Aucun linter (ou désactivé), style inconsistent",
+      "short_term": {
+        "timeframe": "À chaque PR",
+        "consequence": "Code review become nitpicking sur style → discussions inutiles, PR delays",
+        "observable_signs": "PR comments 'fix indentation', 'remove unused import', 'format this'"
+      },
+      "medium_term": {
+        "timeframe": "2-4 semaines",
+        "consequence": "Patterns problématiques passent → console.log oubliés, unused vars, dead code s'accumule",
+        "impact_area": "Qualité, maintenabilité"
+      },
+      "long_term": {
+        "final_risk": "MEDIUM TERM: Code becomes messy, onboarding nouveau devs slower, quality drifts",
+        "impact_areas": ["Qualité", "Maintenabilité"]
+      }
+    }
+  },
+
+  "q14_pre_commit_hooks": {
+    "question_name": "Pre-commit hooks",
+    "category": "Phase de création",
+    "weight": 0.15,
+    "consequence_chain": {
+      "immediate_problem": "Pas de pre-commit checks (ou lint failures commitées)",
+      "short_term": {
+        "timeframe": "À chaque commit",
+        "consequence": "Broken code merges → CI fails, pipeline wastes time, builds slow",
+        "observable_signs": "Commits arrive sans lint passing, CI workflow fails 30 minutes later"
+      },
+      "medium_term": {
+        "timeframe": "1-2 mois",
+        "consequence": "Team loose trust in main → frequent hot fixes, rollbacks, incidents",
+        "impact_area": "Déploiement, fiabilité"
+      },
+      "long_term": {
+        "final_risk": "MEDIUM TERM: Main branch unreliable, deploy process slower, team velocity decreases",
+        "impact_areas": ["Fiabilité", "Productivité"]
+      }
+    }
+  },
+
+  "q15_cicd": {
+    "question_name": "Pipeline CI/CD",
+    "category": "Déploiement",
+    "weight": 0.12,
+    "consequence_chain": {
+      "immediate_problem": "Pas de CI/CD ou workflow basique sans tests",
+      "short_term": {
+        "timeframe": "À chaque déploiement",
+        "consequence": "Deploy manuel → erreurs humaines, inconsistent environment, down time possible",
+        "observable_signs": "Deployment checklist manuel, instructions copy-pasted, dépend d'une personne"
+      },
+      "medium_term": {
+        "timeframe": "2-4 semaines",
+        "consequence": "Broken deploys → incident response, rollbacks, utilisateurs affectés",
+        "impact_area": "Disponibilité, fiabilité"
+      },
+      "long_term": {
+        "final_risk": "LONG TERM: Scaling impossible, vendor lock-in on manual process, incident response chaotic",
+        "impact_areas": ["Fiabilité", "Scalabilité", "Coûts"]
+      }
+    }
+  },
+
+  "q16_database_migrations": {
+    "question_name": "Migrations BDD",
+    "category": "Déploiement",
+    "weight": 0.12,
+    "consequence_chain": {
+      "immediate_problem": "Pas de migrations versionées ou script manuel",
+      "short_term": {
+        "timeframe": "À chaque change BDD",
+        "consequence": "Schema et données hors sync → application crashes, data corruption possible",
+        "observable_signs": "Deployment includes manual SQL script, oublis un step = disaster"
+      },
+      "medium_term": {
+        "timeframe": "1-2 mois",
+        "consequence": "Data integrity issues → utilisateurs perdent données, trust erode, incidents",
+        "impact_area": "Fiabilité, données"
+      },
+      "long_term": {
+        "final_risk": "CRITICAL: Data loss incident, recovery coûteux, compliance issues, user trust broken",
+        "impact_areas": ["Données", "Fiabilité", "Légal"]
+      }
+    }
+  },
+
+  "q17_environment_separation": {
+    "question_name": "Environnement de prod distinct",
+    "category": "Déploiement",
+    "weight": 0.12,
+    "consequence_chain": {
+      "immediate_problem": "Un seul environment ou prod config hardcodée",
+      "short_term": {
+        "timeframe": "À la prochaine feature",
+        "consequence": "Tester en prod (accidentellement) → utilisateurs affectés, données test en production",
+        "observable_signs": "Debug logs en prod, feature flags non working, env not separated"
+      },
+      "medium_term": {
+        "timeframe": "2-4 semaines",
+        "consequence": "Incidents causés par testing in prod → utilisateurs voient bugs, confiance baisse",
+        "impact_area": "Fiabilité, utilisateur experience"
+      },
+      "long_term": {
+        "final_risk": "MEDIUM TERM: Impossible to safely test changes, incident rate high, scaling impossible",
+        "impact_areas": ["Fiabilité", "Qualité"]
+      }
+    }
+  },
+
+  "q18_git_history": {
+    "question_name": "Utilisation de Git",
+    "category": "Gestion haut niveau",
+    "weight": 0.10,
+    "consequence_chain": {
+      "immediate_problem": "<5 commits ou messages non descriptifs",
+      "short_term": {
+        "timeframe": "À la prochaine investigation",
+        "consequence": "Impossible de trouver pourquoi un change a été fait → debugging ralenti",
+        "observable_signs": "git log shows 'fix', 'update', 'asd', aucun context"
+      },
+      "medium_term": {
+        "timeframe": "1-2 mois",
+        "consequence": "Tech decisions oubliées, same mistakes repeated, knowledge lost quand dev leave",
+        "impact_area": "Maintenance, documentation"
+      },
+      "long_term": {
+        "final_risk": "MEDIUM TERM: Tribal knowledge, onboarding slower, cant reverse decisions confidently",
+        "impact_areas": ["Maintenance", "Scalabilité"]
+      }
+    }
+  },
+
+  "q19_git_remote": {
+    "question_name": "Push sur un remote",
+    "category": "Gestion haut niveau",
+    "weight": 0.10,
+    "consequence_chain": {
+      "immediate_problem": "Aucun remote ou code seulement local",
+      "short_term": {
+        "timeframe": "Immédiat",
+        "consequence": "Code non sauvegardé → 1 crash disque = perte totale du projet",
+        "observable_signs": "Backup non existent, code sur un seul laptop"
+      },
+      "medium_term": {
+        "timeframe": "Aléatoire (attente du disaster)",
+        "consequence": "Disaster strikes (hardware failure, laptop stolen) → travail perdu",
+        "impact_area": "Disponibilité"
+      },
+      "long_term": {
+        "final_risk": "CRITICAL: Total project loss possible, no collaboration possible, no backup",
+        "impact_areas": ["Disponibilité", "Collaboration"]
+      }
+    }
+  },
+
+  "q20_git_branches": {
+    "question_name": "Branches séparées",
+    "category": "Gestion haut niveau",
+    "weight": 0.10,
+    "consequence_chain": {
+      "immediate_problem": "Tout en main ou branches non utilisées",
+      "short_term": {
+        "timeframe": "À chaque feature",
+        "consequence": "Feature en cours affecte main → utilisateurs voient incomplete work ou bugs",
+        "observable_signs": "WIP code mergé, features incomplete en production"
+      },
+      "medium_term": {
+        "timeframe": "1-2 mois",
+        "consequence": "Main devient unstable → rollbacks difficiles, collaboration impossible",
+        "impact_area": "Collaboration, fiabilité"
+      },
+      "long_term": {
+        "final_risk": "MEDIUM TERM: Workflow chaotic, team size 2+ becomes impossible, scaling prevented",
+        "impact_areas": ["Collaboration", "Scalabilité"]
+      }
+    }
+  },
+
+  "q21_gitignore": {
+    "question_name": ".gitignore configuré",
+    "category": "Gestion haut niveau",
+    "weight": 0.10,
+    "consequence_chain": {
+      "immediate_problem": ".gitignore absent ou incomplet",
+      "short_term": {
+        "timeframe": "À la prochaine build",
+        "consequence": "node_modules/, build artifacts, .env tracké → repo bloated, secrets exposed",
+        "observable_signs": "Repo 100+ MB, contains node_modules, secrets in history"
+      },
+      "medium_term": {
+        "timeframe": "1-2 semaines",
+        "consequence": "Secrets compromised (from node_modules), repo slow to clone/work with",
+        "impact_area": "Sécurité, performance"
+      },
+      "long_term": {
+        "final_risk": "CRITICAL: Secrets exposed, massive cleanup needed, security audit required",
+        "impact_areas": ["Sécurité", "Performance"]
+      }
+    }
+  },
+
+  "q22_console_logs": {
+    "question_name": "Console.log de debug oubliés",
+    "category": "Bugs fonctionnels",
+    "weight": 0.08,
+    "consequence_chain": {
+      "immediate_problem": ">50 console.log, debugger, TODO statements en code",
+      "short_term": {
+        "timeframe": "À la première utilisation",
+        "consequence": "Debug logs pollute user console → utilisateurs confus, app looks unprofessional",
+        "observable_signs": "Browser console full of output, deprecated warnings, developer notes visible"
+      },
+      "medium_term": {
+        "timeframe": "2-4 semaines",
+        "consequence": "Performance impact (logging overhead), harder to debug real errors in prod",
+        "impact_area": "Performance, professionalism"
+      },
+      "long_term": {
+        "final_risk": "MINOR: Perception of poor quality, hard to maintain, real errors buried in noise",
+        "impact_areas": ["Qualité", "Performance"]
+      }
+    }
+  },
+
+  "q23_type_safety": {
+    "question_name": "Type safety (TypeScript)",
+    "category": "Bugs fonctionnels",
+    "weight": 0.08,
+    "consequence_chain": {
+      "immediate_problem": "TypeScript disabled (strict: false) ou many any types",
+      "short_term": {
+        "timeframe": "À chaque changement",
+        "consequence": "Runtime errors pass undetected → bugs only visible in production",
+        "observable_signs": "Tests pass but users hit TypeError, undefined is not a function"
+      },
+      "medium_term": {
+        "timeframe": "1-2 mois",
+        "consequence": "Type-related bugs accumulate → refactoring becomes dangerous, incidents increase",
+        "impact_area": "Fiabilité, qualité"
+      },
+      "long_term": {
+        "final_risk": "MEDIUM TERM: Code too fragile to refactor, tech debt grows, scaling slows down",
+        "impact_areas": ["Fiabilité", "Maintenabilité"]
+      }
+    }
+  }
+}
