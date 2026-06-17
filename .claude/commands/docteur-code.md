@@ -476,6 +476,7 @@ Après avoir tout calculé, **toujours générer** un fichier HTML standalone et
 - `{{CATEGORIES_CARDS}}` : HTML des 7 cartes de catégories (voir format)
 - `{{ORDONNANCE}}` : HTML des 3 quick wins (voir format)
 - `{{DATE_BILAN}}` : date du jour au format français (ex: "27 mai 2026")
+- `{{TIME_BILAN}}` : heure au format HH:mm:ss (ex: "14:32:47")
 - `{{PROJET_NOM}}` : nom du dossier courant (basename du pwd)
 
 ### Format d'une carte catégorie
@@ -717,6 +718,11 @@ Où `{{STEPS_HTML}}` est généré comme :
     text-transform: uppercase;
     margin-bottom: 4px;
     opacity: 1;
+  }
+
+  .doc-time {
+    font-size: 11px;
+    opacity: 0.7;
   }
 
   .doc-title {
@@ -1265,7 +1271,7 @@ Où `{{STEPS_HTML}}` est généré comme :
       <div class="doc-meta">
         <strong>Bilan de santé</strong>
         Projet : {{PROJET_NOM}}<br>
-        Date : {{DATE_BILAN}}
+        Date : {{DATE_BILAN}} <span class="doc-time">· {{TIME_BILAN}}</span>
       </div>
     </div>
     <div class="doc-title">Diagnostic complet</div>
