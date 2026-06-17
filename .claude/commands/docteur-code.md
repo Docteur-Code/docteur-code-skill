@@ -1,11 +1,11 @@
 ---
 description: Bilan de santé express de votre projet codé avec l'IA. Diagnostic en 5 minutes.
-version: 1.1.0
+version: 1.2.0
 ---
 
 # Docteur Code - Bilan de santé express
 
-**Version : 1.1.0**
+**Version : 1.2.0**
 
 Le check-up rapide pour les créateurs qui buildent avec l'IA (Cursor, Claude Code, Bolt, etc.).
 
@@ -108,43 +108,67 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 3 - Architecture du code (poids 15%)
 
 ```
-9. Gestion des dépendances
-   - Vérifier : présence de package-lock.json / yarn.lock / poetry.lock / Pipfile.lock
-   - 0 = pas de lockfile
+9. Lockfile / reproductibilité
+   - Vérifier : présence de package-lock.json / yarn.lock / pnpm-lock.yaml / poetry.lock / Pipfile.lock
+   - 0 = pas de lockfile (les versions installées varient d'une machine à l'autre)
    - 2 = lockfile présent
-   - 3 = lockfile + dependabot.yml ou renovate.json
+   - 3 = lockfile + mise à jour automatisée des dépendances (dependabot.yml ou renovate.json)
 
-10. Modularité du code
+10. Modularité du code   [GARDE-FOU CRITIQUE]
     - Compter : find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.py" \) -not -path "*/node_modules/*" -not -path "*/.next/*" -exec wc -l {} \; | sort -rn | head -5
-    - 0 = au moins 1 fichier > 1000 lignes
-    - 1 = au moins 1 fichier 500-1000 lignes
-    - 2 = max ~300 lignes par fichier
-    - 3 = tout sous 300 lignes, structure modulaire claire
+    - En 2026, l'IA génère facilement des fichiers énormes : être strict.
+    - 0 = au moins 1 fichier > 1000 lignes (fichier géant, ingérable)
+    - 1 = au moins 1 fichier entre 600 et 1000 lignes
+    - 2 = tout sous 600 lignes, mais quelques fichiers entre 300 et 600
+    - 3 = tout sous ~300 lignes, découpage clair par responsabilité
 
-11. Séparation backend/frontend
-    - Vérifier la structure : dossiers séparés api/, server/, backend/ vs app/, components/, pages/
-    - Si monolithique (Next.js par exemple) : OK si routes API isolées dans /api
-    - N/A si projet purement frontend ou backend
-    - Évaluer 0-3 selon la clarté de la séparation
+11. Séparation des responsabilités
+    - La logique métier, l'accès aux données et l'affichage doivent vivre dans des
+      fichiers/dossiers distincts, pas mélangés dans les mêmes fichiers.
+    - Vérifier la structure : dossiers séparés (api/, server/, services/, lib/ vs
+      components/, pages/, ui/). En monolithe (Next.js), routes API isolées dans /api.
+    - N/A = projet purement statique sans logique
+    - 0 = tout est mélangé (logique métier directement dans les composants d'affichage)
+    - 1 = séparation partielle, beaucoup de mélange subsiste
+    - 2 = séparation claire entre affichage et logique, quelques exceptions
+    - 3 = séparation nette : affichage, logique métier et accès aux données bien isolés
+
+12. Validation des données en entrée
+    - Vérifier les dépendances : zod, yup, joi, valibot, superstruct (JS/TS) ;
+      pydantic, marshmallow, cerberus, class-validator (Python/autres)
+    - Vérifier aussi que les entrées externes (formulaires, API, paramètres d'URL) sont contrôlées
+    - 0 = aucune validation (les données entrent sans aucun contrôle)
+    - 2 = une librairie de validation présente et utilisée par endroits
+    - 3 = validation systématique des entrées externes (formulaires, API, variables d'env)
+
+13. Couche d'accès aux données structurée
+    - Les interactions avec la base passent par une couche dédiée (ORM, query builder,
+      ou dossier repository), pas par du SQL brut éparpillé partout.
+    - Vérifier les dépendances : prisma, drizzle, typeorm, sequelize, mongoose, kysely
+      (JS/TS) ; sqlalchemy, django ORM, peewee (Python)
+    - N/A = projet sans base de données
+    - 0 = SQL brut dispersé dans le code, sans couche dédiée
+    - 2 = ORM ou query builder présent et utilisé
+    - 3 = accès aux données centralisé (ORM + couche repository/service claire)
 ```
 
 ### Catégorie 4 - Phase de création du code (poids 15%)
 
 ```
-12. Tests unitaires
+14. Tests unitaires
     - Chercher : *.test.*, *.spec.*, __tests__/, tests/, jest.config, vitest.config, pytest.ini
     - 0 = aucun test
     - 1 = quelques tests présents mais ratio test/code < 10%
     - 2 = tests présents, ratio raisonnable
     - 3 = tests + coverage config
 
-13. Linter configuré
+15. Linter configuré
     - Vérifier : .eslintrc*, .prettierrc*, biome.json, ruff.toml, .flake8
     - 0 = aucun
     - 2 = linter présent (eslint OU prettier)
     - 3 = linter + formatter + script lint dans package.json
 
-14. Pre-commit hooks
+16. Pre-commit hooks
     - Vérifier : .husky/, lefthook.yml, .pre-commit-config.yaml, simple-git-hooks dans package.json
     - 0 = aucun
     - 2 = présent et configuré
@@ -154,7 +178,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 5 - Déploiement (poids 12%)
 
 ```
-15. Pipeline CI/CD réel (automatisé et bloquant)   [GARDE-FOU CRITIQUE]
+17. Pipeline CI/CD réel (automatisé et bloquant)   [GARDE-FOU CRITIQUE]
     - IMPORTANT : un script de déploiement manuel (deploy.sh, SCP, restart systemd,
       cron) n'est PAS du CI/CD. Le CI/CD est un pipeline AUTOMATIQUE déclenché par
       un push ou une PR, qui teste avant de livrer.
@@ -165,13 +189,13 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = pipeline qui lance les tests OU le lint sur push/PR
     - 3 = pipeline qui lance tests + lint ET bloque le merge/déploiement en cas d'échec
 
-16. Migrations BDD
+18. Migrations BDD
     - Vérifier : dossiers migrations/, prisma/migrations/, supabase/migrations/, alembic/versions/
     - N/A = pas de BDD
     - 0 = pas de migrations versionées mais BDD présente
     - 3 = migrations versionnées et présentes
 
-17. Environnements distincts (dev / staging / prod)
+19. Environnements distincts (dev / staging / prod)
     - Un environnement de staging (préproduction) pour tester avant la vraie prod
       est le standard moderne. Le simple dev/prod ne suffit plus.
     - Vérifier : .env.production / .env.staging / .env.development, scripts
@@ -181,7 +205,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = staging présent, ou séparation dev/staging/prod partielle
     - 3 = dev + staging + prod distincts et réellement utilisés
 
-18. Rollback / retour arrière
+20. Rollback / retour arrière
     - Capacité à revenir rapidement à la version précédente si un déploiement casse.
     - Vérifier : script de rollback, tags de version / releases, déploiement par image
       versionnée (Docker), ou procédure de rollback documentée
@@ -190,7 +214,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = rollback possible ou documenté (redéployer un tag/commit précédent à la main)
     - 3 = rollback automatisé (déclenché sur échec d'un health check, ou commande dédiée)
 
-19. Alerting de déploiement
+21. Alerting de déploiement
     - Être prévenu automatiquement du succès ou de l'échec d'un déploiement, sans
       avoir à lire les logs SSH à la main.
     - Vérifier : intégrations Slack / Telegram / Discord / email dans le pipeline ou
@@ -203,25 +227,25 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 6 - Gestion haut niveau (poids 10%)
 
 ```
-20. Utilisation de Git
+22. Utilisation de Git
     - Exécuter : git log --oneline | wc -l (nombre de commits)
     - 0 = < 5 commits
     - 1 = 5-20 commits
     - 2 = 20-100 commits
     - 3 = 100+ commits avec messages descriptifs (check: git log --oneline | head -20)
 
-21. Push sur un remote   [GARDE-FOU CRITIQUE]
+23. Push sur un remote   [GARDE-FOU CRITIQUE]
     - Exécuter : git remote -v
     - 0 = aucun remote (le code n'existe qu'en local, aucune sauvegarde)
     - 3 = remote présent (github/gitlab/etc.)
 
-22. Branches séparées
+24. Branches séparées
     - Exécuter : git branch -a | wc -l
     - 0 = uniquement main/master
     - 2 = quelques branches feature
     - 3 = workflow git clean (main + branches de feature avec PRs)
 
-23. .gitignore configuré
+25. .gitignore configuré
     - Lire .gitignore et vérifier présence de : node_modules, .env, dist/, build/, .DS_Store
     - 0 = absent ou très incomplet
     - 2 = présent avec les essentiels
@@ -231,14 +255,14 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 7 - Bugs fonctionnels (poids 8%)
 
 ```
-24. Console.log de debug oubliés
+26. Console.log de debug oubliés
     - Exécuter : grep -rE "console\.log|debugger|TODO|FIXME|XXX" --include="*.js" --include="*.ts" --include="*.tsx" --include="*.jsx" -l 2>/dev/null | wc -l
     - 0 = > 50 fichiers concernés
     - 1 = 20-50
     - 2 = 5-20
     - 3 = < 5
 
-25. Type safety (si TypeScript)
+27. Type safety (si TypeScript)
     - Vérifier : tsconfig.json -> "strict": true
     - N/A = projet JavaScript pur
     - 0 = strict: false ou ignoré
@@ -350,8 +374,9 @@ Certains points sont des **garde-fous critiques** : leur absence représente un 
 
 Garde-fous critiques (repérés par `[GARDE-FOU CRITIQUE]` dans le scan) :
 - **Sécurité** — Secrets dans l'historique git (#4) à 0, OU .env exposé (#5) à 0 → Sécurité plafonnée à 50
-- **Déploiement** — Pipeline CI/CD réel (#15) à 0 → Déploiement plafonné à 50
-- **Gestion haut niveau** — Aucun remote / pas de sauvegarde (#21) à 0 → catégorie plafonnée à 50
+- **Architecture** — Fichier géant > 1000 lignes (Modularité #10 à 0) → Architecture plafonnée à 50
+- **Déploiement** — Pipeline CI/CD réel (#17) à 0 → Déploiement plafonné à 50
+- **Gestion haut niveau** — Aucun remote / pas de sauvegarde (#23) à 0 → catégorie plafonnée à 50
 
 Appliquer le plafond APRÈS le calcul de `score_categorie`, juste avant le score global : `score_categorie = min(score_categorie, 50)` si un garde-fou de la catégorie est à 0.
 
@@ -1563,7 +1588,7 @@ Où `{{STEPS_HTML}}` est généré comme :
     <div class="signature">Docteur Code · Bilan généré automatiquement par la skill /docteur-code</div>
     <div>Pour la version complète et l'accompagnement : docteur-code.fr</div>
     <!-- Garder cette version synchronisée avec le champ "version" du frontmatter en haut du fichier -->
-    <div class="footer-version">Skill v1.1.0</div>
+    <div class="footer-version">Skill v1.2.0</div>
   </div>
 
 </div>
@@ -1675,5 +1700,5 @@ Ne pas spammer cette CTA. Une fois suffit.
 
 ---
 
-**Version :** 1.1.0
+**Version :** 1.2.0
 **Créé par :** Docteur Code · docteur-code.fr
