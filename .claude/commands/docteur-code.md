@@ -527,12 +527,22 @@ Après avoir tout calculé, **toujours générer** un fichier HTML standalone et
     <span class="cat-icon">{{ICONE}}</span>
     <span class="cat-name">{{NOM}}</span>
   </div>
+  <div class="cat-description">{{DESCRIPTION}}</div>
   <div class="cat-bar">
     <div class="cat-bar-fill" style="width: {{SCORE}}%"></div>
   </div>
   <div class="cat-score">{{SCORE}}/100</div>
 </div>
 ```
+
+Où les descriptions de catégories sont :
+- Setup Claude Code : "Utilises-tu Claude Code de façon optimale ?"
+- Sécurité : "Ton projet protège-t-il tes secrets et données ?"
+- Architecture : "Ton app est-elle construite sur des fondations solides ?"
+- Phase de création : "Ton code est-il testé et formaté correctement ?"
+- Déploiement : "Peux-tu déployer sans stress ?"
+- Gestion haut niveau : "Gères-tu bien ton code et ton historique ?"
+- Bugs fonctionnels : "Ton code fonctionne-t-il sans erreurs silencieuses ?"
 
 Où `LEVEL_CLASS` dépend du score :
 - 0-25 : `critical` (rouge)
@@ -743,11 +753,8 @@ Où `{{STEPS_HTML}}` est généré comme :
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .brand-icon svg {
-    width: 24px;
-    height: 24px;
+    font-size: 24px;
+    line-height: 1;
   }
 
   .brand-name {
@@ -881,6 +888,13 @@ Où `{{STEPS_HTML}}` est généré comme :
     border-right: 1px solid var(--border);
   }
 
+  .scale-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+    display: block;
+    line-height: 1;
+  }
+
   .scale-step .step-num {
     font-size: 11px;
     font-weight: 700;
@@ -960,6 +974,13 @@ Où `{{STEPS_HTML}}` est généré comme :
     font-weight: 600;
     color: var(--text);
     flex: 1;
+  }
+
+  .cat-description {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    line-height: 1.4;
   }
 
   .cat-bar {
@@ -1384,13 +1405,7 @@ Où `{{STEPS_HTML}}` est généré comme :
   <header class="letterhead">
     <div class="letterhead-top">
       <div class="brand">
-        <div class="brand-icon">
-          <svg viewBox="0 0 48 48" fill="none" stroke="var(--primary)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
-            <path d="M16 15 L7 24 L16 33"/>
-            <path d="M32 15 L41 24 L32 33"/>
-            <path d="M19 30 L22 24 L25 28 L29 16" stroke="var(--critical)"/>
-          </svg>
-        </div>
+        <div class="brand-icon">🩺</div>
         <div>
           <div class="brand-name">Docteur Code</div>
           <div class="brand-tag">Médecin de votre code généré par IA</div>
@@ -1423,21 +1438,25 @@ Où `{{STEPS_HTML}}` est généré comme :
     <!-- Échelle visuelle -->
     <div class="scale" style="--niveau-color: {{NIVEAU_COULEUR}};">
       <div class="scale-step {{ACTIVE_1}}">
+        <div class="scale-icon">🚨</div>
         <div class="step-num">Niveau 1</div>
         <div class="step-name">Soins intensifs</div>
         <div class="step-range">0-25</div>
       </div>
       <div class="scale-step {{ACTIVE_2}}">
+        <div class="scale-icon">⚠️</div>
         <div class="step-num">Niveau 2</div>
         <div class="step-name">Sous traitement</div>
         <div class="step-range">26-50</div>
       </div>
       <div class="scale-step {{ACTIVE_3}}">
+        <div class="scale-icon">✓</div>
         <div class="step-num">Niveau 3</div>
         <div class="step-name">Bonne santé</div>
         <div class="step-range">51-75</div>
       </div>
       <div class="scale-step {{ACTIVE_4}}">
+        <div class="scale-icon">⭐</div>
         <div class="step-num">Niveau 4</div>
         <div class="step-name">Pleine forme</div>
         <div class="step-range">76-100</div>
