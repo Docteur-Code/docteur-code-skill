@@ -1,11 +1,11 @@
 ---
 description: Bilan de santé express de votre projet codé avec l'IA. Diagnostic en 5 minutes.
-version: 1.4.0
+version: 1.5.0
 ---
 
 # Docteur Code - Bilan de santé express
 
-**Version : 1.4.0**
+**Version : 1.5.0**
 
 Le check-up rapide pour les créateurs qui buildent avec l'IA (Cursor, Claude Code, Bolt, etc.).
 
@@ -205,29 +205,50 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 
 ```
 19. Tests unitaires
-    - Chercher : *.test.*, *.spec.*, __tests__/, tests/, jest.config, vitest.config, pytest.ini
-    - 0 = aucun test
-    - 1 = quelques tests présents mais ratio test/code < 10%
-    - 2 = tests présents, ratio raisonnable
-    - 3 = tests + coverage config
+    - Chercher : *.test.*, *.spec.*, __tests__/, tests/, jest.config, vitest.config, pytest.ini,
+      et un script "test" réel dans package.json (pas un "echo no test")
+    - En 2026, l'IA génère du code en masse : sans tests, rien ne garantit qu'il marche encore après chaque modification. Être strict.
+    - 0 = aucun test, ou seulement un script de test bidon
+    - 1 = quelques tests épars, ratio test/code < 10 %
+    - 2 = tests présents sur une bonne partie du code, lançables par une commande
+    - 3 = tests fournis + couverture mesurée avec un seuil minimal exigé
 
 20. Linter configuré
-    - Vérifier : .eslintrc*, .prettierrc*, biome.json, ruff.toml, .flake8
-    - 0 = aucun
-    - 2 = linter présent (eslint OU prettier)
-    - 3 = linter + formatter + script lint dans package.json
+    - Un linter analyse ton code et signale les erreurs et les mauvaises pratiques au fil de l'écriture.
+    - Vérifier : .eslintrc* / eslint.config.*, biome.json (linter), ruff.toml / [tool.ruff] dans pyproject.toml, .flake8
+    - 0 = aucun linter
+    - 1 = config de linter présente mais quasi vide (règles par défaut désactivées)
+    - 2 = linter configuré avec un vrai jeu de règles
+    - 3 = linter configuré + script "lint" dans package.json (vérifiable en une commande)
 
-21. Pre-commit hooks
+21. Formatage de code imposé
+    - Un formateur applique automatiquement la même mise en forme à tout le code, pour qu'il reste lisible et cohérent d'un fichier à l'autre.
+    - Vérifier : .prettierrc* / prettier dans package.json, biome.json (section formatter), [tool.ruff.format] ou black dans pyproject.toml (un simple .editorconfig ne suffit pas)
+    - 0 = aucun formateur configuré
+    - 2 = formateur présent (configuration détectée)
+    - 3 = formateur + script de formatage dans package.json (format / format:check) appliqué à tout le projet
+
+22. Vérification de types dans les scripts
+    - Activer le mode strict ne sert à rien si personne ne lance jamais la vérification des types : beaucoup d'outils de build ignorent les erreurs de type.
+    - Vérifier un script dédié dans package.json : tsc --noEmit, vue-tsc, svelte-check, astro check, ou un outil équivalent (mypy, pyright en Python)
+    - N/A = projet sans typage statique (JavaScript pur sans tsconfig, et aucun outil de typage)
+    - 0 = aucune commande de vérification des types
+    - 2 = une commande de vérification des types existe (script typecheck / check)
+    - 3 = vérification des types lancée automatiquement à chaque modification (intégration continue)
+
+23. Pre-commit hooks
+    - Un hook pre-commit lance des vérifications automatiques juste avant chaque enregistrement, et bloque ce qui ne va pas.
     - Vérifier : .husky/, lefthook.yml, .pre-commit-config.yaml, simple-git-hooks dans package.json
-    - 0 = aucun
-    - 2 = présent et configuré
-    - 3 = présent avec lint + tests
+    - 0 = aucun hook pre-commit
+    - 1 = hook présent mais vide, ou qui ne lance aucune vérification utile
+    - 2 = hook qui lance au moins le linter ou le formateur sur le code modifié
+    - 3 = hook qui lance lint + formatage + tests (ou vérification des types) avant chaque enregistrement
 ```
 
 ### Catégorie 5 - Déploiement (poids 12%)
 
 ```
-22. Pipeline CI/CD réel (automatisé et bloquant)   [GARDE-FOU CRITIQUE]
+24. Pipeline CI/CD réel (automatisé et bloquant)   [GARDE-FOU CRITIQUE]
     - IMPORTANT : un script de déploiement manuel (deploy.sh, SCP, restart systemd,
       cron) n'est PAS du CI/CD. Le CI/CD est un pipeline AUTOMATIQUE déclenché par
       un push ou une PR, qui teste avant de livrer.
@@ -238,13 +259,13 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = pipeline qui lance les tests OU le lint sur push/PR
     - 3 = pipeline qui lance tests + lint ET bloque le merge/déploiement en cas d'échec
 
-23. Migrations BDD
+25. Migrations BDD
     - Vérifier : dossiers migrations/, prisma/migrations/, supabase/migrations/, alembic/versions/
     - N/A = pas de BDD
     - 0 = pas de migrations versionées mais BDD présente
     - 3 = migrations versionnées et présentes
 
-24. Environnements distincts (dev / staging / prod)
+26. Environnements distincts (dev / staging / prod)
     - Un environnement de staging (préproduction) pour tester avant la vraie prod
       est le standard moderne. Le simple dev/prod ne suffit plus.
     - Vérifier : .env.production / .env.staging / .env.development, scripts
@@ -254,7 +275,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = staging présent, ou séparation dev/staging/prod partielle
     - 3 = dev + staging + prod distincts et réellement utilisés
 
-25. Rollback / retour arrière
+27. Rollback / retour arrière
     - Capacité à revenir rapidement à la version précédente si un déploiement casse.
     - Vérifier : script de rollback, tags de version / releases, déploiement par image
       versionnée (Docker), ou procédure de rollback documentée
@@ -263,7 +284,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = rollback possible ou documenté (redéployer un tag/commit précédent à la main)
     - 3 = rollback automatisé (déclenché sur échec d'un health check, ou commande dédiée)
 
-26. Alerting de déploiement
+28. Alerting de déploiement
     - Être prévenu automatiquement du succès ou de l'échec d'un déploiement, sans
       avoir à lire les logs SSH à la main.
     - Vérifier : intégrations Slack / Telegram / Discord / email dans le pipeline ou
@@ -276,25 +297,25 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 6 - Gestion haut niveau (poids 10%)
 
 ```
-27. Utilisation de Git
+29. Utilisation de Git
     - Exécuter : git log --oneline | wc -l (nombre de commits)
     - 0 = < 5 commits
     - 1 = 5-20 commits
     - 2 = 20-100 commits
     - 3 = 100+ commits avec messages descriptifs (check: git log --oneline | head -20)
 
-28. Push sur un remote   [GARDE-FOU CRITIQUE]
+30. Push sur un remote   [GARDE-FOU CRITIQUE]
     - Exécuter : git remote -v
     - 0 = aucun remote (le code n'existe qu'en local, aucune sauvegarde)
     - 3 = remote présent (github/gitlab/etc.)
 
-29. Branches séparées
+31. Branches séparées
     - Exécuter : git branch -a | wc -l
     - 0 = uniquement main/master
     - 2 = quelques branches feature
     - 3 = workflow git clean (main + branches de feature avec PRs)
 
-30. .gitignore configuré
+32. .gitignore configuré
     - Lire .gitignore et vérifier présence de : node_modules, .env, dist/, build/, .DS_Store
     - 0 = absent ou très incomplet
     - 2 = présent avec les essentiels
@@ -304,14 +325,14 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 7 - Bugs fonctionnels (poids 8%)
 
 ```
-31. Console.log de debug oubliés
+33. Console.log de debug oubliés
     - Exécuter : grep -rE "console\.log|debugger|TODO|FIXME|XXX" --include="*.js" --include="*.ts" --include="*.tsx" --include="*.jsx" -l 2>/dev/null | wc -l
     - 0 = > 50 fichiers concernés
     - 1 = 20-50
     - 2 = 5-20
     - 3 = < 5
 
-32. Type safety (si TypeScript)
+34. Type safety (si TypeScript)
     - Vérifier : tsconfig.json -> "strict": true
     - N/A = projet JavaScript pur
     - 0 = strict: false ou ignoré
@@ -425,8 +446,8 @@ Garde-fous critiques (repérés par `[GARDE-FOU CRITIQUE]` dans le scan) :
 - **Setup Claude Code** — Aucun CLAUDE.md (#1) à 0 → Setup plafonné à 50
 - **Sécurité** — L'un de ces points à 0 → Sécurité plafonnée à 50 : secrets dans l'historique git (#6), .env exposé (#7), base ouverte / pas de contrôle d'accès (#11), ou clé secrète exposée côté client (#12)
 - **Architecture** — Fichier géant > 1000 lignes (Modularité #15 à 0) → Architecture plafonnée à 50
-- **Déploiement** — Pipeline CI/CD réel (#22) à 0 → Déploiement plafonné à 50
-- **Gestion haut niveau** — Aucun remote / pas de sauvegarde (#28) à 0 → catégorie plafonnée à 50
+- **Déploiement** — Pipeline CI/CD réel (#24) à 0 → Déploiement plafonné à 50
+- **Gestion haut niveau** — Aucun remote / pas de sauvegarde (#30) à 0 → catégorie plafonnée à 50
 
 Appliquer le plafond APRÈS le calcul de `score_categorie`, juste avant le score global : `score_categorie = min(score_categorie, 50)` si un garde-fou de la catégorie est à 0.
 
@@ -1638,7 +1659,7 @@ Où `{{STEPS_HTML}}` est généré comme :
     <div class="signature">Docteur Code · Bilan généré automatiquement par la skill /docteur-code</div>
     <div>Pour la version complète et l'accompagnement : docteur-code.fr</div>
     <!-- Garder cette version synchronisée avec le champ "version" du frontmatter en haut du fichier -->
-    <div class="footer-version">Skill v1.4.0</div>
+    <div class="footer-version">Skill v1.5.0</div>
   </div>
 
 </div>
@@ -1750,5 +1771,5 @@ Ne pas spammer cette CTA. Une fois suffit.
 
 ---
 
-**Version :** 1.4.0
+**Version :** 1.5.0
 **Créé par :** Docteur Code · docteur-code.fr
