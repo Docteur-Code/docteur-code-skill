@@ -1,11 +1,11 @@
 ---
 description: Bilan de santé express de votre projet codé avec l'IA. Diagnostic en 5 minutes.
-version: 1.2.0
+version: 1.3.0
 ---
 
 # Docteur Code - Bilan de santé express
 
-**Version : 1.2.0**
+**Version : 1.3.0**
 
 Le check-up rapide pour les créateurs qui buildent avec l'IA (Cursor, Claude Code, Bolt, etc.).
 
@@ -103,18 +103,50 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
    - 0 = aucune (console.log partout)
    - 2 = logger structuré présent
    - 3 = error tracking (Sentry) + logger
+
+9. Contrôle d'accès aux données (autorisation / RLS)   [GARDE-FOU CRITIQUE]
+   - Le plus gros risque des apps vibe-codées : une base ouverte où n'importe qui
+     peut lire/écrire les données de tous les utilisateurs.
+   - Vérifier selon le stack :
+     - Supabase : policies RLS dans supabase/migrations (RLS activé + create policy),
+       et que la clé service_role n'est PAS utilisée côté client
+     - Firebase : firestore.rules / storage.rules non permissifs (pas de `allow read, write: if true`)
+     - Backend custom : middleware d'autorisation sur les routes qui accèdent aux données
+   - N/A = pas de données utilisateur à protéger (site purement statique, pas de BDD)
+   - 0 = base ouverte / aucune règle d'autorisation (accès total possible)
+   - 1 = autorisation partielle (certaines tables ou routes protégées, d'autres non)
+   - 2 = autorisation en place sur l'essentiel
+   - 3 = autorisation systématique (RLS activé partout, ou contrôle serveur complet)
+
+10. Clés sensibles non exposées côté client   [GARDE-FOU CRITIQUE]
+    - Une clé secrète (service_role Supabase, clé API privée, secret serveur) ne doit
+      JAMAIS se retrouver dans le code qui tourne dans le navigateur.
+    - Vérifier : grep -rE "service_role|sk-live|sk_live|-----BEGIN" dans src/ client/ app/,
+      variables NEXT_PUBLIC_* / VITE_* / EXPO_PUBLIC_* contenant un secret, clés en dur
+    - 0 = au moins une clé secrète exposée côté client
+    - 3 = aucune clé sensible côté client (seulement des clés publiques/anon prévues pour ça)
+
+11. Rate limiting / protection contre les abus
+    - Limiter le nombre de requêtes protège tes endpoints (login, API) du brute-force
+      et des abus automatisés.
+    - Vérifier les dépendances : express-rate-limit, @upstash/ratelimit, rate-limiter-flexible,
+      slowapi (Python), ou protection au niveau hébergeur/proxy (Cloudflare, Vercel)
+    - N/A = pas d'API ni d'authentification exposées (site purement statique)
+    - 0 = aucune limite (endpoints exposés sans protection)
+    - 2 = rate limiting sur les endpoints sensibles (auth)
+    - 3 = rate limiting généralisé + protection anti-abus (captcha/WAF si pertinent)
 ```
 
 ### Catégorie 3 - Architecture du code (poids 15%)
 
 ```
-9. Lockfile / reproductibilité
+12. Lockfile / reproductibilité
    - Vérifier : présence de package-lock.json / yarn.lock / pnpm-lock.yaml / poetry.lock / Pipfile.lock
    - 0 = pas de lockfile (les versions installées varient d'une machine à l'autre)
    - 2 = lockfile présent
    - 3 = lockfile + mise à jour automatisée des dépendances (dependabot.yml ou renovate.json)
 
-10. Modularité du code   [GARDE-FOU CRITIQUE]
+13. Modularité du code   [GARDE-FOU CRITIQUE]
     - Compter : find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.tsx" -o -name "*.jsx" -o -name "*.py" \) -not -path "*/node_modules/*" -not -path "*/.next/*" -exec wc -l {} \; | sort -rn | head -5
     - En 2026, l'IA génère facilement des fichiers énormes : être strict.
     - 0 = au moins 1 fichier > 1000 lignes (fichier géant, ingérable)
@@ -122,7 +154,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = tout sous 600 lignes, mais quelques fichiers entre 300 et 600
     - 3 = tout sous ~300 lignes, découpage clair par responsabilité
 
-11. Séparation des responsabilités
+14. Séparation des responsabilités
     - La logique métier, l'accès aux données et l'affichage doivent vivre dans des
       fichiers/dossiers distincts, pas mélangés dans les mêmes fichiers.
     - Vérifier la structure : dossiers séparés (api/, server/, services/, lib/ vs
@@ -133,7 +165,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = séparation claire entre affichage et logique, quelques exceptions
     - 3 = séparation nette : affichage, logique métier et accès aux données bien isolés
 
-12. Validation des données en entrée
+15. Validation des données en entrée
     - Vérifier les dépendances : zod, yup, joi, valibot, superstruct (JS/TS) ;
       pydantic, marshmallow, cerberus, class-validator (Python/autres)
     - Vérifier aussi que les entrées externes (formulaires, API, paramètres d'URL) sont contrôlées
@@ -141,7 +173,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = une librairie de validation présente et utilisée par endroits
     - 3 = validation systématique des entrées externes (formulaires, API, variables d'env)
 
-13. Couche d'accès aux données structurée
+16. Couche d'accès aux données structurée
     - Les interactions avec la base passent par une couche dédiée (ORM, query builder,
       ou dossier repository), pas par du SQL brut éparpillé partout.
     - Vérifier les dépendances : prisma, drizzle, typeorm, sequelize, mongoose, kysely
@@ -155,20 +187,20 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 4 - Phase de création du code (poids 15%)
 
 ```
-14. Tests unitaires
+17. Tests unitaires
     - Chercher : *.test.*, *.spec.*, __tests__/, tests/, jest.config, vitest.config, pytest.ini
     - 0 = aucun test
     - 1 = quelques tests présents mais ratio test/code < 10%
     - 2 = tests présents, ratio raisonnable
     - 3 = tests + coverage config
 
-15. Linter configuré
+18. Linter configuré
     - Vérifier : .eslintrc*, .prettierrc*, biome.json, ruff.toml, .flake8
     - 0 = aucun
     - 2 = linter présent (eslint OU prettier)
     - 3 = linter + formatter + script lint dans package.json
 
-16. Pre-commit hooks
+19. Pre-commit hooks
     - Vérifier : .husky/, lefthook.yml, .pre-commit-config.yaml, simple-git-hooks dans package.json
     - 0 = aucun
     - 2 = présent et configuré
@@ -178,7 +210,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 5 - Déploiement (poids 12%)
 
 ```
-17. Pipeline CI/CD réel (automatisé et bloquant)   [GARDE-FOU CRITIQUE]
+20. Pipeline CI/CD réel (automatisé et bloquant)   [GARDE-FOU CRITIQUE]
     - IMPORTANT : un script de déploiement manuel (deploy.sh, SCP, restart systemd,
       cron) n'est PAS du CI/CD. Le CI/CD est un pipeline AUTOMATIQUE déclenché par
       un push ou une PR, qui teste avant de livrer.
@@ -189,13 +221,13 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = pipeline qui lance les tests OU le lint sur push/PR
     - 3 = pipeline qui lance tests + lint ET bloque le merge/déploiement en cas d'échec
 
-18. Migrations BDD
+21. Migrations BDD
     - Vérifier : dossiers migrations/, prisma/migrations/, supabase/migrations/, alembic/versions/
     - N/A = pas de BDD
     - 0 = pas de migrations versionées mais BDD présente
     - 3 = migrations versionnées et présentes
 
-19. Environnements distincts (dev / staging / prod)
+22. Environnements distincts (dev / staging / prod)
     - Un environnement de staging (préproduction) pour tester avant la vraie prod
       est le standard moderne. Le simple dev/prod ne suffit plus.
     - Vérifier : .env.production / .env.staging / .env.development, scripts
@@ -205,7 +237,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = staging présent, ou séparation dev/staging/prod partielle
     - 3 = dev + staging + prod distincts et réellement utilisés
 
-20. Rollback / retour arrière
+23. Rollback / retour arrière
     - Capacité à revenir rapidement à la version précédente si un déploiement casse.
     - Vérifier : script de rollback, tags de version / releases, déploiement par image
       versionnée (Docker), ou procédure de rollback documentée
@@ -214,7 +246,7 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 2 = rollback possible ou documenté (redéployer un tag/commit précédent à la main)
     - 3 = rollback automatisé (déclenché sur échec d'un health check, ou commande dédiée)
 
-21. Alerting de déploiement
+24. Alerting de déploiement
     - Être prévenu automatiquement du succès ou de l'échec d'un déploiement, sans
       avoir à lire les logs SSH à la main.
     - Vérifier : intégrations Slack / Telegram / Discord / email dans le pipeline ou
@@ -227,25 +259,25 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 6 - Gestion haut niveau (poids 10%)
 
 ```
-22. Utilisation de Git
+25. Utilisation de Git
     - Exécuter : git log --oneline | wc -l (nombre de commits)
     - 0 = < 5 commits
     - 1 = 5-20 commits
     - 2 = 20-100 commits
     - 3 = 100+ commits avec messages descriptifs (check: git log --oneline | head -20)
 
-23. Push sur un remote   [GARDE-FOU CRITIQUE]
+26. Push sur un remote   [GARDE-FOU CRITIQUE]
     - Exécuter : git remote -v
     - 0 = aucun remote (le code n'existe qu'en local, aucune sauvegarde)
     - 3 = remote présent (github/gitlab/etc.)
 
-24. Branches séparées
+27. Branches séparées
     - Exécuter : git branch -a | wc -l
     - 0 = uniquement main/master
     - 2 = quelques branches feature
     - 3 = workflow git clean (main + branches de feature avec PRs)
 
-25. .gitignore configuré
+28. .gitignore configuré
     - Lire .gitignore et vérifier présence de : node_modules, .env, dist/, build/, .DS_Store
     - 0 = absent ou très incomplet
     - 2 = présent avec les essentiels
@@ -255,14 +287,14 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 ### Catégorie 7 - Bugs fonctionnels (poids 8%)
 
 ```
-26. Console.log de debug oubliés
+29. Console.log de debug oubliés
     - Exécuter : grep -rE "console\.log|debugger|TODO|FIXME|XXX" --include="*.js" --include="*.ts" --include="*.tsx" --include="*.jsx" -l 2>/dev/null | wc -l
     - 0 = > 50 fichiers concernés
     - 1 = 20-50
     - 2 = 5-20
     - 3 = < 5
 
-27. Type safety (si TypeScript)
+30. Type safety (si TypeScript)
     - Vérifier : tsconfig.json -> "strict": true
     - N/A = projet JavaScript pur
     - 0 = strict: false ou ignoré
@@ -373,10 +405,10 @@ Ignorer les N/A : ne pas les compter au numérateur ni au dénominateur.
 Certains points sont des **garde-fous critiques** : leur absence représente un risque qu'aucune autre bonne pratique ne compense. Si un garde-fou critique est noté **0**, le score de SA catégorie est **plafonné à 50/100**, même si tout le reste est parfait.
 
 Garde-fous critiques (repérés par `[GARDE-FOU CRITIQUE]` dans le scan) :
-- **Sécurité** — Secrets dans l'historique git (#4) à 0, OU .env exposé (#5) à 0 → Sécurité plafonnée à 50
-- **Architecture** — Fichier géant > 1000 lignes (Modularité #10 à 0) → Architecture plafonnée à 50
-- **Déploiement** — Pipeline CI/CD réel (#17) à 0 → Déploiement plafonné à 50
-- **Gestion haut niveau** — Aucun remote / pas de sauvegarde (#23) à 0 → catégorie plafonnée à 50
+- **Sécurité** — L'un de ces points à 0 → Sécurité plafonnée à 50 : secrets dans l'historique git (#4), .env exposé (#5), base ouverte / pas de contrôle d'accès (#9), ou clé secrète exposée côté client (#10)
+- **Architecture** — Fichier géant > 1000 lignes (Modularité #13 à 0) → Architecture plafonnée à 50
+- **Déploiement** — Pipeline CI/CD réel (#20) à 0 → Déploiement plafonné à 50
+- **Gestion haut niveau** — Aucun remote / pas de sauvegarde (#26) à 0 → catégorie plafonnée à 50
 
 Appliquer le plafond APRÈS le calcul de `score_categorie`, juste avant le score global : `score_categorie = min(score_categorie, 50)` si un garde-fou de la catégorie est à 0.
 
@@ -1588,7 +1620,7 @@ Où `{{STEPS_HTML}}` est généré comme :
     <div class="signature">Docteur Code · Bilan généré automatiquement par la skill /docteur-code</div>
     <div>Pour la version complète et l'accompagnement : docteur-code.fr</div>
     <!-- Garder cette version synchronisée avec le champ "version" du frontmatter en haut du fichier -->
-    <div class="footer-version">Skill v1.2.0</div>
+    <div class="footer-version">Skill v1.3.0</div>
   </div>
 
 </div>
@@ -1700,5 +1732,5 @@ Ne pas spammer cette CTA. Une fois suffit.
 
 ---
 
-**Version :** 1.2.0
+**Version :** 1.3.0
 **Créé par :** Docteur Code · docteur-code.fr
