@@ -1,530 +1,256 @@
 {
+  "_guide": "Source de vérité pour les textes des recommandations. RÈGLES : phrases complètes, français simple, ZÉRO jargon technique non expliqué, ton direct. Public = créateurs non techniciens. why_matters = 2-3 phrases avec UNE phrase clé en <strong>. consequences = 1-2 phrases concrètes par horizon. Le modèle adapte ces textes au projet réel mais garde ce niveau de simplicité.",
+
   "q1_claude_md": {
     "question_name": "CLAUDE.md à la racine",
     "category": "Setup Claude Code",
-    "weight": 0.22,
-    "consequence_chain": {
-      "immediate_problem": "Pas de conventions documentées pour l'IA",
-      "short_term": {
-        "timeframe": "À chaque usage",
-        "consequence": "Claude Code doit deviner tes préférences → réinvente la roue à chaque question",
-        "observable_signs": "Code formaté différemment, import order incohérente, noms de variables inconsistants"
-      },
-      "medium_term": {
-        "timeframe": "1-3 mois",
-        "consequence": "Chaque suggestion IA nécessite tu modifies → ralentissement du workflow, frustration",
-        "impact_area": "Productivité, qualité du code"
-      },
-      "long_term": {
-        "final_risk": "LONG TERM: Dépenser 2x plus de tokens pour des refactoring évitables, perdre des heures en corrections",
-        "impact_areas": ["Productivité", "Coûts Claude"]
-      }
+    "why_matters": "Le fichier CLAUDE.md, c'est la fiche d'instructions que l'IA lit avant de toucher à ton code. <strong>Sans elle, l'IA invente ses propres règles à chaque fois</strong> et tu dois corriger ses réponses encore et encore. Dix minutes pour l'écrire t'économisent des heures de va-et-vient.",
+    "consequences": {
+      "court_terme": "À chaque demande, l'IA devine tes préférences au lieu de les connaître. Tu reçois du code qui ne ressemble pas au reste de ton projet.",
+      "moyen_terme": "Tu passes ton temps à reformuler et à corriger les réponses de l'IA. Ton projet devient un assemblage de styles différents.",
+      "long_terme": "Tu dépenses deux fois plus en crédits d'IA pour un résultat qui demande quand même des retouches."
     }
   },
 
   "q2_hooks": {
     "question_name": "Hooks installés",
     "category": "Setup Claude Code",
-    "weight": 0.22,
-    "consequence_chain": {
-      "immediate_problem": "Pas d'automatisation des tâches répétitives",
-      "short_term": {
-        "timeframe": "À chaque usage",
-        "consequence": "Chaque requête Claude Code doit être manuelle ou mal configurée",
-        "observable_signs": "Claude Code ne sait pas tes préférences, pas de pre-commit checks"
-      },
-      "medium_term": {
-        "timeframe": "2-4 semaines",
-        "consequence": "Bugs non détectés mergent en main → dépendances non auditées, secrets commitée",
-        "impact_area": "Sécurité, qualité du code"
-      },
-      "long_term": {
-        "final_risk": "CRITICAL: Secrets en prod, vulnérabilités ignorées, refactoring coûteux pour corriger la base",
-        "impact_areas": ["Sécurité", "Fiabilité"]
-      }
+    "why_matters": "Les hooks sont des automatismes qui se déclenchent tout seuls pendant que tu travailles, par exemple pour vérifier ton code avant chaque sauvegarde. <strong>Sans eux, rien ne te protège des erreurs de routine</strong> : tu dois penser à tout, à chaque fois. C'est un filet de sécurité qui travaille à ta place.",
+    "consequences": {
+      "court_terme": "Tu dois vérifier à la main chaque détail qu'un automatisme aurait pu contrôler pour toi.",
+      "moyen_terme": "Des erreurs simples, comme un secret oublié, finissent dans ton projet sans que personne ne les arrête.",
+      "long_terme": "Des problèmes évitables s'accumulent jusqu'à devenir longs et coûteux à réparer."
     }
   },
 
   "q3_skills": {
     "question_name": "Skills/Commands installés",
     "category": "Setup Claude Code",
-    "weight": 0.22,
-    "consequence_chain": {
-      "immediate_problem": "Chaque tâche répétitive doit être expliquée à l'IA",
-      "short_term": {
-        "timeframe": "À chaque usage",
-        "consequence": "Workflows courants prennent 3x plus long (tu expliques chaque fois)",
-        "observable_signs": "Tu copie-colle les mêmes prompts, mêmes étapes à chaque fois"
-      },
-      "medium_term": {
-        "timeframe": "1-2 mois",
-        "consequence": "Perte de temps cumulée → frustration, tu arrêtes d'utiliser Claude Code efficacement",
-        "impact_area": "Productivité"
-      },
-      "long_term": {
-        "final_risk": "MEDIUM TERM: Plusieurs heures perdues par mois sur des tâches automatisables",
-        "impact_areas": ["Productivité", "Satisfaction"]
-      }
+    "why_matters": "Les skills, ce sont des raccourcis que tu apprends une fois à l'IA et qu'elle réutilise à volonté. <strong>Sans eux, tu réexpliques les mêmes tâches en boucle.</strong> Les créer te fait gagner du temps sur tout ce que tu fais souvent.",
+    "consequences": {
+      "court_terme": "Chaque tâche répétitive te demande de tout réexpliquer à l'IA depuis le début.",
+      "moyen_terme": "Le temps perdu s'accumule et tu utilises l'IA de façon de moins en moins efficace.",
+      "long_terme": "Tu passes des heures chaque mois sur des tâches que tu aurais pu automatiser en quelques minutes."
     }
   },
 
   "q4_secrets_in_git": {
     "question_name": "Secrets dans git history",
     "category": "Sécurité",
-    "weight": 0.18,
-    "consequence_chain": {
-      "immediate_problem": "API keys, tokens ou credentials visibles dans git log",
-      "short_term": {
-        "timeframe": "1-4 semaines",
-        "consequence": "Scanner automatisé trouvent tes credentials → attaquant les utilise pour accéder à tes services",
-        "observable_signs": "Appels API non autorisés, usage anormal dans tes logs, factures surprises"
-      },
-      "medium_term": {
-        "timeframe": "1-3 mois",
-        "consequence": "Services compromis → infrastructure instable, données exposées, utilisateurs affectés",
-        "impact_area": "Sécurité, disponibilité, confiance utilisateur"
-      },
-      "long_term": {
-        "final_risk": "CRITICAL: Exfiltration de données, incident de sécurité, responsabilité légale, coûts de remédiation énormes",
-        "impact_areas": ["Sécurité", "Données", "Légal", "Réputation"]
-      }
+    "why_matters": "Tes secrets (clés d'accès, mots de passe) sont enregistrés dans l'historique de ton projet, visibles par toute personne qui y a accès. <strong>Une fois publiés, ils ne peuvent plus être considérés comme sûrs.</strong> Des robots scannent en permanence le web à la recherche de ce genre de clés.",
+    "consequences": {
+      "court_terme": "Des robots automatisés peuvent trouver tes clés et s'en servir à ta place, parfois en quelques jours.",
+      "moyen_terme": "Tes services peuvent être détournés : factures qui explosent, comptes piratés, données exposées.",
+      "long_terme": "Tu fais face à une fuite de données et à des frais imprévus, avec une confiance difficile à rattraper."
     }
   },
 
   "q5_env_security": {
     "question_name": ".env présent ET ignoré par git",
     "category": "Sécurité",
-    "weight": 0.18,
-    "consequence_chain": {
-      "immediate_problem": ".env est tracké par git ou n'existe pas (variables hardcodées)",
-      "short_term": {
-        "timeframe": "Immédiat",
-        "consequence": "Secrets en clair dans le code source → visible à quiconque a accès au repo",
-        "observable_signs": "API keys, database passwords dans les fichiers source"
-      },
-      "medium_term": {
-        "timeframe": "1-2 mois",
-        "consequence": "Accès non autorisé si quelqu'un obtient la source → données compromise, services abusés",
-        "impact_area": "Sécurité"
-      },
-      "long_term": {
-        "final_risk": "CRITICAL: Même sans malveillance, un incident = exposition de toutes tes credentials, audit coûteux",
-        "impact_areas": ["Sécurité", "Données", "Conformité"]
-      }
+    "why_matters": "Le fichier .env range tes secrets à part, séparés du code, pour ne jamais les diffuser par accident. <strong>S'il n'est pas protégé, tes clés se promènent en clair dans ton projet.</strong> C'est la base de l'hygiène de sécurité.",
+    "consequences": {
+      "court_terme": "Tes secrets restent visibles dans ton code, accessibles à quiconque met la main dessus.",
+      "moyen_terme": "Si ton code fuite ou devient public, tes clés partent avec et peuvent être utilisées contre toi.",
+      "long_terme": "Une seule fuite suffit à exposer tous tes accès d'un coup, avec un grand ménage à faire derrière."
     }
   },
 
   "q6_dependencies_audit": {
     "question_name": "Dépendances auditées",
     "category": "Sécurité",
-    "weight": 0.18,
-    "consequence_chain": {
-      "immediate_problem": "Vulnérabilités HIGH/CRITICAL non détectées dans les dépendances",
-      "short_term": {
-        "timeframe": "2-8 semaines",
-        "consequence": "Attackers exploitent vulnérabilités connues → accès non autorisé, données compromises",
-        "observable_signs": "Correctifs de sécurité sortent, tu ne les appliques pas, système vulnerable"
-      },
-      "medium_term": {
-        "timeframe": "2-3 mois",
-        "consequence": "Incident de sécurité → données volées, utilisateurs affectés, perte de confiance",
-        "impact_area": "Sécurité, réputation"
-      },
-      "long_term": {
-        "final_risk": "CRITICAL: Breach majeure, coûts d'audit, responsabilité légale, utilisateurs partis",
-        "impact_areas": ["Sécurité", "Données", "Légal", "Réputation"]
-      }
+    "why_matters": "Ton projet s'appuie sur des dizaines de briques de code écrites par d'autres, et certaines contiennent des failles connues. <strong>Ne pas les vérifier, c'est laisser une porte ouverte sans le savoir.</strong> Un contrôle régulier te dit lesquelles réparer.",
+    "consequences": {
+      "court_terme": "Des failles déjà connues et documentées restent présentes dans ton projet, prêtes à être exploitées.",
+      "moyen_terme": "Quelqu'un peut s'en servir pour entrer, voler des données ou perturber ton service.",
+      "long_terme": "Tu risques une faille de sécurité majeure, avec des conséquences légales et une perte de confiance."
     }
   },
 
   "q7_auth_solution": {
     "question_name": "Authentification via solution éprouvée",
     "category": "Sécurité",
-    "weight": 0.18,
-    "consequence_chain": {
-      "immediate_problem": "Auth maison ou bcrypt seul (sans audit de sécurité)",
-      "short_term": {
-        "timeframe": "1-2 semaines",
-        "consequence": "Failles d'auth : session hijacking, password brute force, token theft",
-        "observable_signs": "Connexion sans MFA, sessions non expirantes, passwords stockées mal"
-      },
-      "medium_term": {
-        "timeframe": "1-2 mois",
-        "consequence": "Utilisateurs compromis → données volées, compte utilisateur abusé",
-        "impact_area": "Sécurité, confiance utilisateur"
-      },
-      "long_term": {
-        "final_risk": "CRITICAL: Breach de données utilisateur, responsabilité légale énorme, perte totale de confiance",
-        "impact_areas": ["Sécurité", "Données", "Légal", "Réputation"]
-      }
+    "why_matters": "L'authentification, c'est ce qui protège les comptes de tes utilisateurs. <strong>Une solution faite maison est presque toujours plus fragile qu'un outil éprouvé</strong> utilisé par des milliers de projets. Mieux vaut s'appuyer sur ce qui a déjà fait ses preuves.",
+    "consequences": {
+      "court_terme": "Ton système de connexion peut comporter des failles que tu ne soupçonnes pas.",
+      "moyen_terme": "Les comptes de tes utilisateurs peuvent être piratés et leurs données dérobées.",
+      "long_terme": "Une fuite des données de tes utilisateurs entraîne une perte de confiance et de lourdes responsabilités."
     }
   },
 
   "q8_observability": {
     "question_name": "Observabilité présente",
     "category": "Sécurité",
-    "weight": 0.18,
-    "consequence_chain": {
-      "immediate_problem": "Aucun monitoring : errors invisibles, console.log partout",
-      "short_term": {
-        "timeframe": "À la première erreur",
-        "consequence": "Bugs passent en prod sans détection → utilisateurs hitent des 500 errors avant que tu saches",
-        "observable_signs": "Tu découvres les bugs via les utilisateurs, pas tes logs"
-      },
-      "medium_term": {
-        "timeframe": "1-2 mois",
-        "consequence": "Pattern d'erreurs ignorés → même bugs reviennent, utilisateurs partent",
-        "impact_area": "Fiabilité, satisfaction utilisateur"
-      },
-      "long_term": {
-        "final_risk": "MEDIUM TERM: Perte d'utilisateurs due à mauvaise fiabilité, diagnostic d'incidents impossible",
-        "impact_areas": ["Fiabilité", "Satisfaction"]
-      }
+    "why_matters": "Surveiller ton application, c'est être prévenu quand quelque chose casse, avant tes utilisateurs. <strong>Sans surveillance, tu découvres les bugs uniquement quand on se plaint.</strong> Un outil de suivi te montre les problèmes en temps réel.",
+    "consequences": {
+      "court_terme": "Quand une erreur survient, tu ne le sais pas : ce sont tes utilisateurs qui la rencontrent en premier.",
+      "moyen_terme": "Les mêmes problèmes reviennent sans que tu comprennes pourquoi, et tes utilisateurs se lassent.",
+      "long_terme": "Tu perds des utilisateurs à cause de pannes que tu n'as jamais vues venir."
     }
   },
 
   "q9_lockfile": {
     "question_name": "Gestion des dépendances",
     "category": "Architecture",
-    "weight": 0.15,
-    "consequence_chain": {
-      "immediate_problem": "Pas de lockfile → dépendances non versionées",
-      "short_term": {
-        "timeframe": "À la prochaine installation",
-        "consequence": "npm install te donne des versions différentes → code fonctionne sur ta machine mais pas en prod",
-        "observable_signs": "Works on my machine syndrome, CI fails mais local OK"
-      },
-      "medium_term": {
-        "timeframe": "2-4 semaines",
-        "consequence": "Déploiements imprévisibles → downtime, rollbacks coûteux",
-        "impact_area": "Fiabilité, déploiement"
-      },
-      "long_term": {
-        "final_risk": "MEDIUM TERM: Impossible de reproduire un environnement stable, maintenance chaotique",
-        "impact_areas": ["Fiabilité", "Déploiement"]
-      }
+    "why_matters": "Le lockfile fige la version exacte de chaque brique utilisée par ton projet. <strong>Sans lui, ton code peut marcher chez toi et planter ailleurs</strong>, simplement parce que les versions diffèrent. C'est ce qui garantit que tout le monde travaille à l'identique.",
+    "consequences": {
+      "court_terme": "Ton projet peut fonctionner sur ton ordinateur mais échouer une fois installé ailleurs.",
+      "moyen_terme": "Tes mises en ligne deviennent imprévisibles, avec des pannes difficiles à expliquer.",
+      "long_terme": "Tu n'arrives plus à reproduire un environnement stable, et la maintenance devient un casse-tête."
     }
   },
 
   "q10_modularity": {
     "question_name": "Modularité du code",
     "category": "Architecture",
-    "weight": 0.15,
-    "consequence_chain": {
-      "immediate_problem": "Fichiers géants (>500 lignes), logique entrelacée",
-      "short_term": {
-        "timeframe": "À chaque changement",
-        "consequence": "Modifier une feature → 50 other things break, tu dois corriger cascade d'erreurs",
-        "observable_signs": "Chaque change prend 3x plus long que prévu, side effects partout"
-      },
-      "medium_term": {
-        "timeframe": "2-3 mois",
-        "consequence": "Vitesse développement ralentit → coûts augmentent, features prennent 2x plus long",
-        "impact_area": "Productivité, maintenabilité"
-      },
-      "long_term": {
-        "final_risk": "LONG TERM: Code becomes unmaintainable, refactor géant demandé (coûteux), nouveau devs refusent le projet",
-        "impact_areas": ["Maintenabilité", "Scalabilité", "Coûts"]
-      }
+    "why_matters": "Un code bien rangé est découpé en petits morceaux simples, faciles à comprendre un par un. <strong>Quand tout est entassé dans d'énormes fichiers, la moindre modification en casse dix autres.</strong> Découper, c'est pouvoir avancer sans tout faire trembler.",
+    "consequences": {
+      "court_terme": "Modifier une fonctionnalité en casse d'autres sans prévenir, et chaque changement prend plus de temps que prévu.",
+      "moyen_terme": "Ton développement ralentit : ajouter quoi que ce soit devient long et stressant.",
+      "long_terme": "Ton code devient si emmêlé qu'il faut tout réécrire, un chantier long et coûteux."
     }
   },
 
   "q11_backend_frontend_separation": {
     "question_name": "Séparation backend/frontend",
     "category": "Architecture",
-    "weight": 0.15,
-    "consequence_chain": {
-      "immediate_problem": "Backend et frontend mélangés, pas de séparation claire",
-      "short_term": {
-        "timeframe": "À chaque feature",
-        "consequence": "Dépendances croisées → modifier le backend = cascade de changements frontend",
-        "observable_signs": "Impossible de scale une partie sans l'autre, testing fragmenté"
-      },
-      "medium_term": {
-        "timeframe": "2-3 mois",
-        "consequence": "Deploy devient risqué → déployer backend requiert deploy frontend aussi",
-        "impact_area": "Déploiement, scalabilité"
-      },
-      "long_term": {
-        "final_risk": "LONG TERM: Impossible de scale indépendamment, migration future extrêmement coûteuse",
-        "impact_areas": ["Scalabilité", "Maintenabilité"]
-      }
+    "why_matters": "Séparer la partie visible, ce que voit l'utilisateur, de la partie technique, les calculs et la base de données, garde chaque morceau indépendant. <strong>Quand les deux sont mélangés, toucher à l'un casse l'autre.</strong> Cette séparation te laisse faire évoluer chaque côté tranquillement.",
+    "consequences": {
+      "court_terme": "Modifier la partie technique t'oblige à toucher aussi à l'affichage, et inversement.",
+      "moyen_terme": "Chaque mise en ligne devient risquée parce que tout est lié.",
+      "long_terme": "Faire grandir ton application devient très difficile, et toute refonte coûte cher."
     }
   },
 
   "q12_unit_tests": {
     "question_name": "Tests unitaires",
     "category": "Phase de création",
-    "weight": 0.15,
-    "consequence_chain": {
-      "immediate_problem": "Aucun test ou ratio très faible (<10%)",
-      "short_term": {
-        "timeframe": "À chaque change",
-        "consequence": "Régression non détectées → bugs mergent en main, utilisateurs les découvrent",
-        "observable_signs": "Tu relances QA manuellement, même changement simple."
-      },
-      "medium_term": {
-        "timeframe": "1-2 mois",
-        "consequence": "Bugs s'accumulent → refactoring devient trop risqué, debt s'épaissit",
-        "impact_area": "Qualité, fiabilité"
-      },
-      "long_term": {
-        "final_risk": "LONG TERM: Trop de tech debt, impossible de changer le code avec confiance, refactor exigé mais trop risqué",
-        "impact_areas": ["Qualité", "Maintenabilité", "Vitesse"]
-      }
+    "why_matters": "Les tests automatiques vérifient que ton application marche toujours, même après une modification. <strong>Sans eux, tu ne sais jamais si un changement a cassé autre chose</strong> sans tout retester à la main. C'est ton garde-fou contre les mauvaises surprises.",
+    "consequences": {
+      "court_terme": "Un changement peut casser une fonctionnalité existante sans que tu t'en aperçoives.",
+      "moyen_terme": "Les bugs s'accumulent et tu n'oses plus modifier ton code de peur de tout casser.",
+      "long_terme": "Ton projet devient figé : trop risqué à faire évoluer, mais trop fragile pour rester en l'état."
     }
   },
 
   "q13_linter": {
     "question_name": "Linter configuré",
     "category": "Phase de création",
-    "weight": 0.15,
-    "consequence_chain": {
-      "immediate_problem": "Aucun linter (ou désactivé), style inconsistent",
-      "short_term": {
-        "timeframe": "À chaque PR",
-        "consequence": "Code review become nitpicking sur style → discussions inutiles, PR delays",
-        "observable_signs": "PR comments 'fix indentation', 'remove unused import', 'format this'"
-      },
-      "medium_term": {
-        "timeframe": "2-4 semaines",
-        "consequence": "Patterns problématiques passent → console.log oubliés, unused vars, dead code s'accumule",
-        "impact_area": "Qualité, maintenabilité"
-      },
-      "long_term": {
-        "final_risk": "MEDIUM TERM: Code becomes messy, onboarding nouveau devs slower, quality drifts",
-        "impact_areas": ["Qualité", "Maintenabilité"]
-      }
+    "why_matters": "Un linter est un correcteur automatique qui relit ton code et signale les fautes au fur et à mesure. <strong>Sans lui, les petites erreurs passent inaperçues</strong> jusqu'à provoquer un vrai bug. C'est une vérification gratuite qui tourne en permanence.",
+    "consequences": {
+      "court_terme": "Ton code est écrit de façon incohérente d'un fichier à l'autre, et les petites fautes s'accumulent sans être vues.",
+      "moyen_terme": "Ton code devient difficile à relire, et des bugs évitables se retrouvent chez tes utilisateurs.",
+      "long_terme": "Chaque modification devient lente et risquée, et ton projet coûte de plus en plus cher à faire évoluer."
     }
   },
 
   "q14_pre_commit_hooks": {
     "question_name": "Pre-commit hooks",
     "category": "Phase de création",
-    "weight": 0.15,
-    "consequence_chain": {
-      "immediate_problem": "Pas de pre-commit checks (ou lint failures commitées)",
-      "short_term": {
-        "timeframe": "À chaque commit",
-        "consequence": "Broken code merges → CI fails, pipeline wastes time, builds slow",
-        "observable_signs": "Commits arrive sans lint passing, CI workflow fails 30 minutes later"
-      },
-      "medium_term": {
-        "timeframe": "1-2 mois",
-        "consequence": "Team loose trust in main → frequent hot fixes, rollbacks, incidents",
-        "impact_area": "Déploiement, fiabilité"
-      },
-      "long_term": {
-        "final_risk": "MEDIUM TERM: Main branch unreliable, deploy process slower, team velocity decreases",
-        "impact_areas": ["Fiabilité", "Productivité"]
-      }
+    "why_matters": "Un hook pre-commit vérifie ton code juste avant de l'enregistrer, et bloque tout ce qui ne va pas. <strong>Sans lui, du code cassé peut se glisser dans ton projet sans alerte.</strong> C'est un dernier contrôle qualité automatique avant validation.",
+    "consequences": {
+      "court_terme": "Du code défectueux peut être enregistré sans que rien ne t'avertisse.",
+      "moyen_terme": "Tu passes ton temps à réparer en urgence des problèmes qui auraient pu être bloqués à la source.",
+      "long_terme": "La base de ton projet devient peu fiable, et chaque mise en ligne demande plus de précautions."
     }
   },
 
   "q15_cicd": {
     "question_name": "Pipeline CI/CD",
     "category": "Déploiement",
-    "weight": 0.12,
-    "consequence_chain": {
-      "immediate_problem": "Pas de CI/CD ou workflow basique sans tests",
-      "short_term": {
-        "timeframe": "À chaque déploiement",
-        "consequence": "Deploy manuel → erreurs humaines, inconsistent environment, down time possible",
-        "observable_signs": "Deployment checklist manuel, instructions copy-pasted, dépend d'une personne"
-      },
-      "medium_term": {
-        "timeframe": "2-4 semaines",
-        "consequence": "Broken deploys → incident response, rollbacks, utilisateurs affectés",
-        "impact_area": "Disponibilité, fiabilité"
-      },
-      "long_term": {
-        "final_risk": "LONG TERM: Scaling impossible, vendor lock-in on manual process, incident response chaotic",
-        "impact_areas": ["Fiabilité", "Scalabilité", "Coûts"]
-      }
+    "why_matters": "Un pipeline automatique teste et met en ligne ton application à ta place, à chaque modification. <strong>Sans lui, chaque déploiement repose sur toi, à la main et sans droit à l'erreur.</strong> L'automatiser, c'est supprimer le risque d'oubli.",
+    "consequences": {
+      "court_terme": "Chaque mise en ligne se fait à la main, avec un risque d'erreur ou d'étape oubliée.",
+      "moyen_terme": "Des mises en ligne ratées provoquent des pannes et des retours en arrière en urgence.",
+      "long_terme": "Faire grandir ton projet devient ingérable, et chaque incident vire au stress."
     }
   },
 
   "q16_database_migrations": {
     "question_name": "Migrations BDD",
     "category": "Déploiement",
-    "weight": 0.12,
-    "consequence_chain": {
-      "immediate_problem": "Pas de migrations versionées ou script manuel",
-      "short_term": {
-        "timeframe": "À chaque change BDD",
-        "consequence": "Schema et données hors sync → application crashes, data corruption possible",
-        "observable_signs": "Deployment includes manual SQL script, oublis un step = disaster"
-      },
-      "medium_term": {
-        "timeframe": "1-2 mois",
-        "consequence": "Data integrity issues → utilisateurs perdent données, trust erode, incidents",
-        "impact_area": "Fiabilité, données"
-      },
-      "long_term": {
-        "final_risk": "CRITICAL: Data loss incident, recovery coûteux, compliance issues, user trust broken",
-        "impact_areas": ["Données", "Fiabilité", "Légal"]
-      }
+    "why_matters": "Une migration enregistre chaque changement de ta base de données de façon ordonnée et réversible. <strong>Sans elles, modifier ta base à la main, c'est risquer de perdre ou d'abîmer des données.</strong> C'est ce qui rend tes évolutions sûres.",
+    "consequences": {
+      "court_terme": "Modifier ta base de données à la main peut désynchroniser ton application et provoquer des plantages.",
+      "moyen_terme": "Tu risques d'abîmer ou de perdre des données de tes utilisateurs.",
+      "long_terme": "Une perte de données importante peut survenir, avec une récupération longue et coûteuse."
     }
   },
 
   "q17_environment_separation": {
     "question_name": "Environnement de prod distinct",
     "category": "Déploiement",
-    "weight": 0.12,
-    "consequence_chain": {
-      "immediate_problem": "Un seul environment ou prod config hardcodée",
-      "short_term": {
-        "timeframe": "À la prochaine feature",
-        "consequence": "Tester en prod (accidentellement) → utilisateurs affectés, données test en production",
-        "observable_signs": "Debug logs en prod, feature flags non working, env not separated"
-      },
-      "medium_term": {
-        "timeframe": "2-4 semaines",
-        "consequence": "Incidents causés par testing in prod → utilisateurs voient bugs, confiance baisse",
-        "impact_area": "Fiabilité, utilisateur experience"
-      },
-      "long_term": {
-        "final_risk": "MEDIUM TERM: Impossible to safely test changes, incident rate high, scaling impossible",
-        "impact_areas": ["Fiabilité", "Qualité"]
-      }
+    "why_matters": "Avoir un environnement de test séparé de la production te permet d'essayer des choses sans risque pour tes vrais utilisateurs. <strong>Sans séparation, tu testes directement sur ce qu'ils utilisent.</strong> C'est ce qui te laisse expérimenter sereinement.",
+    "consequences": {
+      "court_terme": "Tu risques de tester des nouveautés directement sur ce que voient tes utilisateurs.",
+      "moyen_terme": "Tes utilisateurs tombent sur des bugs en cours de test, et la confiance s'érode.",
+      "long_terme": "Tu ne peux plus rien changer sans risque, et les incidents se multiplient."
     }
   },
 
   "q18_git_history": {
     "question_name": "Utilisation de Git",
     "category": "Gestion haut niveau",
-    "weight": 0.10,
-    "consequence_chain": {
-      "immediate_problem": "<5 commits ou messages non descriptifs",
-      "short_term": {
-        "timeframe": "À la prochaine investigation",
-        "consequence": "Impossible de trouver pourquoi un change a été fait → debugging ralenti",
-        "observable_signs": "git log shows 'fix', 'update', 'asd', aucun context"
-      },
-      "medium_term": {
-        "timeframe": "1-2 mois",
-        "consequence": "Tech decisions oubliées, same mistakes repeated, knowledge lost quand dev leave",
-        "impact_area": "Maintenance, documentation"
-      },
-      "long_term": {
-        "final_risk": "MEDIUM TERM: Tribal knowledge, onboarding slower, cant reverse decisions confidently",
-        "impact_areas": ["Maintenance", "Scalabilité"]
-      }
+    "why_matters": "L'historique Git garde la trace de chaque changement et de la raison qui l'a motivé. <strong>Sans messages clairs, tu oublies vite pourquoi telle décision a été prise.</strong> C'est la mémoire de ton projet.",
+    "consequences": {
+      "court_terme": "Tu n'arrives plus à retrouver pourquoi un changement a été fait, ce qui ralentit chaque recherche de bug.",
+      "moyen_terme": "Les décisions importantes se perdent, et les mêmes erreurs se répètent.",
+      "long_terme": "Le savoir du projet disparaît, et reprendre le code devient très lent, pour toi comme pour quelqu'un d'autre."
     }
   },
 
   "q19_git_remote": {
     "question_name": "Push sur un remote",
     "category": "Gestion haut niveau",
-    "weight": 0.10,
-    "consequence_chain": {
-      "immediate_problem": "Aucun remote ou code seulement local",
-      "short_term": {
-        "timeframe": "Immédiat",
-        "consequence": "Code non sauvegardé → 1 crash disque = perte totale du projet",
-        "observable_signs": "Backup non existent, code sur un seul laptop"
-      },
-      "medium_term": {
-        "timeframe": "Aléatoire (attente du disaster)",
-        "consequence": "Disaster strikes (hardware failure, laptop stolen) → travail perdu",
-        "impact_area": "Disponibilité"
-      },
-      "long_term": {
-        "final_risk": "CRITICAL: Total project loss possible, no collaboration possible, no backup",
-        "impact_areas": ["Disponibilité", "Collaboration"]
-      }
+    "why_matters": "Pousser ton code sur un serveur distant, comme GitHub, c'est en garder une copie de sauvegarde en sécurité. <strong>Sans ça, ton projet n'existe qu'à un seul endroit.</strong> Une panne de ton ordinateur suffirait à tout perdre.",
+    "consequences": {
+      "court_terme": "Ton code n'existe que sur ta machine, sans aucune sauvegarde.",
+      "moyen_terme": "Un disque qui lâche, un ordinateur perdu ou volé, et ton travail disparaît.",
+      "long_terme": "Tu risques de perdre l'intégralité de ton projet, sans aucun moyen de le récupérer."
     }
   },
 
   "q20_git_branches": {
     "question_name": "Branches séparées",
     "category": "Gestion haut niveau",
-    "weight": 0.10,
-    "consequence_chain": {
-      "immediate_problem": "Tout en main ou branches non utilisées",
-      "short_term": {
-        "timeframe": "À chaque feature",
-        "consequence": "Feature en cours affecte main → utilisateurs voient incomplete work ou bugs",
-        "observable_signs": "WIP code mergé, features incomplete en production"
-      },
-      "medium_term": {
-        "timeframe": "1-2 mois",
-        "consequence": "Main devient unstable → rollbacks difficiles, collaboration impossible",
-        "impact_area": "Collaboration, fiabilité"
-      },
-      "long_term": {
-        "final_risk": "MEDIUM TERM: Workflow chaotic, team size 2+ becomes impossible, scaling prevented",
-        "impact_areas": ["Collaboration", "Scalabilité"]
-      }
+    "why_matters": "Les branches te permettent de travailler sur une nouveauté à part, sans toucher à la version qui fonctionne. <strong>Sans elles, chaque essai en cours affecte directement ta version principale.</strong> C'est ce qui garde ton projet stable pendant que tu avances.",
+    "consequences": {
+      "court_terme": "Une fonctionnalité encore en chantier peut se retrouver mélangée à ta version stable.",
+      "moyen_terme": "Ta version principale devient instable et difficile à corriger.",
+      "long_terme": "Travailler à plusieurs devient impossible, et ton organisation tourne au chaos."
     }
   },
 
   "q21_gitignore": {
     "question_name": ".gitignore configuré",
     "category": "Gestion haut niveau",
-    "weight": 0.10,
-    "consequence_chain": {
-      "immediate_problem": ".gitignore absent ou incomplet",
-      "short_term": {
-        "timeframe": "À la prochaine build",
-        "consequence": "node_modules/, build artifacts, .env tracké → repo bloated, secrets exposed",
-        "observable_signs": "Repo 100+ MB, contains node_modules, secrets in history"
-      },
-      "medium_term": {
-        "timeframe": "1-2 semaines",
-        "consequence": "Secrets compromised (from node_modules), repo slow to clone/work with",
-        "impact_area": "Sécurité, performance"
-      },
-      "long_term": {
-        "final_risk": "CRITICAL: Secrets exposed, massive cleanup needed, security audit required",
-        "impact_areas": ["Sécurité", "Performance"]
-      }
+    "why_matters": "Le fichier .gitignore indique à Git quels fichiers ne jamais enregistrer, comme tes secrets ou les fichiers temporaires. <strong>Sans lui, des choses sensibles ou inutiles finissent dans ton projet.</strong> C'est un tri automatique de ce qui doit rester privé.",
+    "consequences": {
+      "court_terme": "Des fichiers inutiles ou sensibles, dont tes secrets, se retrouvent enregistrés dans ton projet.",
+      "moyen_terme": "Tes secrets peuvent être exposés et ton projet devient lourd et lent à manipuler.",
+      "long_terme": "Tu dois faire un grand nettoyage de sécurité et changer toutes tes clés exposées."
     }
   },
 
   "q22_console_logs": {
     "question_name": "Console.log de debug oubliés",
     "category": "Bugs fonctionnels",
-    "weight": 0.08,
-    "consequence_chain": {
-      "immediate_problem": ">50 console.log, debugger, TODO statements en code",
-      "short_term": {
-        "timeframe": "À la première utilisation",
-        "consequence": "Debug logs pollute user console → utilisateurs confus, app looks unprofessional",
-        "observable_signs": "Browser console full of output, deprecated warnings, developer notes visible"
-      },
-      "medium_term": {
-        "timeframe": "2-4 semaines",
-        "consequence": "Performance impact (logging overhead), harder to debug real errors in prod",
-        "impact_area": "Performance, professionalism"
-      },
-      "long_term": {
-        "final_risk": "MINOR: Perception of poor quality, hard to maintain, real errors buried in noise",
-        "impact_areas": ["Qualité", "Performance"]
-      }
+    "why_matters": "Les messages de débogage servent pendant le développement, mais n'ont rien à faire dans la version finale. <strong>Oubliés, ils encombrent ton application et peuvent révéler des informations internes.</strong> Les retirer, c'est livrer quelque chose de propre.",
+    "consequences": {
+      "court_terme": "Des messages techniques restent visibles et donnent une impression de travail bâclé.",
+      "moyen_terme": "Les vraies erreurs se noient au milieu de ces messages inutiles, ce qui complique le diagnostic.",
+      "long_terme": "Ton application paraît peu soignée et devient plus difficile à entretenir."
     }
   },
 
   "q23_type_safety": {
     "question_name": "Type safety (TypeScript)",
     "category": "Bugs fonctionnels",
-    "weight": 0.08,
-    "consequence_chain": {
-      "immediate_problem": "TypeScript disabled (strict: false) ou many any types",
-      "short_term": {
-        "timeframe": "À chaque changement",
-        "consequence": "Runtime errors pass undetected → bugs only visible in production",
-        "observable_signs": "Tests pass but users hit TypeError, undefined is not a function"
-      },
-      "medium_term": {
-        "timeframe": "1-2 mois",
-        "consequence": "Type-related bugs accumulate → refactoring becomes dangerous, incidents increase",
-        "impact_area": "Fiabilité, qualité"
-      },
-      "long_term": {
-        "final_risk": "MEDIUM TERM: Code too fragile to refactor, tech debt grows, scaling slows down",
-        "impact_areas": ["Fiabilité", "Maintenabilité"]
-      }
+    "why_matters": "La vérification des types repère certaines erreurs automatiquement, avant même que ton code tourne. <strong>Sans elle, ces erreurs n'apparaissent qu'une fois en ligne, devant tes utilisateurs.</strong> C'est une protection qui attrape les fautes en amont.",
+    "consequences": {
+      "court_terme": "Des erreurs qui auraient pu être détectées en amont n'apparaissent qu'une fois en production.",
+      "moyen_terme": "Ces bugs s'accumulent et rendent toute modification risquée.",
+      "long_terme": "Ton code devient trop fragile pour évoluer sereinement, et chaque ajout ralentit le projet."
     }
   }
 }

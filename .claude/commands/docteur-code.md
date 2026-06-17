@@ -343,26 +343,26 @@ Poids catégories :
 
 1. Charger le fichier `./.claude/commands/docteur-code-consequences.json`
 2. Pour chaque diagnostic à score 0-1 :
-   - Récupérer sa `consequence_chain` correspondante
+   - Récupérer son entrée correspondante (champs `why_matters` et `consequences`)
    - Évaluer la pertinence selon Phase 2 :
-     - Si l'utilisateur signale des bugs → conséquences related to reliability/type safety plus importante
-     - Si l'utilisateur signale des coûts Claude → conséquences related to productivity/architecture plus importante
-     - Si l'utilisateur signale des problèmes de déploiement → conséquences related to CI/CD/deployment plus importante
+     - Si l'utilisateur signale des bugs → les conséquences liées aux tests et à la fiabilité pèsent plus lourd
+     - Si l'utilisateur signale des coûts Claude → les conséquences liées au setup et à la productivité pèsent plus lourd
+     - Si l'utilisateur signale des problèmes de déploiement → les conséquences liées au CI/CD et au déploiement pèsent plus lourd
    - Calculer un score de sévérité (0-10) basé sur : impact à long terme + pertinence Phase 2 + faisabilité de la solution
-3. Stocker chaque diagnostic avec son score de sévérité et sa chaîne de conséquence
+3. Stocker chaque diagnostic avec son score de sévérité, son `why_matters` et ses trois conséquences
 
 ### Phase 3b : Sélectionner les 3 quick wins enrichis
 
 Identifier les 3 questions où :
 1. Le score est à 0 ou 1
-2. Score de sévérité conséquence >= 7 (consequence chain with long-term impact)
-3. OU consequence matches directement un pain point Phase 2
-4. L'action est rapide à mettre en oeuvre (< 30 min)
+2. Le score de sévérité conséquence est >= 7 (conséquence avec un fort impact à long terme)
+3. OU la conséquence correspond directement à un problème signalé en Phase 2
+4. L'action est rapide à mettre en œuvre (< 30 min)
 
 Trier par :
-1. Score sévérité conséquence (descending)
-2. Poids de la catégorie (descending)
-3. Difficulté implémentation (ascending)
+1. Score de sévérité conséquence (décroissant)
+2. Poids de la catégorie (décroissant)
+3. Difficulté d'implémentation (croissant)
 
 Pour chaque quick win sélectionné, créer une structure enrichie :
 
@@ -375,12 +375,12 @@ Pour chaque quick win sélectionné, créer une structure enrichie :
   "category": "Nom de la catégorie",
   
   "consequence_chain": {
-    "short_term": "Impact court terme (1-2 semaines) : ce qui se passe immédiatement",
-    "medium_term": "Impact moyen terme (1-3 mois) : conséquences composées",
-    "final_risk": "Risque à long terme (3+ mois) : pire cas, ce qui peut être irrévocable"
+    "short_term": "1-2 phrases complètes : ce qui se passe à court terme (1-2 semaines). Concret, sans jargon.",
+    "medium_term": "1-2 phrases complètes : ce qui se passe à moyen terme (1-3 mois).",
+    "final_risk": "1-2 phrases complètes : le pire cas à long terme (3+ mois)."
   },
   
-  "whyMatters": "Paragraphe de 4-5 phrases expliquant POURQUOI c'est important. Inclure : la chaîne de conséquence court/moyen/long, timeframe, impact concret. Pas de jargon, ton direct.",
+  "whyMatters": "2-3 phrases complètes et simples qui expliquent POURQUOI c'est important. UNE phrase clé doit être en gras avec <strong>...</strong>. Pas de chiffres ni d'horizons ici (ils sont dans les conséquences). Public non technique : si un terme technique est inévitable, l'expliquer en quelques mots.",
   "currentState": "Description de l'état actuel détecté dans le scan (ex: '.env présent mais NON ignoré par git')",
   "steps": [
     {
@@ -394,12 +394,16 @@ Pour chaque quick win sélectionné, créer une structure enrichie :
 }
 ```
 
-**Principes des recommandations** :
-- Le "pourquoi" doit être compréhensible par un novice, sans supposer de knowledge technique
-- Chaque step doit être exécutable en 1-2 minutes max
-- Les commandes bash doivent être copiables intégralement
-- Toujours finir par une étape de validation ("vérifier que ça marche")
-- Pas d'estimation de temps (l'utilisateur verra si c'est rapide ou non)
+**Principes de rédaction (TRÈS IMPORTANT)** :
+- Public = créateurs **non techniciens**. Chaque phrase doit être comprise par quelqu'un qui ne code pas.
+- **Phrases complètes uniquement.** Jamais de fragments télégraphiques (pas de "Bugs subtils passent inaperçus et accumulent"). On écrit "Les petites erreurs passent inaperçues et s'accumulent sans que tu les voies."
+- **Zéro jargon non expliqué** et zéro anglicisme inutile : pas de "runtime", "codebase", "refactor", "merge", "commit" bruts. Si un terme technique est indispensable, l'expliquer en quelques mots juste après.
+- **Moins d'informations, mais plus claires.** Une idée par phrase. Mieux vaut court et limpide que complet et confus.
+- Dans `whyMatters`, mettre **une phrase clé en gras** (`<strong>`) pour accrocher l'œil.
+- Le `whyMatters` explique le POURQUOI ; les conséquences (court/moyen/long) répondent au "qu'est-ce qui se passe si je ne fais rien". Ne pas mélanger les deux.
+- S'appuyer sur les textes de référence dans `docteur-code-consequences.json` et les adapter au projet réel, en gardant ce niveau de simplicité.
+- Chaque étape (`step`) doit être exécutable en 1-2 minutes, avec une commande copiable et une étape de validation finale.
+- Pas d'estimation de temps dans les textes (l'utilisateur verra si c'est rapide ou non).
 
 **Exemples complétés** :
 
@@ -413,12 +417,12 @@ Pour chaque quick win sélectionné, créer une structure enrichie :
   "category": "Sécurité",
   
   "consequence_chain": {
-    "short_term": "Scanner automatisé découvrent tes credentials dans git history → attaquant les utilise pour accéder à tes services (1-4 semaines)",
-    "medium_term": "Services compromis → infrastructure instable, données exposées, utilisateurs affectés (1-3 mois)",
-    "final_risk": "Exfiltration de données, incident de sécurité, responsabilité légale, coûts de remédiation énormes"
+    "short_term": "Tes secrets restent visibles dans ton code, accessibles à quiconque met la main dessus.",
+    "medium_term": "Si ton code fuite ou devient public, tes clés partent avec et peuvent être utilisées contre toi.",
+    "final_risk": "Une seule fuite suffit à exposer tous tes accès d'un coup, avec un grand ménage à faire derrière."
   },
   
-  "whyMatters": "Ton fichier .env contient tes secrets (API keys, tokens database). S'il est tracké par git et ton repo est public, n'importe qui peut voir tes credentials dans l'historique. Un attacker automatisé va les trouver dans les 1-2 semaines et les utiliser. Après ça, ton infra est compromise : services instables, données à risque, coûts d'incident énormes. Ça doit être fait IMMÉDIATEMENT.",
+  "whyMatters": "Le fichier .env range tes secrets à part, séparés du code, pour ne jamais les diffuser par accident. <strong>S'il n'est pas protégé, tes clés se promènent en clair dans ton projet.</strong> C'est la base de l'hygiène de sécurité, et ça se règle en deux minutes.",
   "currentState": ".env détecté mais NON dans .gitignore",
   "steps": [
     {
@@ -456,12 +460,12 @@ Pour chaque quick win sélectionné, créer une structure enrichie :
   "category": "Setup Claude Code",
   
   "consequence_chain": {
-    "short_term": "À chaque usage, Claude Code doit deviner tes préférences → réinvente la roue à chaque question (immédiat)",
-    "medium_term": "Chaque suggestion nécessite tu la modifies → ralentissement du workflow, frustration (1-3 mois)",
-    "final_risk": "Dépenser 2x plus de tokens sur refactoring évitables, perdre des heures en corrections, workflow inefficace"
+    "short_term": "À chaque demande, l'IA devine tes préférences au lieu de les connaître. Tu reçois du code qui ne ressemble pas au reste de ton projet.",
+    "medium_term": "Tu passes ton temps à reformuler et à corriger les réponses de l'IA. Ton projet devient un assemblage de styles différents.",
+    "final_risk": "Tu dépenses deux fois plus en crédits d'IA pour un résultat qui demande quand même des retouches."
   },
   
-  "whyMatters": "Quand tu travailles avec Claude Code ou Cursor, l'IA a besoin de savoir tes préférences : comment tu veux que le code soit structuré, nommé, formaté. Sans ça, chaque réponse réinvente la roue et tu dois tout refaire. Avec un CLAUDE.md clair, Claude Code produit des réponses cohérentes du premier coup. 10 min de setup = des heures économisées après.",
+  "whyMatters": "Le fichier CLAUDE.md, c'est la fiche d'instructions que l'IA lit avant de toucher à ton code. <strong>Sans elle, l'IA invente ses propres règles à chaque fois</strong> et tu dois corriger ses réponses encore et encore. Dix minutes pour l'écrire t'économisent des heures de va-et-vient.",
   "currentState": "CLAUDE.md absent ou incomplet",
   "steps": [
     {
@@ -579,9 +583,15 @@ Chaque recommandation met le **bénéfice en avant** (ce que l'user va gagner) +
       <strong>État actuel :</strong> {{CURRENT_STATE}}
     </div>
     
-    <!-- Conséquences si on ne fait rien (NEW) -->
-    <details class="rx-consequence" {{IF_FIRST}}open{{/IF_FIRST}}>
-      <summary>⚠️ Les conséquences si tu ne fais rien</summary>
+    <!-- 1. Pourquoi c'est important (ouvert sur la 1ère reco) -->
+    <details class="rx-detail" {{IF_FIRST}}open{{/IF_FIRST}}>
+      <summary>ℹ️ Pourquoi c'est important</summary>
+      <div class="rx-why">{{WHY_MATTERS}}</div>
+    </details>
+
+    <!-- 2. Qu'est-ce qui se passe si tu ne fais rien -->
+    <details class="rx-consequence">
+      <summary>⚠️ Qu'est-ce qui se passe si tu ne fais rien</summary>
       <div class="consequence-chain">
         <div class="consequence-step">
           <div class="step-label">Court terme (1-2 semaines)</div>
@@ -599,13 +609,8 @@ Chaque recommandation met le **bénéfice en avant** (ce que l'user va gagner) +
         </div>
       </div>
     </details>
-    
-    <!-- Détails techniques (collapsibles) -->
-    <details class="rx-detail">
-      <summary>ℹ️ Pourquoi c'est important</summary>
-      <div class="rx-why">{{WHY_MATTERS}}</div>
-    </details>
 
+    <!-- 3. Comment procéder -->
     <details class="rx-detail">
       <summary>⚙️ Comment procéder ({{DIFFICULTY}}))</summary>
       <div class="rx-steps">
@@ -1155,6 +1160,11 @@ Où `{{STEPS_HTML}}` est généré comme :
     font-size: 14px;
     line-height: 1.6;
     color: var(--text);
+  }
+
+  .rx-why strong {
+    color: var(--primary);
+    font-weight: 700;
   }
 
   .rx-state {
