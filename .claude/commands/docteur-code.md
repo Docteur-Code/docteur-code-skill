@@ -1,11 +1,11 @@
 ---
 description: Bilan de santé express de votre projet codé avec l'IA. Diagnostic en 5 minutes.
-version: 1.6.0
+version: 1.7.0
 ---
 
 # Docteur Code - Bilan de santé express
 
-**Version : 1.6.0**
+**Version : 1.7.0**
 
 Le check-up rapide pour les créateurs qui buildent avec l'IA (Cursor, Claude Code, Bolt, etc.).
 
@@ -346,18 +346,28 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 
 ```
 35. Console.log de debug oubliés
-    - Exécuter : grep -rE "console\.log|debugger|TODO|FIXME|XXX" --include="*.js" --include="*.ts" --include="*.tsx" --include="*.jsx" -l 2>/dev/null | wc -l
-    - 0 = > 50 fichiers concernés
-    - 1 = 20-50
-    - 2 = 5-20
-    - 3 = < 5
+    - Les messages de débogage et les marqueurs TODO/FIXME laissés dans le code encombrent la version finale et peuvent révéler des détails internes.
+    - Exécuter : grep -rE "console\.(log|debug)|debugger|TODO|FIXME|XXX" --include="*.js" --include="*.ts" --include="*.tsx" --include="*.jsx" -l 2>/dev/null | wc -l
+    - 0 = plus de 30 fichiers concernés
+    - 1 = 10 à 30 fichiers
+    - 2 = 3 à 10 fichiers
+    - 3 = moins de 3 fichiers (code propre)
 
 36. Type safety (si TypeScript)
-    - Vérifier : tsconfig.json -> "strict": true
-    - N/A = projet JavaScript pur
-    - 0 = strict: false ou ignoré
-    - 2 = strict: true mais beaucoup de `any`
-    - 3 = strict + no implicit any
+    - Le mode strict de TypeScript attrape de nombreuses erreurs avant même que le code ne tourne.
+    - Vérifier dans tsconfig.json : "strict": true, et l'absence de relâchements ("noImplicitAny": false notamment)
+    - N/A = projet JavaScript pur (pas de tsconfig.json)
+    - 0 = strict absent, à false, ou tsconfig quasi permissif
+    - 1 = strict activé mais contourné par de nombreux `any` ou `@ts-ignore`
+    - 2 = strict activé, usage de `any` limité
+    - 3 = strict complet, sans implicit any ni contournements éparpillés
+
+37. Gestion des erreurs (pas d'erreurs avalées)
+    - Une erreur attrapée puis ignorée (un bloc « catch » vide) masque les pannes : le programme continue comme si de rien n'était alors que quelque chose a échoué en silence.
+    - Exécuter : grep -rEn "catch *\([^)]*\) *\{ *\}|catch *\{ *\}|\.catch\(\(\) *=> *\{\}\)|except[^:]*: *pass" --include="*.js" --include="*.ts" --include="*.tsx" --include="*.jsx" --include="*.py" 2>/dev/null | wc -l
+    - 0 = plusieurs erreurs avalées (blocs vides) dans le code
+    - 2 = de rares cas, mais l'essentiel des erreurs est traité ou remonté
+    - 3 = aucune erreur avalée : chaque erreur est gérée, journalisée ou remontée
 ```
 
 ---
@@ -1679,7 +1689,7 @@ Où `{{STEPS_HTML}}` est généré comme :
     <div class="signature">Docteur Code · Bilan généré automatiquement par la skill /docteur-code</div>
     <div>Pour la version complète et l'accompagnement : docteur-code.fr</div>
     <!-- Garder cette version synchronisée avec le champ "version" du frontmatter en haut du fichier -->
-    <div class="footer-version">Skill v1.6.0</div>
+    <div class="footer-version">Skill v1.7.0</div>
   </div>
 
 </div>
@@ -1791,5 +1801,5 @@ Ne pas spammer cette CTA. Une fois suffit.
 
 ---
 
-**Version :** 1.6.0
+**Version :** 1.7.0
 **Créé par :** Docteur Code · docteur-code.fr

@@ -72,7 +72,7 @@ La skill va :
 | Phase de création   | 15%   | Tests, linter, formatage, vérification de types, pre-commit hooks |
 | Déploiement         | 12%   | CI/CD bloquant, migrations BDD, staging, rollback, alerting |
 | Gestion haut niveau | 10%   | Git, remote, branches, .gitignore, README/docs, messages de commit structurés |
-| Bugs fonctionnels   | 8%    | Console.log oubliés, type safety                         |
+| Bugs fonctionnels   | 8%    | Console.log oubliés, type safety, gestion des erreurs    |
 
 Le scan détecte automatiquement environ 80% des points. Les 20% restants (comportement avec Claude Code, bugs bloquants ressentis) font l'objet de 4 questions simples.
 

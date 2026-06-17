@@ -395,5 +395,16 @@
       "moyen_terme": "Ces bugs s'accumulent et rendent toute modification risquée.",
       "long_terme": "Ton code devient trop fragile pour évoluer sereinement, et chaque ajout ralentit le projet."
     }
+  },
+
+  "q37_error_handling": {
+    "question_name": "Gestion des erreurs (pas d'erreurs avalées)",
+    "category": "Bugs fonctionnels",
+    "why_matters": "Quand ton code attrape une erreur puis ne fait rien avec, la panne se produit quand même mais en silence, sans laisser de trace. <strong>Une erreur avalée, c'est un problème qui existe sans que tu puisses jamais le voir.</strong> Mieux vaut toujours traiter une erreur, ou au moins la signaler.",
+    "consequences": {
+      "court_terme": "Des problèmes se produisent sans rien afficher, et tu ne sais même pas qu'ils existent.",
+      "moyen_terme": "Tu cherches longtemps l'origine de comportements bizarres, car les vraies erreurs ont été masquées.",
+      "long_terme": "Des pannes silencieuses s'accumulent et ton application devient imprévisible, sans cause apparente."
+    }
   }
 }
