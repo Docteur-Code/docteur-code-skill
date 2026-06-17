@@ -1,11 +1,11 @@
 ---
 description: Bilan de santé express de votre projet codé avec l'IA. Diagnostic en 5 minutes.
-version: 1.5.0
+version: 1.6.0
 ---
 
 # Docteur Code - Bilan de santé express
 
-**Version : 1.5.0**
+**Version : 1.6.0**
 
 Le check-up rapide pour les créateurs qui buildent avec l'IA (Cursor, Claude Code, Bolt, etc.).
 
@@ -298,11 +298,12 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
 
 ```
 29. Utilisation de Git
-    - Exécuter : git log --oneline | wc -l (nombre de commits)
-    - 0 = < 5 commits
-    - 1 = 5-20 commits
-    - 2 = 20-100 commits
-    - 3 = 100+ commits avec messages descriptifs (check: git log --oneline | head -20)
+    - Git enregistre l'historique de ton projet ; un historique vivant montre un travail suivi et traçable.
+    - Exécuter : git log --oneline | wc -l (nombre de commits), puis git log --oneline | head -20 (qualité des messages)
+    - 0 = < 5 commits, ou messages vides et génériques ("update", "wip", "fix")
+    - 1 = 5-20 commits, messages souvent peu parlants
+    - 2 = 20-100 commits avec des messages compréhensibles
+    - 3 = 100+ commits, messages clairs et descriptifs qui expliquent le pourquoi du changement
 
 30. Push sur un remote   [GARDE-FOU CRITIQUE]
     - Exécuter : git remote -v
@@ -310,29 +311,48 @@ Toutes les vérifications sont à faire avec les outils Bash et Read. Aucune éc
     - 3 = remote présent (github/gitlab/etc.)
 
 31. Branches séparées
-    - Exécuter : git branch -a | wc -l
-    - 0 = uniquement main/master
-    - 2 = quelques branches feature
-    - 3 = workflow git clean (main + branches de feature avec PRs)
+    - Travailler sur des branches dédiées garde ta version principale stable pendant que tu développes.
+    - Exécuter : git branch -a | wc -l, et observer si le travail passe par des branches puis des fusions
+    - 0 = uniquement main/master (tout le travail directement sur la branche principale)
+    - 1 = une ou deux branches, mais l'essentiel du travail va droit sur la principale
+    - 2 = plusieurs branches de fonctionnalité utilisées régulièrement
+    - 3 = chaque changement passe par une branche dédiée puis une fusion (pull request)
 
 32. .gitignore configuré
-    - Lire .gitignore et vérifier présence de : node_modules, .env, dist/, build/, .DS_Store
-    - 0 = absent ou très incomplet
-    - 2 = présent avec les essentiels
-    - 3 = exhaustif
+    - Le fichier .gitignore empêche d'enregistrer ce qui ne doit pas l'être (secrets, fichiers temporaires, dossiers générés).
+    - Lire .gitignore et vérifier la présence de : node_modules, .env, dist/, build/, .DS_Store, fichiers de cache
+    - 0 = absent, ou présent mais sans .env ni node_modules (l'essentiel manque)
+    - 2 = présent avec les essentiels (dépendances, secrets, dossiers générés)
+    - 3 = couverture complète et adaptée au stack (caches, logs, fichiers d'environnement, artefacts de build)
+
+33. Documentation du projet (README)
+    - Un README explique à quoi sert le projet, comment l'installer et le lancer ; c'est la porte d'entrée pour toi dans six mois comme pour un nouvel arrivant.
+    - Vérifier : présence d'un README.md non vide à la racine, et idéalement un dossier docs/ ou des sections claires (installation, usage, configuration)
+    - 0 = aucun README, ou fichier quasi vide (un titre seul)
+    - 1 = README minimal (quelques lignes, sans instructions d'installation ni d'usage)
+    - 2 = README correct : présentation + installation + lancement
+    - 3 = documentation soignée : README complet et, si le projet le justifie, dossier docs/ ou guides dédiés
+
+34. Messages de commit structurés
+    - Une convention de nommage des enregistrements (par exemple "feat:", "fix:", "docs:") rend l'historique lisible d'un coup d'oeil et permet même de générer des notes de version automatiquement.
+    - Exécuter : git log --oneline | head -30 et repérer des préfixes réguliers (feat / fix / chore / docs...)
+    - N/A = trop peu de commits pour juger (historique encore très court)
+    - 0 = aucune convention, messages écrits au cas par cas
+    - 2 = convention suivie sur une bonne partie des enregistrements récents
+    - 3 = convention appliquée systématiquement, historique homogène et facile à parcourir
 ```
 
 ### Catégorie 7 - Bugs fonctionnels (poids 8%)
 
 ```
-33. Console.log de debug oubliés
+35. Console.log de debug oubliés
     - Exécuter : grep -rE "console\.log|debugger|TODO|FIXME|XXX" --include="*.js" --include="*.ts" --include="*.tsx" --include="*.jsx" -l 2>/dev/null | wc -l
     - 0 = > 50 fichiers concernés
     - 1 = 20-50
     - 2 = 5-20
     - 3 = < 5
 
-34. Type safety (si TypeScript)
+36. Type safety (si TypeScript)
     - Vérifier : tsconfig.json -> "strict": true
     - N/A = projet JavaScript pur
     - 0 = strict: false ou ignoré
@@ -1659,7 +1679,7 @@ Où `{{STEPS_HTML}}` est généré comme :
     <div class="signature">Docteur Code · Bilan généré automatiquement par la skill /docteur-code</div>
     <div>Pour la version complète et l'accompagnement : docteur-code.fr</div>
     <!-- Garder cette version synchronisée avec le champ "version" du frontmatter en haut du fichier -->
-    <div class="footer-version">Skill v1.5.0</div>
+    <div class="footer-version">Skill v1.6.0</div>
   </div>
 
 </div>
@@ -1771,5 +1791,5 @@ Ne pas spammer cette CTA. Une fois suffit.
 
 ---
 
-**Version :** 1.5.0
+**Version :** 1.6.0
 **Créé par :** Docteur Code · docteur-code.fr

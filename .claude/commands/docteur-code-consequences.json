@@ -353,7 +353,29 @@
     }
   },
 
-  "q33_console_logs": {
+  "q33_readme": {
+    "question_name": "Documentation du projet (README)",
+    "category": "Gestion haut niveau",
+    "why_matters": "Le README est la première chose qu'on lit pour comprendre un projet : à quoi il sert, comment l'installer, comment le lancer. <strong>Sans lui, toi dans six mois ou la moindre personne qui t'aide perd un temps fou à tout deviner.</strong> Quelques lignes claires suffisent à rendre ton projet abordable.",
+    "consequences": {
+      "court_terme": "Reprendre le projet après une pause t'oblige à redécouvrir comment il s'installe et se lance.",
+      "moyen_terme": "Toute personne qui veut t'aider met du temps à démarrer, faute d'explications de base.",
+      "long_terme": "Le projet devient difficile à transmettre, et son fonctionnement ne tient plus que dans ta tête."
+    }
+  },
+
+  "q34_commit_convention": {
+    "question_name": "Messages de commit structurés",
+    "category": "Gestion haut niveau",
+    "why_matters": "Donner un format régulier à tes enregistrements (comme « ajout : » ou « correction : ») rend ton historique lisible d'un coup d'oeil. <strong>Sans convention, ton historique devient un fouillis où l'on ne retrouve plus rien.</strong> C'est une habitude simple qui paie sur la durée.",
+    "consequences": {
+      "court_terme": "Ton historique mélange tout, et retrouver un changement précis prend plus de temps.",
+      "moyen_terme": "Comprendre l'évolution du projet devient pénible, et les recherches de bug s'allongent.",
+      "long_terme": "L'historique perd presque toute sa valeur, alors qu'il devrait être un atout pour t'y retrouver."
+    }
+  },
+
+  "q35_console_logs": {
     "question_name": "Console.log de debug oubliés",
     "category": "Bugs fonctionnels",
     "why_matters": "Les messages de débogage servent pendant le développement, mais n'ont rien à faire dans la version finale. <strong>Oubliés, ils encombrent ton application et peuvent révéler des informations internes.</strong> Les retirer, c'est livrer quelque chose de propre.",
@@ -364,7 +386,7 @@
     }
   },
 
-  "q34_type_safety": {
+  "q36_type_safety": {
     "question_name": "Type safety (TypeScript)",
     "category": "Bugs fonctionnels",
     "why_matters": "La vérification des types repère certaines erreurs automatiquement, avant même que ton code tourne. <strong>Sans elle, ces erreurs n'apparaissent qu'une fois en ligne, devant tes utilisateurs.</strong> C'est une protection qui attrape les fautes en amont.",
