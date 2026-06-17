@@ -67,7 +67,7 @@ La skill va :
 | Catégorie           | Poids | Ce qui est vérifié                                       |
 | ------------------- | ----- | -------------------------------------------------------- |
 | Setup Claude Code   | 22%   | CLAUDE.md, hooks, skills installés                       |
-| Sécurité            | 18%   | Secrets dans git, .env, dépendances, auth, observabilité |
+| Sécurité            | 18%   | Secrets, .env, dépendances, auth, contrôle d'accès aux données (RLS), clés côté client, rate limiting |
 | Architecture        | 15%   | Lockfile, modularité, séparation des responsabilités, validation des données, accès BDD |
 | Phase de création   | 15%   | Tests, linter, pre-commit hooks                          |
 | Déploiement         | 12%   | CI/CD bloquant, migrations BDD, staging, rollback, alerting |
