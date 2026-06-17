@@ -339,22 +339,48 @@ Poids catégories :
 76-100 → Pleine forme
 ```
 
-### Identifier les 3 quick wins
+### Phase 3a : Charger et évaluer les chaînes de conséquence (NEW)
+
+1. Charger le fichier `./.claude/commands/docteur-code-consequences.json`
+2. Pour chaque diagnostic à score 0-1 :
+   - Récupérer sa `consequence_chain` correspondante
+   - Évaluer la pertinence selon Phase 2 :
+     - Si l'utilisateur signale des bugs → conséquences related to reliability/type safety plus importante
+     - Si l'utilisateur signale des coûts Claude → conséquences related to productivity/architecture plus importante
+     - Si l'utilisateur signale des problèmes de déploiement → conséquences related to CI/CD/deployment plus importante
+   - Calculer un score de sévérité (0-10) basé sur : impact à long terme + pertinence Phase 2 + faisabilité de la solution
+3. Stocker chaque diagnostic avec son score de sévérité et sa chaîne de conséquence
+
+### Phase 3b : Sélectionner les 3 quick wins enrichis
 
 Identifier les 3 questions où :
 1. Le score est à 0 ou 1
-2. La catégorie a un poids élevé (priorité Setup Claude Code, Sécurité, Architecture)
-3. L'action est rapide à mettre en oeuvre
+2. Score de sévérité conséquence >= 7 (consequence chain with long-term impact)
+3. OU consequence matches directement un pain point Phase 2
+4. L'action est rapide à mettre en oeuvre (< 30 min)
 
-Pour chaque quick win, créer une structure détaillée :
+Trier par :
+1. Score sévérité conséquence (descending)
+2. Poids de la catégorie (descending)
+3. Difficulté implémentation (ascending)
+
+Pour chaque quick win sélectionné, créer une structure enrichie :
 
 ```json
 {
   "id": "recommendation_id",
   "title": "Titre court (7-10 mots max)",
+  "benefit": "Ce que l'utilisateur gagne concrètement (ex: 'Tes secrets restent privés')",
   "severity": "CRITICAL|MAJOR|MINOR",
   "category": "Nom de la catégorie",
-  "whyMatters": "Paragraphe de 3-4 phrases expliquant POURQUOI c'est important. Pas de jargon, ton direct. Exemples : risque réel, impact sur la maintenabilité, bénéfice concret.",
+  
+  "consequence_chain": {
+    "short_term": "Impact court terme (1-2 semaines) : ce qui se passe immédiatement",
+    "medium_term": "Impact moyen terme (1-3 mois) : conséquences composées",
+    "final_risk": "Risque à long terme (3+ mois) : pire cas, ce qui peut être irrévocable"
+  },
+  
+  "whyMatters": "Paragraphe de 4-5 phrases expliquant POURQUOI c'est important. Inclure : la chaîne de conséquence court/moyen/long, timeframe, impact concret. Pas de jargon, ton direct.",
   "currentState": "Description de l'état actuel détecté dans le scan (ex: '.env présent mais NON ignoré par git')",
   "steps": [
     {
@@ -382,10 +408,17 @@ Pour chaque quick win, créer une structure détaillée :
 {
   "id": "gitignore-env",
   "title": "Sécuriser .env par git",
-  "benefit": "Tes secrets ne seront jamais publics sur GitHub",
+  "benefit": "Tes secrets restent privés, ton infra reste sûre",
   "severity": "CRITICAL",
   "category": "Sécurité",
-  "whyMatters": "Ton fichier .env contient tes secrets (API keys, tokens database). S'il est tracké par git et ton repo est public (ou accessible à des collègues), n'importe qui peut voir tes credentials. C'est la porte ouverte à un accès non autorisé. Ça doit être fait immédiatement.",
+  
+  "consequence_chain": {
+    "short_term": "Scanner automatisé découvrent tes credentials dans git history → attaquant les utilise pour accéder à tes services (1-4 semaines)",
+    "medium_term": "Services compromis → infrastructure instable, données exposées, utilisateurs affectés (1-3 mois)",
+    "final_risk": "Exfiltration de données, incident de sécurité, responsabilité légale, coûts de remédiation énormes"
+  },
+  
+  "whyMatters": "Ton fichier .env contient tes secrets (API keys, tokens database). S'il est tracké par git et ton repo est public, n'importe qui peut voir tes credentials dans l'historique. Un attacker automatisé va les trouver dans les 1-2 semaines et les utiliser. Après ça, ton infra est compromise : services instables, données à risque, coûts d'incident énormes. Ça doit être fait IMMÉDIATEMENT.",
   "currentState": ".env détecté mais NON dans .gitignore",
   "steps": [
     {
@@ -421,7 +454,14 @@ Pour chaque quick win, créer une structure détaillée :
   "benefit": "L'IA comprend tes préférences = réponses plus rapides et meilleures",
   "severity": "MAJOR",
   "category": "Setup Claude Code",
-  "whyMatters": "Quand tu travailles avec Claude Code ou Cursor, l'IA a besoin de savoir tes préférences : comment tu veux que le code soit structuré, nommé, formaté. Sans ça, chaque réponse réinvente la roue. Avec un CLAUDE.md clair, tu gagnes du temps et les réponses sont meilleures. Ça te coûte 10 min de setup, tu economises des heures après.",
+  
+  "consequence_chain": {
+    "short_term": "À chaque usage, Claude Code doit deviner tes préférences → réinvente la roue à chaque question (immédiat)",
+    "medium_term": "Chaque suggestion nécessite tu la modifies → ralentissement du workflow, frustration (1-3 mois)",
+    "final_risk": "Dépenser 2x plus de tokens sur refactoring évitables, perdre des heures en corrections, workflow inefficace"
+  },
+  
+  "whyMatters": "Quand tu travailles avec Claude Code ou Cursor, l'IA a besoin de savoir tes préférences : comment tu veux que le code soit structuré, nommé, formaté. Sans ça, chaque réponse réinvente la roue et tu dois tout refaire. Avec un CLAUDE.md clair, Claude Code produit des réponses cohérentes du premier coup. 10 min de setup = des heures économisées après.",
   "currentState": "CLAUDE.md absent ou incomplet",
   "steps": [
     {
@@ -528,6 +568,27 @@ Chaque recommandation met le **bénéfice en avant** (ce que l'user va gagner) +
     <div class="rx-context">
       <strong>État actuel :</strong> {{CURRENT_STATE}}
     </div>
+    
+    <!-- Conséquences si on ne fait rien (NEW) -->
+    <details class="rx-consequence" {{IF_FIRST}}open{{/IF_FIRST}}>
+      <summary>⚠️ Les conséquences si tu ne fais rien</summary>
+      <div class="consequence-chain">
+        <div class="consequence-step">
+          <div class="step-label">Court terme (1-2 semaines)</div>
+          <div class="step-content">{{CONSEQUENCE_SHORT_TERM}}</div>
+        </div>
+        <div class="chain-arrow">↓</div>
+        <div class="consequence-step">
+          <div class="step-label">Moyen terme (1-3 mois)</div>
+          <div class="step-content">{{CONSEQUENCE_MEDIUM_TERM}}</div>
+        </div>
+        <div class="chain-arrow">↓</div>
+        <div class="consequence-step final">
+          <div class="step-label">Risque à long terme</div>
+          <div class="step-content risk">{{CONSEQUENCE_FINAL_RISK}}</div>
+        </div>
+      </div>
+    </details>
     
     <!-- Détails techniques (collapsibles) -->
     <details class="rx-detail">
@@ -1183,6 +1244,73 @@ Où `{{STEPS_HTML}}` est généré comme :
   .rx-checkbox input[type="checkbox"]:checked + label {
     color: var(--excellent);
     text-decoration: line-through;
+  }
+
+  /* Consequence chain section */
+  .rx-consequence {
+    margin: 16px 0;
+    padding: 12px;
+    background: rgba(199, 62, 29, 0.05);
+    border-left: 4px solid var(--critical);
+    border-radius: 6px;
+  }
+
+  .rx-consequence summary {
+    color: var(--critical);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 0;
+  }
+
+  .rx-consequence summary:hover {
+    opacity: 0.8;
+  }
+
+  .consequence-chain {
+    margin-top: 12px;
+    padding: 12px;
+    background: white;
+    border-radius: 4px;
+  }
+
+  .consequence-step {
+    padding: 12px;
+    background: var(--bg-light);
+    border-left: 3px solid var(--warning);
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .consequence-step.final {
+    border-left-color: var(--critical);
+    background: rgba(199, 62, 29, 0.05);
+    font-weight: 500;
+  }
+
+  .step-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .step-content {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .step-content.risk {
+    color: var(--critical);
+  }
+
+  .chain-arrow {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin: 4px 0;
   }
 
   /* CTA */
