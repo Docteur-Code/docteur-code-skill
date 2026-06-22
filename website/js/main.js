@@ -44,8 +44,7 @@
   /* ---- Form: validation + wa.me handoff ---- */
   var form = document.querySelector('#ordonnance-form');
   if (form) {
-    // PLACEHOLDER : remplace par ton vrai numéro WhatsApp (format international, sans +, sans espaces)
-    var WHATSAPP_NUMBER = '33756921842';
+    var WHATSAPP_NUMBER = '33658323806';
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();

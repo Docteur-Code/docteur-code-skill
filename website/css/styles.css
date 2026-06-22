@@ -210,6 +210,42 @@ section { padding: clamp(50px, 8vw, 96px) 0; position: relative; }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-4 { grid-template-columns: repeat(4, 1fr); }
 
+/* Symptôme mis en avant (sécurité) */
+.symptom-feature {
+  background: var(--navy);
+  color: var(--cream);
+  border: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-hard);
+  padding: 34px 38px;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  position: relative;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.symptom-feature:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--navy-ink); }
+.symptom-feature .ic { font-size: 4.2rem; line-height: 1; flex: 0 0 auto; }
+.symptom-feature__quote { font-family: var(--font-body); font-style: normal; font-weight: 700; font-size: clamp(1.6rem, 3.4vw, 2.6rem); color: var(--cream); line-height: 1.35; margin: 0 0 16px; }
+.symptom-feature__quote .hl { color: var(--gold); }
+.symptom-feature p { color: var(--cream); font-size: 1.15rem; opacity: .92; }
+.symptom-feature p strong { color: var(--gold); font-weight: 700; }
+
+/* Carte symptôme : verbatim en avant + conséquence */
+.symptom-quote { font-size: 1.3rem; font-weight: 700; color: var(--navy); line-height: 1.4; margin: 0 0 14px; }
+.symptom-conseq { color: var(--navy-ink); }
+.symptom-feature .stamp {
+  position: absolute; top: -14px; right: 24px;
+  background: var(--red); color: var(--white-warm);
+  font-family: var(--font-condensed); text-transform: uppercase;
+  font-size: .85rem; letter-spacing: 1px;
+  padding: 6px 14px; border-radius: 4px;
+  box-shadow: var(--shadow-hard-sm);
+}
+@media (max-width: 600px) {
+  .symptom-feature { flex-direction: column; text-align: center; padding: 30px 24px; }
+}
+
 /* Liste à coches rondes (façon billboard) */
 .checklist { display: grid; gap: 14px; }
 .checklist li { display: flex; gap: 14px; align-items: flex-start; font-size: 1.1rem; }
@@ -250,6 +286,24 @@ section { padding: clamp(50px, 8vw, 96px) 0; position: relative; }
   font-size: .95rem; padding: 8px 16px; border: 3px solid var(--navy-ink);
   border-radius: var(--radius); transform: rotate(-4deg); box-shadow: var(--shadow-hard-sm);
 }
+.role-card__sign {
+  display: flex; align-items: center; gap: 18px;
+  margin-top: 28px; padding-top: 22px;
+  border-top: 2px dashed rgba(237,228,208,.25);
+}
+.role-card__avatar {
+  flex: 0 0 auto;
+  width: 132px; height: 132px; border-radius: 50%;
+  object-fit: cover; object-position: center;
+  border: 4px solid var(--gold);
+  box-shadow: var(--shadow-hard-sm);
+}
+.role-card__sign .who { line-height: 1.3; }
+.role-card__sign .who strong {
+  font-family: var(--font-condensed); text-transform: uppercase; letter-spacing: 1px;
+  color: var(--cream); font-size: 1.2rem; display: block;
+}
+.role-card__sign .who span { color: var(--gold); font-size: .98rem; }
 
 /* =========================== NAVBAR ==================================== */
 .nav {
@@ -403,6 +457,11 @@ section { padding: clamp(50px, 8vw, 96px) 0; position: relative; }
 .quote-card p { font-style: italic; margin: 6px 0 16px; }
 .quote-card .who { font-family: var(--font-condensed); text-transform: uppercase; color: var(--navy); letter-spacing: .5px; }
 .quote-card .stars { color: var(--gold); font-size: 1.2rem; letter-spacing: 3px; margin-bottom: 8px; }
+.quote-card { display: flex; flex-direction: column; }
+.quote-card p { flex: 1; }
+.quote-card .who { line-height: 1.25; }
+.quote-card .who span { display: block; color: var(--red); font-size: .82rem; letter-spacing: .5px; }
+.quote-card .who .li { text-transform: none; color: #0A66C2; text-decoration: underline; font-size: .82rem; letter-spacing: 0; }
 
 /* =========================== FAQ (accordion) =========================== */
 .faq-item { border: var(--border); border-radius: var(--radius); background: var(--white-warm); color: var(--navy-ink); margin-bottom: 16px; box-shadow: var(--shadow-hard-sm); overflow: hidden; }
@@ -489,6 +548,12 @@ section { padding: clamp(50px, 8vw, 96px) 0; position: relative; }
   .price-card.feature { transform: none; }
   .step { grid-template-columns: 1fr; }
 }
+/* Petites apartés / blagues entre parenthèses */
+.aside {
+  font-style: italic;
+  opacity: .7;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
