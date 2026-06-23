@@ -1,0 +1,7 @@
+# Cloudflare Worker (static assets only) — Dr. Code website
+# Serves the static site in ./website with no Worker script (assets-only).
+name = "docteur-code-website"
+compatibility_date = "2025-06-01"
+
+[assets]
+directory = "./website"
