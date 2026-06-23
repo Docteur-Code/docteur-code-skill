@@ -83,6 +83,23 @@
           <p class="symptom-conseq">Ne gaspillez plus vos tokens. Dr. Code vous les fait économiser.</p>
         </div>
       </div>
+
+      <!-- ============ AUTO-TEST CTA ============ -->
+      <div class="wrap" style="text-align:center;margin-top:40px">
+        <div class="card reveal" style="max-width:700px;margin:0 auto;padding:24px">
+          <h3 style="margin:0 0 12px">Testez votre code maintenant</h3>
+          <p style="margin:0 0 20px;color:var(--text-muted)">
+            Collez cette instruction dans Claude Code :
+          </p>
+          <div style="display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap">
+            <code id="auto-test-instruction" style="background:var(--navy-10);padding:12px 16px;border-radius:8px;font-size:0.9em;max-width:100%;word-break:break-all">
+              Installe la skill Docteur Code depuis https://raw.githubusercontent.com/christophehavard/docteur-code-skill/main/.claude/commands/docteur-code.md et run-la sur ton projet
+            </code>
+            <button class="btn btn--sm" onclick="copyAutoTestInstruction()" id="copy-btn">Copier</button>
+          </div>
+          <p id="copy-confirm" style="margin:12px 0 0;color:var(--gold);display:none">Copié !</p>
+        </div>
+      </div>
     </div>
   </section>
 

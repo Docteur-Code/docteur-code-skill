@@ -100,4 +100,19 @@
   /* ---- Footer year ---- */
   var y = document.querySelector('[data-year]');
   if (y) y.textContent = new Date().getFullYear();
+
+  /* ---- Auto-test copy ---- */
+  function copyAutoTestInstruction() {
+    var text = document.getElementById('auto-test-instruction').textContent;
+    var btn = document.getElementById('copy-btn');
+    var confirm = document.getElementById('copy-confirm');
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copié !';
+      if (confirm) confirm.style.display = 'block';
+      setTimeout(function() {
+        btn.textContent = 'Copier';
+        if (confirm) confirm.style.display = 'none';
+      }, 2000);
+    });
+  }
 })();
