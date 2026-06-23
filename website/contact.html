@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact — Obtenez votre ordonnance · Dr. Code</title>
+  <title>Contact — Demander une consultation · Dr. Code</title>
   <meta name="description" content="Décrivez les symptômes de votre projet et recevez votre ordonnance. Formulaire ou WhatsApp — le docteur vous répond.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
         <li><a href="soins.html">Les Soins</a></li>
         <li><a href="docteur.html">Le Docteur</a></li>
         <li><a href="contact.html" class="active">Contact</a></li>
-        <li><a href="contact.html" class="btn nav__cta">Obtenir une ordonnance</a></li>
+        <li><a href="contact.html" class="btn nav__cta">Demander une consultation</a></li>
       </ul>
       <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
@@ -34,7 +34,7 @@
     <span class="sparkle gold sm" style="bottom:26%;right:15%"></span>
     <div class="wrap">
       <span class="eyebrow">Envoyez vos symptômes</span>
-      <h1>OBTENEZ VOTRE ORDONNANCE</h1>
+      <h1>DEMANDER UNE CONSULTATION</h1>
       <p class="lead" style="margin:18px auto 0;color:var(--cream)">Décrivez votre projet et ce qui vous inquiète. Le docteur revient vers vous rapidement — c'est gratuit et sans engagement.</p>
     </div>
   </header>
@@ -71,32 +71,34 @@
                 <label for="outil">Avec quoi l'avez-vous codé ?</label>
                 <select id="outil" name="outil">
                   <option value="">— Choisir —</option>
+                  <option>Claude / Claude Code</option>
                   <option>Cursor</option>
                   <option>Lovable</option>
                   <option>v0</option>
-                  <option>Claude / Claude Code</option>
                   <option>Bolt</option>
                   <option>Replit</option>
                   <option>Un peu de tout</option>
-                  <option>Je ne sais pas</option>
                   <option>Autre</option>
                 </select>
+              </div>
+              <div class="field">
+                <label for="github">Lien du projet (GitHub)</label>
+                <input type="url" id="github" name="github" autocomplete="off" placeholder="https://github.com/…">
               </div>
               <div class="field">
                 <label for="symptomes">Les symptômes <span class="req">*</span></label>
                 <textarea id="symptomes" name="symptomes" required placeholder="Qu'est-ce qui cloche ? Bugs, lenteurs, peur de déployer, code illisible…"></textarea>
                 <span class="err">Décrivez ce qui ne va pas, même vaguement.</span>
               </div>
-              <button type="submit" class="btn btn--lg" style="width:100%;justify-content:center">📋 Envoyer mon ordonnance</button>
-              <p class="form-note">En envoyant, votre demande s'ouvre dans WhatsApp pour finaliser l'échange. Aucune donnée n'est stockée sur ce site.</p>
+              <button type="submit" class="btn btn--lg" style="width:100%;justify-content:center">📋 Demander une consultation</button>
+              <p class="form-error" hidden style="color:var(--red);margin-top:12px">Oups, l'envoi a échoué. Réessayez ou écrivez directement à christophe@alpes-ia.fr.</p>
             </form>
 
             <!-- Message de succès -->
             <div class="form-success">
               <div class="rx-big">℞</div>
-              <h3 style="font-family:var(--font-condensed);text-transform:uppercase;color:var(--navy);margin-bottom:10px">Ordonnance transmise&nbsp;!</h3>
-              <p style="margin-bottom:20px">Votre demande est prête. Si WhatsApp ne s'est pas ouvert, cliquez ci-dessous.</p>
-              <a href="#" data-wa class="btn btn--wa btn--lg" target="_blank" rel="noopener">💬 Ouvrir WhatsApp</a>
+              <h3 style="font-family:var(--font-condensed);text-transform:uppercase;color:var(--navy);margin-bottom:10px">Demande transmise&nbsp;!</h3>
+              <p style="margin-bottom:20px">Merci, votre demande de consultation est bien arrivée. Le docteur vous répond sous 48 à 72h.</p>
             </div>
           </div>
         </div>
@@ -183,7 +185,7 @@
         <div>
           <h4>Prendre rendez-vous</h4>
           <div class="footer__links">
-            <a href="contact.html">📋 Obtenir une ordonnance</a>
+            <a href="contact.html">📋 Demander une consultation</a>
             <a href="https://wa.me/33658323806" target="_blank" rel="noopener">💬 WhatsApp</a>
             <a href="#" class="placeholder">[@ Instagram]</a>
             <a href="#" class="placeholder">[@ LinkedIn]</a>

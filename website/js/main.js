@@ -41,10 +41,10 @@
     });
   });
 
-  /* ---- Form: validation + wa.me handoff ---- */
+  /* ---- Form: validation + n8n webhook (email handoff) ---- */
   var form = document.querySelector('#ordonnance-form');
   if (form) {
-    var WHATSAPP_NUMBER = '33658323806';
+    var ENDPOINT = 'https://n8n.cloudron.alpes-ia.fr/webhook/docteur-code-contact';
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -63,24 +63,31 @@
         return;
       }
 
-      var get = function (n) { var el = form.elements[n]; return el ? el.value.trim() : ''; };
-      var msg =
-        'Bonjour Docteur Code ! Voici ma demande de consultation :\n\n' +
-        'Nom : ' + get('nom') + '\n' +
-        'Projet : ' + get('projet') + '\n' +
-        'Outil IA utilisé : ' + (get('outil') || 'non précisé') + '\n' +
-        'Symptômes : ' + get('symptomes');
+      var btn = form.querySelector('button[type="submit"]');
+      var errNote = form.querySelector('.form-error');
+      if (errNote) errNote.hidden = true;
+      if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
 
-      var url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
+      // Sent as form-urlencoded to avoid a CORS preflight on the n8n webhook
+      var body = new URLSearchParams(new FormData(form)).toString();
 
-      var success = document.querySelector('.form-success');
-      if (success) {
-        form.style.display = 'none';
-        success.classList.add('show');
-        var waLink = success.querySelector('[data-wa]');
-        if (waLink) waLink.href = url;
-      }
-      window.open(url, '_blank', 'noopener');
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: body
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          var success = document.querySelector('.form-success');
+          if (success) {
+            form.style.display = 'none';
+            success.classList.add('show');
+          }
+        })
+        .catch(function () {
+          if (errNote) errNote.hidden = false;
+          if (btn) { btn.disabled = false; btn.textContent = '📋 Demander une consultation'; }
+        });
     });
 
     form.querySelectorAll('[required]').forEach(function (input) {
