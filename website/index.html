@@ -95,7 +95,10 @@
             <code id="auto-test-instruction" style="display:block;padding:12px 16px;font-family:monospace;font-size:0.9em;word-break:break-all;background:transparent;white-space:pre-wrap">
 Installe la skill Docteur Code depuis https://raw.githubusercontent.com/christophehavard/docteur-code-skill/main/.claude/commands/docteur-code.md et run-la sur ton projet
             </code>
-            <button onclick="copyAutoTestInstruction()" id="copy-btn" style="position:absolute;top:4px;right:4px;background:none;border:none;padding:4px 8px;font-size:1.2em;cursor:pointer" aria-label="Copier">📋</button>
+            <button onclick="copyAutoTestInstruction()" id="copy-btn" style="position:absolute;top:4px;right:4px;background:none;border:none;padding:4px 8px;font-size:1.2em;cursor:pointer" aria-label="Copier">
+              📋
+              <span class="tooltip" id="copy-tooltip" style="position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--navy);color:var(--cream);padding:4px 8px;border-radius:4px;font-size:0.8em;white-space:nowrap;opacity:0;transition:opacity 0.2s;pointer-events:none">Copier</span>
+            </button>
           </div>
           <p id="copy-confirm" style="margin:12px 0 0;color:var(--gold);display:none">Copié !</p>
         </div>

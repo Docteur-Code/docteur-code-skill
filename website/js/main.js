@@ -102,17 +102,33 @@
   if (y) y.textContent = new Date().getFullYear();
 
   /* ---- Auto-test copy ---- */
+  var copyBtn = document.getElementById('copy-btn');
+  var copyTooltip = document.getElementById('copy-tooltip');
+
+  if (copyBtn && copyTooltip) {
+    copyBtn.addEventListener('mouseenter', function() {
+      copyTooltip.style.opacity = '1';
+    });
+    copyBtn.addEventListener('mouseleave', function() {
+      copyTooltip.style.opacity = '0';
+    });
+  }
+
   function copyAutoTestInstruction() {
     var text = document.getElementById('auto-test-instruction').textContent;
-    var btn = document.getElementById('copy-btn');
-    var confirm = document.getElementById('copy-confirm');
+    var tooltip = document.getElementById('copy-tooltip');
+
     navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = 'Copié !';
-      if (confirm) confirm.style.display = 'block';
-      setTimeout(function() {
-        btn.textContent = 'Copier';
-        if (confirm) confirm.style.display = 'none';
-      }, 2000);
+      if (tooltip) {
+        tooltip.textContent = 'Copié !';
+        tooltip.style.opacity = '1';
+        setTimeout(function() {
+          tooltip.style.opacity = '0';
+          setTimeout(function() {
+            tooltip.textContent = 'Copier';
+          }, 200);
+        }, 800);
+      }
     });
   }
 })();
