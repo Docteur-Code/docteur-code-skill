@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dr. Code — Pas sûr de votre code ? Appelez le docteur.</title>
+  <meta name="description" content="Vous avez codé votre projet avec l'IA et vous doutez ? Dr. Code diagnostique, soigne et sécurise votre code. Rapide. Efficace. Sans chichis.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Anton&family=Bitter:ital,wght@0,400;0,600;0,700;1,400&family=Kaushan+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231E3A52'/%3E%3Ctext x='50' y='72' font-size='62' text-anchor='middle' fill='%23D8A33B' font-family='Georgia' font-weight='bold'%3E%2B%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <nav class="nav">
+    <div class="wrap nav__inner">
+      <a href="index.html" class="brand">
+        <span class="brand__mark">DR<span class="brand__plus">.</span>CODE</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="index.html" class="active">Accueil</a></li>
+        <li><a href="soins.html">Les Soins</a></li>
+        <li><a href="docteur.html">Le Docteur</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="contact.html" class="btn nav__cta">Demander une consultation</a></li>
+      </ul>
+      <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="hero-scene">
+      <img src="assets/img/billboard-scene.png" alt="Dr. Code — Pas sûr de votre code ? Appelez le docteur." width="1536" height="1024">
+    </div>
+    <div class="hero-band">
+      <div class="marquee">
+        <span>RAPIDE <span class="dot">★</span> EFFICACE <span class="dot">★</span> SANS CHICHIS <span class="dot">★</span> ON NE JUGE PAS, ON VOUS SOIGNE <span class="dot">★</span> RAPIDE <span class="dot">★</span> EFFICACE <span class="dot">★</span> SANS CHICHIS <span class="dot">★</span> ON NE JUGE PAS, ON VOUS SOIGNE <span class="dot">★</span></span>
+      </div>
+    </div>
+    <div class="hero-intro wrap">
+      <span class="sparkle" style="top:18%;left:8%"></span>
+      <span class="sparkle red sm" style="top:30%;right:12%"></span>
+      <span class="sparkle gold sm" style="bottom:20%;left:18%"></span>
+      <h1>VOTRE CODE EST MALADE&nbsp;?</h1>
+      <span class="sub">Le docteur vous reçoit sans rendez-vous.</span>
+      <p class="lead" style="margin:24px auto 0;color:var(--cream)">Vous avez bâti votre app avec l'IA. Ça fonctionne, oui.<br><strong>Mais jusqu'à quand ?<br> Faites-vous dépister.</strong></p>
+      <div class="hero-cta">
+        <a href="contact.html" class="btn btn--lg">📋 Demander une consultation</a>
+        <a href="soins.html" class="btn btn--lg btn--navy" style="border-color:var(--cream)">Voir les soins</a>
+      </div>
+      <p style="margin:28px auto 10px;color:var(--gold);font-family:var(--font-condensed);letter-spacing:1px;text-transform:uppercase;font-size:0.9em">🔬 Ou testez votre code gratuitement, sans rendez-vous</p>
+      <div class="autotest-box" style="max-width:560px;margin:0 auto">
+        <code class="autotest-code" data-copy="Installe la skill Docteur Code depuis https://raw.githubusercontent.com/christophehavard/docteur-code-skill/main/.claude/commands/docteur-code.md et run-la sur ton projet">Installe la skill Docteur Code depuis https://raw.githubusercontent.com/christophehavard/docteur-code-skill/main/.claude/commands/docteur-code.md et run-la sur ton projet</code>
+        <button type="button" class="autotest-copy-btn" aria-label="Copier">
+          📋
+          <span class="autotest-tooltip">Copier</span>
+        </button>
+      </div>
+      <p class="autotest-hint autotest-hint--light">↑ Copie/colle cette phrase dans ton IA pour lancer l'analyse</p>
+    </div>
+  </header>
+
+  <!-- ============ SYMPTÔMES ============ -->
+  <section>
+    <div class="wrap" style="text-align:center">
+      <span class="eyebrow reveal">Auto-diagnostic</span>
+      <h2 class="section-title reveal">Vous reconnaissez ces <span class="hl">symptômes</span>&nbsp;?</h2>
+      <div class="flourish center reveal"></div>
+      <div class="symptom-feature reveal" style="margin-top:46px;text-align:left">
+        <span class="stamp">Le plus fréquent</span>
+        <div class="ic">🔒</div>
+        <div>
+          <div class="symptom-feature__quote">« Mes clients me confient leurs données. Moi, je ne sais même pas si c'est vraiment <span class="hl">sécurisé</span>. »</div>
+          <p>Une fuite de données, une faille RGPD, et c'est votre crédibilité — et votre <strong>responsabilité</strong> — qui sont en jeu.<br><strong>Dr. Code vérifie ce que l'IA a raté.</strong></p>
+        </div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:26px;text-align:left">
+        <div class="card reveal">
+          <p class="symptom-quote">« Je corrige une chose, et ça en fait sauter trois autres. Sans savoir pourquoi. »</p>
+          <p class="symptom-conseq">Dr. Code vous aide à comprendre comment éviter de perdre du temps.</p>
+        </div>
+        <div class="card reveal">
+          <p class="symptom-quote">« L'IA me dit que c'est bon… et en fait ça ne l'est pas. »</p>
+          <p class="symptom-conseq">Dr. Code vous dira toujours la vérité, même si elle est dure à entendre.</p>
+        </div>
+        <div class="card reveal">
+          <p class="symptom-quote">« Un jour ça marche, le lendemain tout est bloqué. »</p>
+          <p class="symptom-conseq">Ne gaspillez plus vos tokens. Dr. Code vous les fait économiser.</p>
+        </div>
+      </div>
+
+      <!-- ============ AUTO-TEST CTA ============ -->
+      <div class="wrap" style="text-align:center;margin-top:40px">
+        <div class="card reveal" style="max-width:700px;margin:0 auto;padding:24px">
+          <h3 style="margin:0 0 12px">Testez votre code maintenant</h3>
+          <p style="margin:0 0 20px;color:var(--text-muted)">
+            Collez cette instruction dans Claude Code :
+          </p>
+          <div class="autotest-box">
+            <code class="autotest-code" data-copy="Installe la skill Docteur Code depuis https://raw.githubusercontent.com/christophehavard/docteur-code-skill/main/.claude/commands/docteur-code.md et run-la sur ton projet">Installe la skill Docteur Code depuis https://raw.githubusercontent.com/christophehavard/docteur-code-skill/main/.claude/commands/docteur-code.md et run-la sur ton projet</code>
+            <button type="button" class="autotest-copy-btn" aria-label="Copier">
+              📋
+              <span class="autotest-tooltip">Copier</span>
+            </button>
+          </div>
+          <p class="autotest-hint">↑ Copie/colle cette phrase dans ton IA pour lancer l'analyse</p>
+        </div>
+      </div>
+
+      <!-- ============ CE QU'ON DIAGNOSTIQUE ============ -->
+      <div style="margin-top:56px">
+        <span class="eyebrow reveal">Concrètement</span>
+        <h2 class="section-title reveal">7 points <span class="hl">scannés</span>, sans jargon</h2>
+        <div class="flourish center reveal"></div>
+        <div class="grid grid-4 reveal" style="margin-top:36px;text-align:left">
+          <div class="card" style="padding:20px">
+            <div class="card__num" style="font-size:1.8rem">⚙️</div>
+            <h3 style="font-size:1.05rem">Setup Claude Code</h3>
+            <p>Pourriez-vous économiser du temps et de l'argent avec une IA mieux configurée ?</p>
+          </div>
+          <div class="card" style="padding:20px">
+            <div class="card__num" style="font-size:1.8rem">🔒</div>
+            <h3 style="font-size:1.05rem">Sécurité</h3>
+            <p>Existe-t-il des failles susceptibles de vous causer des ennuis ?</p>
+          </div>
+          <div class="card" style="padding:20px">
+            <div class="card__num" style="font-size:1.8rem">🏗️</div>
+            <h3 style="font-size:1.05rem">Architecture</h3>
+            <p>Un changement risque-t-il d'en casser trois autres ailleurs ?</p>
+          </div>
+          <div class="card" style="padding:20px">
+            <div class="card__num" style="font-size:1.8rem">🧪</div>
+            <h3 style="font-size:1.05rem">Tests & qualité</h3>
+            <p>Comment s'assurer que tout fonctionne bien sans tout retester à la main à chaque fois ?</p>
+          </div>
+          <div class="card" style="padding:20px">
+            <div class="card__num" style="font-size:1.8rem">🚀</div>
+            <h3 style="font-size:1.05rem">Déploiement</h3>
+            <p>Si la prod plante, pouvez-vous revenir en arrière sans drame ?</p>
+          </div>
+          <div class="card" style="padding:20px">
+            <div class="card__num" style="font-size:1.8rem">📁</div>
+            <h3 style="font-size:1.05rem">Gestion de projet</h3>
+            <p>Votre travail est-il vraiment sauvegardé et traçable ?</p>
+          </div>
+          <div class="card" style="padding:20px">
+            <div class="card__num" style="font-size:1.8rem">🐛</div>
+            <h3 style="font-size:1.05rem">Bugs courants</h3>
+            <p>Des oublis de code traînent-ils sans que vous le sachiez ?</p>
+          </div>
+        </div>
+        <p class="reveal" style="margin-top:28px"><a href="soins.html#bilan">Voir le détail complet du bilan →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="zigzag"></div>
+
+  <!-- ============ APERÇU DES SOINS ============ -->
+  <section class="section--navy">
+    <div class="wrap">
+      <div style="text-align:center">
+        <span class="eyebrow reveal" style="color:var(--gold)">Notre carte des soins</span>
+        <h2 class="section-title reveal">Trois façons de vous <span class="hl">remettre d'aplomb</span></h2>
+        <div class="flourish center reveal"></div>
+      </div>
+      <div class="grid grid-3" style="margin-top:46px">
+        <div class="card reveal">
+          <div class="card__num">🩺</div>
+          <h3>Le bilan de santé</h3>
+          <p>Qualité, sécurité, dette technique, prêt-pour-la-prod, Dr. Code ausculte l'ensemble de votre projet.<br> Vous repartez avec une <strong>ordonnance claire</strong>.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card__num">💊</div>
+          <h3>Le traitement</h3>
+          <p>On corrige, on sécurise, on nettoie. Vous décidez de la dose, on s'occupe du reste.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card__num">📈</div>
+          <h3>Le suivi</h3>
+          <p>Des check-up réguliers pour être sûr. Vous avancez et Dr. Code vous soutient tout au long du chemin.</p>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:40px">
+        <a href="soins.html" class="btn btn--lg btn--ghost reveal">Découvrir les soins en détail →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ POURQUOI ============ -->
+  <section>
+    <div class="wrap grid grid-2" style="align-items:center;gap:60px">
+      <div class="reveal">
+        <span class="eyebrow">On ne juge pas.</span>
+        <h2 class="section-title">Coder avec l'IA, ce n'est <span class="hl">pas tricher</span>.</h2>
+        <div class="flourish"></div>
+        <p class="lead" style="margin-bottom:18px">Vibe-coder, prototyper avec Claude ou Lovable, c'est génial — ça vous a emmené loin, vite. Mais l'IA ne sait pas toujours ce qui se cache sous le capot.</p>
+        <div style="margin-top:28px">
+          <a href="docteur.html" class="btn">Rencontrer le docteur</a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="role-card">
+          <span class="label">Mon rôle</span>
+          <p>Poser un <span class="gold">regard humain et expert</span> sur votre projet : vous dire ce qui va, ce qui cloche, et comment le réparer.</p>
+          <div class="role-card__sign">
+            <img class="role-card__avatar" src="assets/img/docteur-avatar.png" alt="Le Dr. Code">
+            <div class="who">
+              <strong>Le Dr. Code</strong>
+              <span>Votre médecin traitant du code</span>
+            </div>
+          </div>
+          <span class="stamp">★ Sans jugement</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="zigzag"></div>
+
+  <!-- ============ TÉMOIGNAGES ============ -->
+  <section class="section--navy">
+    <div class="wrap">
+      <div style="text-align:center">
+        <span class="eyebrow reveal" style="color:var(--gold)">Paroles de patients guéris</span>
+        <h2 class="section-title reveal">Ils sont sortis de la <span class="hl">salle d'attente</span></h2>
+        <div class="flourish center reveal"></div>
+      </div>
+      <div class="grid grid-3" style="margin-top:46px">
+        <div class="quote-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>« Ça fonctionnait. Mais en dessous, c'était un Frankenstein. Je ne savais pas ce que je ne savais pas — la position la plus dangereuse pour continuer à construire. »</p>
+          <div class="who">— Christiaan Trahms<span>CEO in motion · Vibe Coder</span><a class="li" href="https://www.linkedin.com/in/christiaantrahms/" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+        </div>
+        <div class="quote-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>« Il n'a pas seulement réparé mon code : il m'a expliqué ce que j'avais créé, pourquoi c'était un problème, et à quoi ressemblait une vraie solution. Patient, précis, et zéro condescendance. »</p>
+          <div class="who">— Christiaan Trahms<span>CEO in motion · Vibe Coder</span><a class="li" href="https://www.linkedin.com/in/christiaantrahms/" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+        </div>
+        <div class="quote-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>« Un produit ré-architecturé, pensé pour durer, et des milliers d'euros d'infra économisés. Si vous avez construit avec l'IA sans être technique, c'est exactement la personne qu'il vous faut. »</p>
+          <div class="who">— Christiaan Trahms<span>CEO in motion · Vibe Coder</span><a class="li" href="https://www.linkedin.com/in/christiaantrahms/" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GARANTIES ============ -->
+  <section>
+    <div class="wrap" style="text-align:center">
+      <h2 class="section-title reveal">Nos <span class="hl">engagements</span></h2>
+      <div class="flourish center reveal"></div>
+      <div class="guarantees reveal" style="margin-top:40px">
+        <div class="guarantee"><div class="ic">⚡</div><strong>Rapide</strong><p>Diagnostic sous 48–72h</p></div>
+        <div class="guarantee"><div class="ic">🎯</div><strong>Efficace</strong><p>Des actions concrètes</p></div>
+        <div class="guarantee"><div class="ic">🗣️</div><strong>Sans chichis</strong><p>Zéro jargon inutile</p></div>
+        <div class="guarantee"><div class="ic">🤝</div><strong>Sans jugement</strong><p>On vous soigne, point</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA STRIP ============ -->
+  <section class="cta-strip">
+    <div class="wrap">
+      <h2 class="reveal">Pas sûr de votre code&nbsp;?</h2>
+      <p class="lead reveal" style="margin:14px auto 0">Décrivez vos symptômes. Le docteur vous répond.</p>
+      <div class="btns reveal">
+        <a href="contact.html" class="btn btn--lg btn--navy">📋 Demander une consultation</a>
+        <a href="contact.html" class="btn btn--lg btn--wa">💬 Écrire sur WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__grid">
+        <div>
+          <span class="brand__mark">DR<span class="brand__plus">.</span>CODE</span>
+          <p style="margin-top:16px;max-width:34ch">Le cabinet qui soigne les projets codés avec l'IA. On ne juge pas. On vous soigne.</p>
+        </div>
+        <div>
+          <h4>Le cabinet</h4>
+          <div class="footer__links">
+            <a href="index.html">Accueil</a>
+            <a href="soins.html">Les Soins</a>
+            <a href="docteur.html">Le Docteur</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4>Prendre rendez-vous</h4>
+          <div class="footer__links">
+            <a href="contact.html">📋 Demander une consultation</a>
+            <a href="https://wa.me/33658323806" target="_blank" rel="noopener" data-wa-footer>💬 WhatsApp</a>
+            <a href="#" class="placeholder">[@ Instagram]</a>
+            <a href="#" class="placeholder">[@ LinkedIn]</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        © <span data-year>2026</span> Dr. Code — Christophe Havard · SIRET 801 236 050 00036 · <a href="mentions-legales.html">Mentions légales</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

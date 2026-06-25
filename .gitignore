@@ -15,3 +15,6 @@ Thumbs.db
 # Logs et temp
 *.log
 .tmp/
+
+# Notes privées (entretiens)
+Entretien exploratoire - Maxime Dumas.txt
