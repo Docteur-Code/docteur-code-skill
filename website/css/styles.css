@@ -342,7 +342,7 @@ section { padding: clamp(50px, 8vw, 96px) 0; position: relative; }
 /* =========================== HERO ====================================== */
 .hero { background: var(--navy); color: var(--cream); padding: 0; overflow: hidden; }
 .hero-scene { background: var(--frame); line-height: 0; }
-.hero-scene img { width: 100%; max-height: 78vh; object-fit: cover; object-position: center; }
+.hero-scene img { width: 100%; height: auto; max-height: 78vh; object-fit: cover; object-position: center; }
 .billboard-frame {
   background: var(--frame);
   padding: clamp(10px, 1.5vw, 18px);
@@ -496,7 +496,7 @@ section { padding: clamp(50px, 8vw, 96px) 0; position: relative; }
 .faq-item.open .faq-a { max-height: 320px; }
 
 /* =========================== PROCESS STEPS ============================= */
-.steps { counter-reset: step; display: grid; gap: 26px; }
+.steps { counter-reset: step; display: grid; gap: 26px; grid-template-columns: repeat(2, 1fr); }
 .step {
   display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: start;
   background: var(--white-warm); color: var(--navy-ink); border: var(--border); border-radius: var(--radius);
@@ -564,7 +564,8 @@ section { padding: clamp(50px, 8vw, 96px) 0; position: relative; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .footer__grid { grid-template-columns: 1fr; }
   .price-card.feature { transform: none; }
-  .step { grid-template-columns: 1fr; }
+  .step, .steps { grid-template-columns: 1fr; }
+  .page-head h1 { font-size: clamp(1.9rem, 8.5vw, 5rem); }
 }
 /* Petites apartés / blagues entre parenthèses */
 .aside {
