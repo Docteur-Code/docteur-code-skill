@@ -59,13 +59,14 @@
   <div class="zigzag"></div>
 
   <!-- ============ SOIN 1 : BILAN ============ -->
-  <section class="section--navy">
+  <section class="section--navy" id="bilan">
     <div class="wrap grid grid-2" style="align-items:center;gap:56px">
       <div class="reveal">
         <div class="card__num" style="font-size:3.4rem;color:var(--gold)">🩺</div>
         <h2 class="section-title">Le bilan de <span class="hl">santé</span></h2>
         <div class="flourish"></div>
         <p class="lead" style="margin-bottom:18px">L'examen complet de votre projet. La première consultation, à prix fixe, pour savoir exactement où vous en êtes.</p>
+        <p style="margin-bottom:18px;color:var(--cream);opacity:.9">Nos outils scannent automatiquement votre code, puis <strong>un développeur expérimenté revoit chaque point à la main</strong>. C'est cette double couche — machine + œil humain — qui fait la différence avec un simple rapport automatisé.</p>
         <ul class="checklist">
           <li>Audit de la qualité et de la lisibilité du code</li>
           <li>Repérage des bugs et zones fragiles</li>
@@ -83,6 +84,45 @@
           <a href="contact.html" class="btn btn--lg" style="margin-top:18px">Réserver mon bilan</a>
         </div>
       </div>
+    </div>
+
+    <div class="wrap" style="margin-top:60px;text-align:center">
+      <span class="eyebrow reveal" style="color:var(--gold)">La méthode</span>
+      <h3 class="section-title reveal" style="font-size:clamp(1.6rem,3vw,2.2rem)">On évalue <span class="hl">méthodiquement</span>, sans deviner</h3>
+      <div class="flourish center reveal"></div>
+      <p class="lead reveal" style="margin:18px auto 0;color:var(--cream)">Chaque bilan passe 7 catégories au crible. Pas de feeling, pas d'à-peu-près : un diagnostic objectif qui dit où concentrer vos efforts — sécuriser ici, optimiser là, ou laisser tranquille ce qui fonctionne déjà.</p>
+      <div class="diag-list reveal" style="margin-top:36px;text-align:left">
+        <div class="diag-row">
+          <div class="diag-row__head"><span class="ic">⚙️</span><strong>Setup Claude Code</strong></div>
+          <p><em>Pourriez-vous économiser du temps et de l'argent avec une IA mieux configurée ?</em><br>On vérifie le CLAUDE.md, les hooks, les skills, les serveurs MCP, les agents personnalisés. Une IA mal encadrée invente, oublie le contexte, et vous fait recorriger les mêmes erreurs.</p>
+        </div>
+        <div class="diag-row">
+          <div class="diag-row__head"><span class="ic">🔒</span><strong>Sécurité</strong></div>
+          <p><em>Existe-t-il des failles susceptibles de vous causer des ennuis ?</em><br>On cherche les secrets exposés, le .env mal protégé, les dépendances vulnérables, l'accès aux données, les clés visibles côté client. Une faille ignorée peut coûter votre crédibilité — et votre responsabilité légale.</p>
+        </div>
+        <div class="diag-row">
+          <div class="diag-row__head"><span class="ic">🏗️</span><strong>Architecture</strong></div>
+          <p><em>Un changement risque-t-il d'en casser trois autres ailleurs ?</em><br>On regarde le lockfile, la modularité, la séparation des responsabilités, la validation des données, l'accès à la base. Un code en spaghetti rend chaque évolution plus lente et plus risquée.</p>
+        </div>
+        <div class="diag-row">
+          <div class="diag-row__head"><span class="ic">🧪</span><strong>Tests & qualité</strong></div>
+          <p><em>Comment s'assurer que tout fonctionne bien sans tout retester à la main à chaque fois ?</em><br>On vérifie la présence de tests, d'un linter, de hooks de pré-commit. Sans ces garde-fous, chaque modification est un coup de dés.</p>
+        </div>
+        <div class="diag-row">
+          <div class="diag-row__head"><span class="ic">🚀</span><strong>Déploiement</strong></div>
+          <p><em>Si la prod plante, pouvez-vous revenir en arrière sans drame ?</em><br>On contrôle le pipeline CI/CD, les migrations de base de données, l'environnement de staging, le plan de retour en arrière, les alertes. Sans ça, un bug en prod devient une crise.</p>
+        </div>
+        <div class="diag-row">
+          <div class="diag-row__head"><span class="ic">📁</span><strong>Gestion de projet</strong></div>
+          <p><em>Votre travail est-il vraiment sauvegardé et traçable ?</em><br>On vérifie Git, le dépôt distant, les branches, le .gitignore. Un code qui n'existe que sur votre machine n'est jamais vraiment en sécurité.</p>
+        </div>
+        <div class="diag-row">
+          <div class="diag-row__head"><span class="ic">🐛</span><strong>Bugs courants</strong></div>
+          <p><em>Des oublis de code traînent-ils sans que vous le sachiez ?</em><br>Console.log oubliés, problèmes de typage : les petits oublis qui trahissent un code pas relu, et qui finissent toujours par remonter au mauvais moment.</p>
+        </div>
+      </div>
+      <p class="reveal" style="margin-top:28px;color:var(--cream);opacity:.85">Nos outils scannent automatiquement ~80% de ces points. Le reste — votre usage de Claude Code, les bugs ressentis, et tout ce qui demande un œil expert — est passé en revue par un développeur expérimenté.</p>
+      <p class="reveal" style="margin-top:10px;color:var(--cream)">De ce diagnostic, on déduit vos priorités — sécuriser ce qui doit l'être, optimiser ce qui freine. C'est précisément ce que couvrent le traitement et le suivi, juste après.</p>
     </div>
   </section>
 
